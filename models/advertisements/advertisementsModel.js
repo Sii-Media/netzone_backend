@@ -26,7 +26,30 @@ const advertisementSchema = mongoose.Schema({
         required: true,
     },
 
-});
+    advertisingBrand: {
+        type: String,
+        required: true,
+    },
+    advertisingViews: {
+        type: Number,
+        required: true,
+    },
+    advertisingYear: {
+        type: String,
+        required: true,
+    },
+    advertisingLocation: {
+        type: String,
+        required: true,
+    },
+    advertisingPrice: {
+        type: Number,
+        required: true,
+    },
+    advertisingImageList: [{ type: String }],
+    advertisingVedio: String,
+
+}, { timestamps: true });
 
 
 

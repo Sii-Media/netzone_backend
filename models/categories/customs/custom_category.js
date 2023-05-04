@@ -36,6 +36,9 @@ const customCategorySchema = mongoose.Schema({
         type: [String],
         required: true,
     },
+    link: {
+        type: String,
+    },
     videourl: {
         type: String,
     },

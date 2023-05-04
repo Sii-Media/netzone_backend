@@ -47,6 +47,7 @@ const companyCategorySchema = mongoose.Schema({
     videourl: {
         type: String,
     },
+    link: String,
 
 }, { timestamps: true });
 

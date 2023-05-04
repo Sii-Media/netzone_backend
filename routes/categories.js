@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getGovernmentalCompany, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getGovernmentalCompany, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getAllGovermentalCategories, } from '../controllers/categories.js';
 
 
 const router = express.Router();
@@ -13,11 +13,14 @@ router.post('/create-freezoon', createfreezoon);
 
 //Factories routes
 router.get('/factories', getAllFactoriesCategories);
-router.get('/get-all-factories', getAllFactories);
+router.get('/get-all-factories/:id', getAllFactories);
+router.get('/factory/:id', getFactoryById);
 
 
 //Custom routes
-router.get('/get-customs', getCustomsCategory);
+router.get('/get-customs-categories', getCustomsCategory);
+router.get('/get-customs', getCustoms);
+router.get('/customs/:id', getCustomsById);
 
 
 //local company routes
@@ -28,6 +31,7 @@ router.get('/local-company/get-products/:id', getLocalCompanyProducts);
 
 //govermental routes
 router.get('/governmental-company', getGovernmentalCompany);
+router.get('/governmental-categories', getAllGovermentalCategories);
 
 //Cars routes
 router.get('/cars', getAllCars);

@@ -34,3 +34,33 @@ export const getAdvertisementById = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+export const createAds = async (req, res) => {
+    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingImage, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio } = req.body;
+
+    try {
+        const newAds = new Advertisement({
+            advertisingTitle,
+            advertisingStartDate,
+            advertisingEndDate,
+            advertisingDescription,
+            advertisingImage,
+            advertisingCountryAlphaCode,
+            advertisingBrand,
+            advertisingViews,
+            advertisingYear,
+            advertisingLocation,
+            advertisingPrice,
+            advertisingImageList,
+            advertisingVedio,
+        });
+
+        const savedAds = await newAds.save();
+        res.status(201).json({
+            msg: 'success',
+            result: savedAds
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
