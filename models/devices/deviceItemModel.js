@@ -13,10 +13,21 @@ const DeviceItemSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    description: {
+        type: String,
+        required: true,
+    },
+
     type: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "DevicesCategories"
-    }
+    },
+    year: {
+        type: Date,
+    },
+    property: String,
+    images: [String],
+    vedio: String,
 });
 
 

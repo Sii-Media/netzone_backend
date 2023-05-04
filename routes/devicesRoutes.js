@@ -4,7 +4,7 @@ import { getDeviceItems, getDevicesCategories, getItemById } from '../controller
 const router = express.Router();
 
 router.get('/', getDevicesCategories);
-router.get('/get-items', getDeviceItems);
+router.get('/get-items/:id', getDeviceItems);
 router.get('/:id', getItemById);
 
 export default router;

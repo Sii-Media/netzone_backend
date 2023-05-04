@@ -17,7 +17,13 @@ const WatchesItemsSchema = mongoose.Schema({
     type: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "WatchesCategory"
-    }
+    },
+    year: {
+        type: Date,
+    },
+    property: String,
+    images: [String],
+    vedio: String,
 });
 
 

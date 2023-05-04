@@ -6,8 +6,8 @@ import { ElectronicDevices } from "../models/electronic_devices/electronic_devic
 
 export const getElectronicDevices = async (req, res) => {
     try {
-        await DeviceList.find({});
-        const data = await ElectronicDevices.find({}).populate('deviceList');
+
+        const data = await ElectronicDevices.find({});
         return res.json({
             msg: "success",
             results: data,
@@ -17,6 +17,24 @@ export const getElectronicDevices = async (req, res) => {
 
     }
 }
+
+
+export const getElectronicDevicesItems = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await ElectronicDevices.findById(id).populate('deviceList');
+        return res.json({
+            msg: "success",
+            results: data,
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+
+    }
+}
+
+
 
 
 export const getElectronicDevicById = async (req, res) => {

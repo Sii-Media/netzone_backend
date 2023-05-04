@@ -17,7 +17,13 @@ const PerfumeItemsSchema = mongoose.Schema({
     type: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "PerfumesCategory"
-    }
+    },
+    year: {
+        type: Date,
+    },
+    property: String,
+    images: [String],
+    vedio: String,
 });
 
 

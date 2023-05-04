@@ -15,7 +15,17 @@ const foodsSchema = mongoose.Schema({
     },
     desc: {
         type: String,
-    }
+    },
+    type: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FoodsCategories"
+    },
+    year: {
+        type: Date,
+    },
+    property: String,
+    images: [String],
+    vedio: String,
 },
     { timestamps: true }
 );

@@ -21,7 +21,8 @@ export const getDevicesCategories = async (req, res) => {
 
 export const getDeviceItems = async (req, res) => {
     try {
-        const data = await DeviceItem.find({}).populate('type', 'name',);
+        const { id } = req.params;
+        const data = await DevicesCategories.findById(id).populate('deviceList');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }

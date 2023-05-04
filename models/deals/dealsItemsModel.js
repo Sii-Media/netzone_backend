@@ -3,10 +3,14 @@ import mongoose from "mongoose";
 const DealsItemsSchema = mongoose.Schema({
 
     name: { type: String, required: true, },
-    sallerName: { type: String, required: true, },
-    endDate: { type: Date, required: true, },
+    imgUrl: { type: String, required: true, },
+    companyName: { type: String, required: true, },
     prevPrice: { type: Number, required: true, min: 1 },
     currentPrice: { type: Number, required: true, min: 1 },
+    startDate: { type: Date, required: true, },
+    endDate: { type: Date, required: true, },
+    location: { type: String, required: true, },
+
 }, { timestamps: true });
 
 
