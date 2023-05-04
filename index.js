@@ -11,7 +11,6 @@ import categoriesRoutes from './routes/categories.js';
 import electronicDevicesRoutes from './routes/electronic_devicesRoutes.js';
 import advertisementsRoutes from './routes/advertisementsRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
-import FactoriesRoutes from './routes/factoriesRoutes.js';
 import foodsProducts from './routes/foods_productsRoutes.js';
 import menFashionRoutes from './routes/men_fashionRoutes.js';
 import womenFashionRoutes from './routes/women_fashionRoutes.js';
@@ -41,7 +40,6 @@ app.use('/categories', categoriesRoutes);
 app.use('/electronic-devices', electronicDevicesRoutes);
 app.use('/advertisements', advertisementsRoutes);
 app.use('/news', newsRoutes);
-app.use('/factories', FactoriesRoutes);
 app.use('/foodsproducts', foodsProducts);
 app.use('/menfashion', menFashionRoutes);
 app.use('/womenfashion', womenFashionRoutes);
@@ -51,7 +49,7 @@ app.use('/legalAdvices', legalAdviceRoutes);
 app.use('/devices', devicesRoutes);
 app.use('/perfumes', perfumesRoutes);
 app.use('/watches', watchesRoutes);
-app.use('/vacancies',vacanciesRoutes);
+app.use('/vacancies', vacanciesRoutes);
 
 
 

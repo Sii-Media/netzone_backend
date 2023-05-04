@@ -30,10 +30,15 @@ const localCompanySchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    images: {
+    docs: {
         type: [String],
         required: true,
     },
+    products: [
+        {
+            type: mongoose.Schema.Types.ObjectId, ref: 'Products',
+        }
+    ]
 
 
 },
