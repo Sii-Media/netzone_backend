@@ -20,10 +20,12 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
+        enum: ['local_company', 'user', 'car', 'ship'],
 
     },
     firstMobile: {
         type: String,
+        required: true,
     },
 
     secondeMobile: {

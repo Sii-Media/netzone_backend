@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import multer from "multer";
+
 
 import bodyParser from 'body-parser';
 
@@ -21,14 +23,42 @@ import devicesRoutes from './routes/devicesRoutes.js';
 import perfumesRoutes from './routes/perfumesRoutes.js';
 import watchesRoutes from './routes/watchesRoutes.js';
 import vacanciesRoutes from './routes/vacanciesRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 dotenv.config();
 
 
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+console.log(__dirname);
+
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/png ' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+
 
 
 

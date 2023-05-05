@@ -7,6 +7,7 @@ const DealsCategoriesSchema = mongoose.Schema({
     dealsItems: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "DealsItems",
+        default: []
     },]
 
 }, { timestamps: true });

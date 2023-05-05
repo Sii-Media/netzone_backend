@@ -1,12 +1,13 @@
 import express from 'express';
 import { getAllDeals, getAllDealsCategories, getDealById } from '../controllers/dealsCtrl.js';
+import auth from '../middlewares/auth.js';
 
 const router = express.Router();
 
 
-router.get('/', getAllDealsCategories);
-router.get('/alldealsItems', getAllDeals);
-router.get('/:id', getDealById);
+router.get('/', auth, getAllDealsCategories);
+router.get('/alldealsItems', auth, getAllDeals);
+router.get('/:id', auth, getDealById);
 
 
 export default router;

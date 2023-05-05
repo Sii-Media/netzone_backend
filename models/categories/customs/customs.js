@@ -14,6 +14,7 @@ const customsSchema = mongoose.Schema({
     },
     freezoonplaces: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'CustomsCategory',
+        default: []
     }],
 
 }, { timestamps: true });

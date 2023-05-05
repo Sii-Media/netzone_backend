@@ -38,6 +38,13 @@ export const getAdvertisementById = async (req, res) => {
 export const createAds = async (req, res) => {
     const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingImage, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio } = req.body;
 
+
+    // if (!req.file) {
+    //     res.status(422).json({ message: error.message });
+    // }
+
+    // const adsImageUrl = await req.file.path;
+
     try {
         const newAds = new Advertisement({
             advertisingTitle,
@@ -64,3 +71,13 @@ export const createAds = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+
+// export const createtest = async(req, res) => {
+
+//     if (!req.file) {
+//         res.status(422).json({ message: error.message });
+//     }
+//     const adsImageUrl = await req.file.path;
+//     res.send(adsImageUrl);
+// }

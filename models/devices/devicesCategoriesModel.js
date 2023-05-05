@@ -12,6 +12,7 @@ const DevicesCategoriesSchema = mongoose.Schema({
     deviceList: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "DeviceItems",
+        default: []
     }],
 });
 

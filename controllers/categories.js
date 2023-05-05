@@ -9,6 +9,7 @@ import { Factory } from "../models/categories/factory/factory.js";
 // import { Product } from "../models/product/product.js";
 import { Vehicle } from "../models/categories/vehicle/vehicleModel.js";
 import { GovernmentalCategory } from "../models/categories/governmental/govermental_categories_model.js";
+import { validationResult } from 'express-validator';
 
 
 //Categories controllers
@@ -34,6 +35,10 @@ export const createCategory = async (req, res) => {
 
         const { url, name } = req.body;
 
+        const error = validationResult(req);
+        if (!error.isEmpty()) {
+            return res.json(error);
+        }
         const exisitingCategory = await Category.findOne({ name });
 
         if (exisitingCategory) {
@@ -50,7 +55,7 @@ export const createCategory = async (req, res) => {
             results: newCategory,
         });
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong" });
+        res.status(500).json({ message: error.message });
     }
 };
 
