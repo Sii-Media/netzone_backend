@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+const { ObjectId } = mongoose.Types;
+
 import { Category } from "../models/categories/categoryModel.js";
 import { Customs } from "../models/categories/customs/customs.js";
 import { CompanyCategory } from "../models/categories/freezoon/company_category.js";
@@ -10,6 +13,7 @@ import { Factory } from "../models/categories/factory/factory.js";
 import { Vehicle } from "../models/categories/vehicle/vehicleModel.js";
 import { GovernmentalCategory } from "../models/categories/governmental/govermental_categories_model.js";
 import { validationResult } from 'express-validator';
+import userModel from '../models/userModel.js';
 
 
 //Categories controllers
@@ -358,10 +362,21 @@ export const createVehicle = async (req, res) => {
             year,
             location,
             type,
-            category
+            category,
+            creator: req.userId,
         });
 
         const savedVehicle = await newVehicle.save();
+
+        // Update the user's vehicles array if the user exists
+        if (ObjectId.isValid(req.userId)) {
+            const user = await userModel.findById(req.userId);
+            if (user) {
+                user.vehicles.push(savedVehicle);
+                await user.save();
+            }
+        }
+
         res.status(201).json({
             msg: 'success',
             result: savedVehicle
@@ -369,4 +384,4 @@ export const createVehicle = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};

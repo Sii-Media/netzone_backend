@@ -38,7 +38,7 @@ export const signUp = async (req, res) => {
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
 
         res.status(201).json({
-            result: newUser,
+            result: newUser._id,
             message: "user created",
             token: token,
         })

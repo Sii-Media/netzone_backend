@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ['local_company', 'user', 'car', 'ship'],
+        enum: ['local_company', 'user', 'freezoon', 'factory', 'car', 'ship'],
 
     },
     firstMobile: {
@@ -44,8 +44,21 @@ const userSchema = mongoose.Schema({
     toCountry: String,
     profilePhoto: String,
     banerPhoto: String,
+    vehicles: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Vehicles',
+            default: [],
+        }
+    ]
 
 },
+    {
+        // Set the select option to exclude the password field by default
+        toJSON: {
+            select: '-password'
+        }
+    },
     { timestamps: true }
 );
 

@@ -41,6 +41,7 @@ export const createNews = async (req, res) => {
             imgUrl,
             owner,
             date,
+            creator: req.userId,
         });
         const savedNews = await news.save();
         res.status(201).json({
