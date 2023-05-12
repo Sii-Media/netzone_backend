@@ -50,7 +50,29 @@ const userSchema = mongoose.Schema({
             ref: 'Vehicles',
             default: [],
         }
-    ]
+    ],
+    products: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Products',
+            default: [],
+        }
+    ],
+    stripeCustomerId: {
+        type: String,
+    },
+    cart: {
+        items: [
+            {
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Products',
+                    required: true
+                },
+                quantity: { type: Number, required: true }
+            }
+        ]
+    }
 
 },
     {

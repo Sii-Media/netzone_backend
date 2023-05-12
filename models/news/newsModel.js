@@ -13,12 +13,12 @@ const newsSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    owner: {
+    ownerName: {
         type: String,
         required: true,
     },
-    date: {
-        type: Date,
+    ownerImage: {
+        type: String,
         required: true,
     },
     creator: {

@@ -7,11 +7,14 @@ export const getAdvertisements = async (req, res) => {
 
         const data = await Advertisement.find({});
         return res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({
+            message: error.message,
+            data,
+        });
 
     }
 

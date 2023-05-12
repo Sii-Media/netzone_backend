@@ -7,7 +7,7 @@ export const getAllNews = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
@@ -34,18 +34,18 @@ export const getNewsById = async (req, res) => {
 
 export const createNews = async (req, res) => {
     try {
-        const { title, description, imgUrl, owner, date } = req.body;
+        const { title, description, imgUrl, ownerName, ownerImage, creator } = req.body;
         const news = new News({
             title,
             description,
             imgUrl,
-            owner,
-            date,
-            creator: req.userId,
+            ownerName,
+            ownerImage,
+            creator,
         });
         const savedNews = await news.save();
         res.status(201).json({
-            msg: 'success',
+            message: 'success',
             result: savedNews,
         });
     } catch (error) {

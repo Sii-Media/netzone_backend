@@ -10,6 +10,7 @@ const DealsItemsSchema = mongoose.Schema({
     startDate: { type: Date, required: true, },
     endDate: { type: Date, required: true, },
     location: { type: String, required: true, },
+    category: { type: String, required: true },
 
 }, { timestamps: true });
 

@@ -4,9 +4,9 @@ import auth from '../middlewares/auth.js';
 const router = express.Router();
 
 
-router.get('/', auth, getAdvertisements);
-router.get('/:id', auth, getAdvertisementById);
-router.post('/createAds', auth, createAds);
+router.get('/', getAdvertisements);
+router.get('/:id', getAdvertisementById);
+router.post('/createAds', createAds);
 // router.get('/test',createtest);
 
 

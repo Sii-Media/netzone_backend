@@ -10,7 +10,7 @@ export const getAllDealsCategories = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: dealsCat,
         });
 
@@ -27,7 +27,7 @@ export const getAllDeals = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: dealsItems,
         });
 
@@ -35,6 +35,24 @@ export const getAllDeals = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const getAllDealsByCat = async (req, res) => {
+    try {
+        const { category } = req.body;
+        const dealsItems = await DealsItems.find({ category: category });
+        if (!dealsItems) {
+            return res.status(404).json({ message: 'no Data Found' });
+        }
+        return res.json({
+            message: "success",
+            results: dealsItems,
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 
 
 export const getDealById = async (req, res) => {

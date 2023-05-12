@@ -31,14 +31,14 @@ export const signUp = async (req, res) => {
             return res.json(error);
         }
         const existingUser = await userModel.findOne({ email });
-        if (existingUser) return res.status(422).json({ message: "User already exist, Please Login!" });
+        if (existingUser) return res.status(422).json({ message: "User already exist, Please Login!", });
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = await userModel.create({ username, email, password: hashedPassword, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto, });
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
 
         res.status(201).json({
-            result: newUser._id,
+            result: newUser,
             message: "user created",
             token: token,
         })

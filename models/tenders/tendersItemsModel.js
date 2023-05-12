@@ -10,6 +10,7 @@ const TendersItemsSchema = mongoose.Schema({
     price: { type: Number, required: true, min: 1 },
     type: { type: String, required: true, },
     value: { type: Number, required: true, min: 1 },
+    category: { type: String, required: true },
 
 }, { timestamps: true });
 

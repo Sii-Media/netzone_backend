@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const ProductSchema = mongoose.Schema({
 
     owner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
 

@@ -11,7 +11,7 @@ export const getAllTendersCategories = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: tendersCat,
         });
 
@@ -25,12 +25,13 @@ export const getAllTendersCategories = async (req, res) => {
 export const getAllTenders = async (req, res) => {
     try {
 
-        const tendersItems = await TendersItems.find({});
+
+        const tendersItems = await TendersItems.find();
         if (!tendersItems) {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: tendersItems,
         });
 
@@ -49,7 +50,7 @@ export const getTenderById = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: tender,
         });
 
@@ -62,10 +63,10 @@ export const getTenderById = async (req, res) => {
 export const getTendersItemsbyMinPrice = async (req, res) => {
 
     try {
-
-        const tendersItems = await TendersItems.find({}).sort({ price: 1 });
+        const { category } = req.body;
+        const tendersItems = await TendersItems.find({ category: category }).sort({ price: 1 });
         return res.json({
-            msg: "success",
+            message: "success",
             results: tendersItems,
         });
 
@@ -77,10 +78,10 @@ export const getTendersItemsbyMinPrice = async (req, res) => {
 
 export const getTendersItemsbyMaxPrice = async (req, res) => {
     try {
-
-        const tendersItems = await TendersItems.find({}).sort({ price: -1 });
+        const { category } = req.body;
+        const tendersItems = await TendersItems.find({ category: category }).sort({ price: -1 });
         return res.json({
-            msg: "success",
+            message: "success",
             results: tendersItems,
         });
 
