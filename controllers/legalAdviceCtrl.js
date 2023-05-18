@@ -9,7 +9,7 @@ export const getLegalAdvices = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {

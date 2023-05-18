@@ -24,6 +24,9 @@ import perfumesRoutes from './routes/perfumesRoutes.js';
 import watchesRoutes from './routes/watchesRoutes.js';
 import vacanciesRoutes from './routes/vacanciesRoutes.js';
 import departmentsRoutes from './routes/departmentsRours.js';
+import openionsRoutes from './routes/openionsRoutes.js';
+import questionRoutes from './routes/questionRoutes.js';
+import requestRoutes from './routes/requestsRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -96,6 +99,9 @@ app.use('/perfumes', perfumesRoutes);
 app.use('/watches', watchesRoutes);
 app.use('/vacancies', vacanciesRoutes);
 app.use('/departments', departmentsRoutes);
+app.use('/openions', openionsRoutes);
+app.use('/questions', questionRoutes);
+app.use('/requests',requestRoutes);
 
 
 

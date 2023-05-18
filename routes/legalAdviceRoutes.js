@@ -5,6 +5,6 @@ import auth from '../middlewares/auth.js';
 const router = express.Router();
 
 
-router.get('/', auth, getLegalAdvices);
+router.get('/', getLegalAdvices);
 
 export default router;
