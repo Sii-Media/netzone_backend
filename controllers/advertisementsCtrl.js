@@ -29,7 +29,7 @@ export const getAdvertisementById = async (req, res) => {
             return res.status(404).json({ message: 'no Data Found' });
         }
         return res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
 
@@ -38,15 +38,31 @@ export const getAdvertisementById = async (req, res) => {
     }
 }
 
+export const getAdvertisementByType = async (req, res) => {
+    const userAdvertisingType = req.params.userAdvertisingType; // Retrieve the userAdvertisingType from req.params
+
+    try {
+
+        const data = await Advertisement.find({ advertisingType: userAdvertisingType });
+        if (!data) {
+            return res.status(404).json({ message: 'no Data Found' });
+        }
+
+        return res.json({
+            message: "success",
+            results: data,
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+
 export const createAds = async (req, res) => {
     const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingImage, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio } = req.body;
 
 
-    // if (!req.file) {
-    //     res.status(422).json({ message: error.message });
-    // }
-
-    // const adsImageUrl = await req.file.path;
 
     try {
         const newAds = new Advertisement({

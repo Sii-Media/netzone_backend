@@ -48,6 +48,7 @@ const advertisementSchema = mongoose.Schema({
     },
     advertisingImageList: [{ type: String }],
     advertisingVedio: String,
+    advertisingType: String,
 
 }, { timestamps: true });
 

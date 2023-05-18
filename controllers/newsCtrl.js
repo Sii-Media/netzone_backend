@@ -35,19 +35,21 @@ export const getNewsById = async (req, res) => {
 export const createNews = async (req, res) => {
     try {
         const { title, description, imgUrl, ownerName, ownerImage, creator } = req.body;
+        const image = req.file;
+        if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
+        const urlImage = 'http://10.0.2.2:5000/' + image.path.replace(/\\/g, '/');
+
         const news = new News({
             title,
             description,
-            imgUrl,
+            imgUrl: urlImage,
             ownerName,
             ownerImage,
             creator,
         });
         const savedNews = await news.save();
-        res.status(201).json({
-            message: 'success',
-            result: savedNews,
-        });
+        // console.log(savedNews);
+        res.status(201).json('success');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

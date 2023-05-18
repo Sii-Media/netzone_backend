@@ -23,6 +23,7 @@ import devicesRoutes from './routes/devicesRoutes.js';
 import perfumesRoutes from './routes/perfumesRoutes.js';
 import watchesRoutes from './routes/watchesRoutes.js';
 import vacanciesRoutes from './routes/vacanciesRoutes.js';
+import departmentsRoutes from './routes/departmentsRours.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -35,17 +36,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 console.log(__dirname);
 
+// const fileStorage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'images');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, new Date().toISOString() + '-' + file.originalname);
+//     }
+// });
 const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images');
+    destination: function (req, file, cb) {
+        cb(null, 'images/')
     },
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + '-' + file.originalname);
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
     }
 });
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/png ' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    if (
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
+    ) {
         cb(null, true);
     } else {
         cb(null, false);
@@ -56,10 +69,12 @@ const fileFilter = (req, file, cb) => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 
-
+// const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
@@ -80,6 +95,7 @@ app.use('/devices', devicesRoutes);
 app.use('/perfumes', perfumesRoutes);
 app.use('/watches', watchesRoutes);
 app.use('/vacancies', vacanciesRoutes);
+app.use('/departments', departmentsRoutes);
 
 
 
@@ -89,3 +105,4 @@ mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: tr
 })).catch((error) => console.log(error.message));
 
 mongoose.set('strictQuery', false);
+
