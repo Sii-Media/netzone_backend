@@ -27,6 +27,7 @@ import departmentsRoutes from './routes/departmentsRours.js';
 import openionsRoutes from './routes/openionsRoutes.js';
 import questionRoutes from './routes/questionRoutes.js';
 import requestRoutes from './routes/requestsRoutes.js';
+import complaintsRoutes from './routes/complaintsRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -101,7 +102,8 @@ app.use('/vacancies', vacanciesRoutes);
 app.use('/departments', departmentsRoutes);
 app.use('/openions', openionsRoutes);
 app.use('/questions', questionRoutes);
-app.use('/requests',requestRoutes);
+app.use('/requests', requestRoutes);
+app.use('/complaints', complaintsRoutes);
 
 
 
