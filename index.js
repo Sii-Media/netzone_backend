@@ -112,5 +112,5 @@ mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: tr
     console.log(`Server Running on ${PORT}`)
 })).catch((error) => console.log(error.message));
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 
