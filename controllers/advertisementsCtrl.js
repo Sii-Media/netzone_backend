@@ -64,7 +64,7 @@ export const createAds = async (req, res) => {
 
     const image = req.file;
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
-    const urlImage = 'http://10.0.2.2:5000/' + image.path.replace(/\\/g, '/');
+    const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 
 
     try {
