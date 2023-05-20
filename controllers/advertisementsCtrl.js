@@ -60,8 +60,11 @@ export const getAdvertisementByType = async (req, res) => {
 
 
 export const createAds = async (req, res) => {
-    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingImage, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio } = req.body;
+    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio, advertisingType } = req.body;
 
+    const image = req.file;
+    if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
+    const urlImage = 'http://10.0.2.2:5000/' + image.path.replace(/\\/g, '/');
 
 
     try {
@@ -70,7 +73,7 @@ export const createAds = async (req, res) => {
             advertisingStartDate,
             advertisingEndDate,
             advertisingDescription,
-            advertisingImage,
+            advertisingImage: urlImage,
             advertisingCountryAlphaCode,
             advertisingBrand,
             advertisingViews,
@@ -79,13 +82,11 @@ export const createAds = async (req, res) => {
             advertisingPrice,
             advertisingImageList,
             advertisingVedio,
+            advertisingType
         });
 
         const savedAds = await newAds.save();
-        res.status(201).json({
-            msg: 'success',
-            result: savedAds
-        });
+        res.status(201).json('success');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

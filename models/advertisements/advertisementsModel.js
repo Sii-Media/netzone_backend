@@ -23,16 +23,15 @@ const advertisementSchema = mongoose.Schema({
     },
     advertisingCountryAlphaCode: {
         type: String,
-        required: true,
     },
 
     advertisingBrand: {
         type: String,
-        required: true,
+       
     },
     advertisingViews: {
         type: Number,
-        required: true,
+       
     },
     advertisingYear: {
         type: String,
@@ -48,7 +47,10 @@ const advertisementSchema = mongoose.Schema({
     },
     advertisingImageList: [{ type: String }],
     advertisingVedio: String,
-    advertisingType: String,
+    advertisingType: {
+        type: String,
+        required: true,
+    },
 
 }, { timestamps: true });
 
