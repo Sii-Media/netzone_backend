@@ -51,7 +51,7 @@ export const signin = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
-    const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, subcategory, address, isFreeZone, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const { username, email, password, userType, firstMobile, isFreeZone, secondMobile, thirdMobile, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'][0];
     try {
@@ -59,8 +59,8 @@ export const signUp = async (req, res) => {
         if (!error.isEmpty()) {
             return res.json(error);
         }
-        const profileUrlImage = 'http://localhost:5000/' + profilePhoto.path.replace(/\\/g, '/');
-        const banerUrlImage = 'http://localhost:5000/' + bannerPhoto.path.replace(/\\/g, '/');
+        const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
+        const banerUrlImage = 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/');
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(422).json({ message: "User already exists, please login!" });
@@ -82,7 +82,7 @@ export const signUp = async (req, res) => {
             thirdMobile,
             subcategory,
             address,
-            isFreeZone,
+            isFreeZone: isFreeZone,
             businessLicense,
             companyProductsNumber,
             sellType,
