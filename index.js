@@ -80,6 +80,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'image', maxCount: 1 },
     { name: 'profilePhoto', maxCount: 1 },
+    { name: 'coverPhoto', maxCount: 1 },
     { name: 'bannerPhoto', maxCount: 1 }
 ]));
 

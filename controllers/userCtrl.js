@@ -54,6 +54,7 @@ export const signUp = async (req, res) => {
     const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, isFreeZoon, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
+    const coverPhoto = req.files['coverPhoto'][0];
 
 
     try {
@@ -62,6 +63,7 @@ export const signUp = async (req, res) => {
             return res.json(error);
         }
         const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
+        const coverUrlImage = 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/');
         const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
@@ -90,6 +92,7 @@ export const signUp = async (req, res) => {
             sellType,
             toCountry,
             profilePhoto: profileUrlImage,
+            coverPhoto: coverUrlImage,
             banerPhoto: banerUrlImage,
         });
 

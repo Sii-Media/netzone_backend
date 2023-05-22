@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema({
     },
     isFreeZoon: {
         type: Boolean,
-       
+
     },
     subcategory: String,
     country: String,
@@ -47,6 +47,7 @@ const userSchema = mongoose.Schema({
     sellType: String,
     toCountry: String,
     profilePhoto: String,
+    coverPhoto: String,
     banerPhoto: String,
     vehicles: [
         {
