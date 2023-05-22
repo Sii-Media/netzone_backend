@@ -34,10 +34,14 @@ const userSchema = mongoose.Schema({
     thirdMobile: {
         type: String,
     },
+    isFreeZoon: {
+        type: Boolean,
+       
+    },
     subcategory: String,
     country: String,
     address: String,
-    isFreeZoon: Boolean,
+
     businessLicense: String,
     companyProductsNumber: Number,
     sellType: String,

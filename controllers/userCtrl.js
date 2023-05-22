@@ -51,7 +51,7 @@ export const signin = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
-    const { username, email, password, userType, firstMobile, isFreeZone, secondMobile, thirdMobile, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, isFreeZoon, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'][0];
     try {
@@ -80,9 +80,9 @@ export const signUp = async (req, res) => {
             firstMobile,
             secondMobile,
             thirdMobile,
+            isFreeZoon: isFreeZoon,
             subcategory,
             address,
-            isFreeZone: isFreeZone,
             businessLicense,
             companyProductsNumber,
             sellType,
@@ -99,6 +99,7 @@ export const signUp = async (req, res) => {
             token: token,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Error in registration" });
     }
 };
