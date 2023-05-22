@@ -23,29 +23,82 @@ export const signin = async (req, res) => {
     }
 }
 
+// export const signUp = async (req, res) => {
+//     const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto } = req.body;
+//     try {
+//         const error = validationResult(req);
+//         if (!error.isEmpty()) {
+//             return res.json(error);
+//         }
+//         const existingUser = await userModel.findOne({ email });
+//         if (existingUser) return res.status(422).json({ message: "User already exist, Please Login!", });
+//         const hashedPassword = await bcrypt.hash(password, 12);
+
+//         const newUser = await userModel.create({ username, email, password: hashedPassword, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto, });
+//         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+
+//         res.status(201).json({
+//             result: newUser,
+//             message: "user created",
+//             token: token,
+//         })
+//     } catch (error) {
+//         res.status(500).json({ message: "error in registeraition" });
+//     }
+
+// }
+
+
+// Handle user registration
 export const signUp = async (req, res) => {
-    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto } = req.body;
+    const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, subcategory, address, isFreeZone, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const profilePhoto = req.files['profilePhoto'][0];
+    const bannerPhoto = req.files['bannerPhoto'][0];
     try {
         const error = validationResult(req);
         if (!error.isEmpty()) {
             return res.json(error);
         }
+        const profileUrlImage = 'http://localhost:5000/' + profilePhoto.path.replace(/\\/g, '/');
+        const banerUrlImage = 'http://localhost:5000/' + bannerPhoto.path.replace(/\\/g, '/');
         const existingUser = await userModel.findOne({ email });
-        if (existingUser) return res.status(422).json({ message: "User already exist, Please Login!", });
+        if (existingUser) {
+            return res.status(422).json({ message: "User already exists, please login!" });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const newUser = await userModel.create({ username, email, password: hashedPassword, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto, });
+        // Upload the profile photo and banner photo using multer
+
+        // Get the uploaded banner photo filename
+
+        const newUser = await userModel.create({
+            username,
+            email,
+            password: hashedPassword,
+            userType,
+            firstMobile,
+            secondMobile,
+            thirdMobile,
+            subcategory,
+            address,
+            isFreeZone,
+            businessLicense,
+            companyProductsNumber,
+            sellType,
+            toCountry,
+            profilePhoto: profileUrlImage,
+            banerPhoto: banerUrlImage,
+        });
+
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
 
         res.status(201).json({
             result: newUser,
-            message: "user created",
+            message: "User created",
             token: token,
-        })
+        });
     } catch (error) {
-        res.status(500).json({ message: "error in registeraition" });
+        res.status(500).json({ message: "Error in registration" });
     }
-
-}
-
-
+};

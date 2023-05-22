@@ -35,7 +35,7 @@ export const getNewsById = async (req, res) => {
 export const createNews = async (req, res) => {
     try {
         const { title, description, imgUrl, ownerName, ownerImage, creator } = req.body;
-        const image = req.file;
+        const image = req.files['image'][0]
         if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
         const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 

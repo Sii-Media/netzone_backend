@@ -65,7 +65,7 @@ export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
         const { name, description, price, images, videoUrl, guarantee, property, madeIn, year } = req.body;
-        const image = req.file;
+        const image = req.files['image'][0];
         console.log(image);
         if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
 

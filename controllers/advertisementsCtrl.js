@@ -62,7 +62,7 @@ export const getAdvertisementByType = async (req, res) => {
 export const createAds = async (req, res) => {
     const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio, advertisingType } = req.body;
 
-    const image = req.file;
+    const image = req.files['image'][0]
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
     const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 

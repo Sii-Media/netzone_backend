@@ -76,7 +76,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+// app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'profilePhoto', maxCount: 1 },
+    { name: 'bannerPhoto', maxCount: 1 }
+]));
+
+
 
 // const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
