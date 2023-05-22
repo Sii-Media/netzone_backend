@@ -53,14 +53,16 @@ export const signin = async (req, res) => {
 export const signUp = async (req, res) => {
     const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, isFreeZoon, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
-    const bannerPhoto = req.files['bannerPhoto'][0];
+    const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
+
+
     try {
         const error = validationResult(req);
         if (!error.isEmpty()) {
             return res.json(error);
         }
         const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
-        const banerUrlImage = 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/');
+        const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(422).json({ message: "User already exists, please login!" });
