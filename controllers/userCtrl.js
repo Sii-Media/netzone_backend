@@ -2,6 +2,9 @@ import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
+import otpGenerator from 'otp-generator'
+import crypto from 'crypto';
+const key = 'otp-secret-key';
 
 export const signin = async (req, res) => {
     const { email, password } = req.body;
@@ -23,30 +26,7 @@ export const signin = async (req, res) => {
     }
 }
 
-// export const signUp = async (req, res) => {
-//     const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto } = req.body;
-//     try {
-//         const error = validationResult(req);
-//         if (!error.isEmpty()) {
-//             return res.json(error);
-//         }
-//         const existingUser = await userModel.findOne({ email });
-//         if (existingUser) return res.status(422).json({ message: "User already exist, Please Login!", });
-//         const hashedPassword = await bcrypt.hash(password, 12);
 
-//         const newUser = await userModel.create({ username, email, password: hashedPassword, userType, firstMobile, secondeMobile, thirdMobile, subcategory, address, isFreeZoon, businessLicense, companyProductsNumber, sellType, toCountry, profilePhoto, banerPhoto, });
-//         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
-
-//         res.status(201).json({
-//             result: newUser,
-//             message: "user created",
-//             token: token,
-//         })
-//     } catch (error) {
-//         res.status(500).json({ message: "error in registeraition" });
-//     }
-
-// }
 
 
 // Handle user registration
@@ -107,4 +87,70 @@ export const signUp = async (req, res) => {
         console.log(error);
         res.status(500).json({ message: "Error in registration" });
     }
+};
+
+
+export const createOtp = async (params, callback) => {
+    const otp = otpGenerator.generate(4, {
+        digits: true,
+        lowerCaseAlphabets: false,
+        upperCaseAlphabets: false,
+        specialChars: false,
+    });
+
+    const ttl = 5 * 60 * 1000;
+    const expires = Date.now() + ttl;
+    const data = `${params.phone}.${otp}.${expires}`;
+    const hash = crypto.createHmac("sha256", key).update(data).digest("hex");
+    const fullHash = `${hash}.${expires}`;
+
+    console.log(`Your Otp is ${otp}`);
+
+    //Send SMS
+
+    return callback(null, fullHash);
+};
+
+
+export const verifyOTP = async (params, callback) => {
+    let [hashValue, expires] = params.hash.split('.');
+
+    let now = Date.now();
+    if (now > parseInt(expires)) return callback('OTP expired');
+
+    let data = `${params.phone}.${params.otp}.${expires}`;
+    let newCalculateHash = crypto.createHmac('sha256', key).update(data).digest('hex');
+
+    if (newCalculateHash === hashValue) {
+        return callback(null, "Success");
+    } else {
+        return callback("Invalid OTP");
+    }
+};
+
+export const otpLogin = async (req, res) => {
+
+    createOtp(req.body, (error, results) => {
+        if (error) {
+            res.status(500).json({ message: "Error in registration" });
+        }
+        return res.status(200).json({
+            message: "Success",
+            data: results,
+        });
+    });
+
+
+};
+
+export const verifyOTPLogin = async (req, res) => {
+    verifyOTP(req.body, (error, results) => {
+        if (error) {
+            return res.status(500).json({ message: "Invalid OTP" }); // Return the response and exit the function
+        }
+        return res.status(200).json({
+            message: "Success",
+            data: results,
+        });
+    });
 };

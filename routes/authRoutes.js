@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { signUp, signin } from '../controllers/userCtrl.js';
+import { otpLogin, signUp, signin, verifyOTPLogin } from '../controllers/userCtrl.js';
 
 const router = express.Router();
 
@@ -28,5 +28,9 @@ router.post('/signin',
             .isEmpty()
             .withMessage('Please enter a valid email address'),
     ], signin);
+
+router.post('/otpLogin',otpLogin);
+router.post('/verifyOtpLogin',verifyOTPLogin);
+
 
 export default router;
