@@ -200,11 +200,8 @@ export const getCustomsById = async (req, res) => {
 export const getAllLocalCompanies = async (req, res) => {
 
     try {
-        const data = await LocalCompany.find({});
-        res.json({
-            msg: "success",
-            results: data,
-        });
+        const data = await LocalCompany.find({}).select('-products');
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
 
