@@ -290,10 +290,7 @@ export const getAllFactoriesCategories = async (req, res) => {
     try {
         await Factory.find({});
         const data = await FactoryCategories.find({}, { title: 1, });
-        res.json({
-            message: "success",
-            results: data,
-        });
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -306,10 +303,7 @@ export const getAllFactories = async (req, res) => {
         const { id } = req.params;
 
         const data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate('factory');
-        res.json({
-            message: "success",
-            results: data,
-        });
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -322,10 +316,7 @@ export const getFactoryById = async (req, res) => {
         if (!factory) {
             return res.status(404).json({ message: 'Factory not found' });
         }
-        res.json({
-            message: "success",
-            results: factory,
-        });
+        res.json(factory);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
