@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const customCategorySchema = mongoose.Schema({
+const customscategoriesSchema = mongoose.Schema({
 
     categoryName: {
         type: String,
@@ -45,4 +45,4 @@ const customCategorySchema = mongoose.Schema({
 
 }, { timestamps: true });
 
-export const CustomCategory = mongoose.model('CustomsCategory', customCategorySchema);
+export const customscategories = mongoose.model('customscategories', customscategoriesSchema);

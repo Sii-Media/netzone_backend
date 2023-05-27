@@ -9,6 +9,10 @@ const governmentalCompanySchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    imageUrl: {
+        type: String,
+        required: true,
+    },
     city: {
         type: String,
         required: true,
@@ -40,4 +44,4 @@ const governmentalCompanySchema = mongoose.Schema({
     { timestamps: true }
 );
 
-export const GovernmentalCompany = mongoose.model('Governmental', governmentalCompanySchema);
+export const GovernmentalCompany = mongoose.model('GovernmentalCompany', governmentalCompanySchema);

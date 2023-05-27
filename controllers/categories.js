@@ -14,6 +14,8 @@ import { Vehicle } from "../models/categories/vehicle/vehicleModel.js";
 import { GovernmentalCategory } from "../models/categories/governmental/govermental_categories_model.js";
 import { validationResult } from 'express-validator';
 import userModel from '../models/userModel.js';
+import { Governmental } from '../models/categories/governmental/gonermental_model.js';
+import { customscategories } from '../models/categories/customs/custom_categories.js';
 
 
 //Categories controllers
@@ -22,7 +24,7 @@ export const getAllCategories = async (req, res) => {
         const data = await Category.find({});
         if (data) {
             return res.status(200).json({
-                msg: "success",
+                message: "success",
                 results: data,
             });
         }
@@ -67,15 +69,33 @@ export const createCategory = async (req, res) => {
 export const getFreezoon = async (req, res) => {
     try {
 
-        const data = await Freezoon.find({}).populate('freezoonplaces');
+        const data = await Freezoon.find().select('-freezoonplaces');
         if (!data) {
             return res.status(404).json({ message: 'Category not found' });
         }
         res.status(200).json({
+            message: "success",
             results: data,
         });
 
     } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+};
+export const getFreezoonById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await Freezoon.findById(id).populate('freezoonplaces');
+        if (!data) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+        res.status(200).json({
+            message: "success",
+            results: data,
+        });
+
+    } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Something went wrong" });
     }
 };
@@ -131,10 +151,9 @@ export const createfreezoon = async (req, res) => {
 export const getCustomsCategory = async (req, res) => {
 
     try {
-
-        const data = await Customs.find({});
+        const data = await Customs.find().select('-customsplaces');
         res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
@@ -146,9 +165,10 @@ export const getCustomsCategory = async (req, res) => {
 
 export const getCustoms = async (req, res) => {
     try {
-        const data = await Customs.find({}).populate('freezoonplaces');
+
+        const data = await Customs.find({}).populate('customsplaces');
         res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
@@ -159,16 +179,17 @@ export const getCustoms = async (req, res) => {
 export const getCustomsById = async (req, res) => {
     try {
         const { id } = req.params;
-        const custom = await Customs.findById(id);
+        const custom = await Customs.findById(id).populate('customsplaces');
         if (!custom) {
             return res.status(404).json({ message: 'no Data Found' });
         }
         res.json({
-            msg: "success",
+            message: "success",
             results: custom,
         });
 
     } catch (error) {
+
         res.status(500).json({ message: error.message });
     }
 };
@@ -229,33 +250,39 @@ export const getLocalCompanyProducts = async (req, res) => {
 }
 
 //Govermental Company controllers
-export const getAllGovermentalCategories = async (req, res) => {
+export const getGovermental = async (req, res) => {
     try {
 
-        const data = await GovernmentalCategory.find({});
-        res.json({
-            msg: "success",
+        const data = await Governmental.find();
+        if (!data) {
+            return res.status(404).json({ message: 'Governmental not found' });
+        }
+        res.status(200).json({
+            message: "success",
             results: data,
         });
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: "Something went wrong" });
     }
-}
+};
 
-export const getGovernmentalCompany = async (req, res) => {
-
+export const getGovermentalById = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await GovernmentalCompany.findById(id);
-        res.json({
-            msg: "success",
+        const data = await Governmental.findById(id).populate('govermentalCompanies');
+        if (!data) {
+            return res.status(404).json({ message: 'Governmental not found' });
+        }
+        res.status(200).json({
+            message: "success",
             results: data,
         });
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
-
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
     }
-
 }
 
 //Factory controllers
@@ -264,7 +291,7 @@ export const getAllFactoriesCategories = async (req, res) => {
         await Factory.find({});
         const data = await FactoryCategories.find({}, { title: 1, });
         res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
@@ -277,10 +304,10 @@ export const getAllFactoriesCategories = async (req, res) => {
 export const getAllFactories = async (req, res) => {
     try {
         const { id } = req.params;
-        // await Factory.find({});
+
         const data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate('factory');
         res.json({
-            msg: "success",
+            message: "success",
             results: data,
         });
     } catch (error) {
@@ -293,10 +320,10 @@ export const getFactoryById = async (req, res) => {
         const { id } = req.params;
         const factory = await Factory.findById(id);
         if (!factory) {
-            return res.status(404).json({ message: 'Vehicle not found' });
+            return res.status(404).json({ message: 'Factory not found' });
         }
         res.json({
-            msg: "success",
+            message: "success",
             results: factory,
         });
     } catch (error) {
@@ -310,7 +337,7 @@ export const getAllCars = async (req, res) => {
     try {
         const cars = await Vehicle.find({ category: "cars" });
         res.json({
-            msg: "success",
+            message: "success",
             results: cars,
         });
     } catch (error) {
@@ -325,13 +352,37 @@ export const getAllPlans = async (req, res) => {
     try {
         const plans = await Vehicle.find({ category: "plans" });
         res.json({
-            msg: "success",
+            message: "success",
             results: plans,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+export const getAllUsedPlans = async (req, res) => {
+    try {
+        const plans = await Vehicle.find({ category: "plans", type: "old" });
+        res.json({
+            message: "success",
+            results: plans,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getAllNewPlans = async (req, res) => {
+    try {
+        const plans = await Vehicle.find({ category: "plans", type: "new" });
+        res.json({
+            message: "success",
+            results: plans,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 export const getVehicleById = async (req, res) => {
     try {
@@ -341,7 +392,7 @@ export const getVehicleById = async (req, res) => {
             return res.status(404).json({ message: 'Vehicle not found' });
         }
         res.json({
-            msg: "success",
+            message: "success",
             results: vehicle,
         });
     } catch (error) {

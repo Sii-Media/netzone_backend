@@ -4,7 +4,16 @@ import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 import otpGenerator from 'otp-generator'
 import crypto from 'crypto';
+import Nexmo from 'nexmo';
+
+const nexmo = new Nexmo({
+    apiKey: '7e88bc5b',
+    apiSecret: '6W60UQDnogslVCuP'
+});
+
+
 const key = 'otp-secret-key';
+
 
 export const signin = async (req, res) => {
     const { email, password } = req.body;
@@ -107,6 +116,16 @@ export const createOtp = async (params, callback) => {
     console.log(`Your Otp is ${otp}`);
 
     //Send SMS
+    const from = '+971542451874';
+    const to = '+971508426896';
+    const text = 'Hello, this is a test SMS message!';
+    nexmo.message.sendSms(from, to, text, (err, responseData) => {
+        if (err) {
+            console.log('Error:', err);
+        } else {
+            console.log('Message sent successfully:', responseData);
+        }
+    });
 
     return callback(null, fullHash);
 };

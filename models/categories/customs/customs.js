@@ -8,12 +8,12 @@ const customsSchema = mongoose.Schema({
         unique: true,
     },
 
-    img: {
+    imageUrl: {
         type: String,
         required: true,
     },
-    freezoonplaces: [{
-        type: mongoose.Schema.Types.ObjectId, ref: 'CustomsCategory',
+    customsplaces: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'customscategories',
         default: []
     }],
 

@@ -1,49 +1,54 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getGovernmentalCompany, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getAllGovermentalCategories, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
 
 
 const router = express.Router();
 
-router.get('/get-categories', auth, getAllCategories);
+router.get('/get-categories', getAllCategories);
 router.post('/create-category', auth, [
     check('url').not().isEmpty().withMessage('url cannot be empty'),
     check('name').not().isEmpty().withMessage('name cannot be empty')
 ], createCategory);
 //Free Zone routes
-router.get('/freezoon', auth, getFreezoon);
-router.post('/create-freezoon', auth, createfreezoon);
+router.get('/freezoon', getFreezoon);
+router.post('/create-freezoon', createfreezoon);
+router.get('/freezoon/:id', getFreezoonById);
 
 
 //Factories routes
-router.get('/factories', auth, getAllFactoriesCategories);
-router.get('/get-all-factories/:id', auth, getAllFactories);
-router.get('/factory/:id', auth, getFactoryById);
+router.get('/factories', getAllFactoriesCategories);
+router.get('/get-all-factories/:id', getAllFactories);
+router.get('/factory/:id', getFactoryById);
 
 
 //Custom routes
-router.get('/get-customs-categories', auth, getCustomsCategory);
-router.get('/get-customs', auth, getCustoms);
-router.get('/customs/:id', auth, getCustomsById);
+router.get('/get-customs-categories',  getCustomsCategory);
+router.get('/get-customs',  getCustoms);
+router.get('/customs/:id',  getCustomsById);
 
 
 //local company routes
-router.get('/local-company', auth, getAllLocalCompanies);
-router.get('/local-company/:id', auth, getLocalCompanyById);
-router.get('/local-company/get-products/:id', auth, getLocalCompanyProducts);
+router.get('/local-company', getAllLocalCompanies);
+router.get('/local-company/:id', getLocalCompanyById);
+router.get('/local-company/get-products/:id', getLocalCompanyProducts);
 
 
 //govermental routes
-router.get('/governmental-company', auth, getGovernmentalCompany);
-router.get('/governmental-categories', auth, getAllGovermentalCategories);
+
+router.get('/govermental',getGovermental);
+router.get('/govermental/:id', getGovermentalById);
 
 //Cars routes
-router.get('/cars', auth, getAllCars);
+router.get('/cars', getAllCars);
 
 
 //Plans routes
-router.get('/planes', auth, getAllPlans);
+router.get('/planes', getAllPlans);
+router.get('/planes/getoldplanes', getAllUsedPlans);
+router.get('/planes/getnewplanes', getAllNewPlans);
+
 
 
 router.post('/vehicle/create-vehicle', auth, createVehicle);

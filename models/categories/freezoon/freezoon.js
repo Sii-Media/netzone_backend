@@ -8,7 +8,7 @@ const freezoonSchema = mongoose.Schema({
         unique: true,
     },
 
-    img: {
+    imageUrl: {
         type: String,
         required: true,
     },
