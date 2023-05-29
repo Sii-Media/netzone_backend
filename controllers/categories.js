@@ -235,14 +235,11 @@ export const getLocalCompanyProducts = async (req, res) => {
 export const getGovermental = async (req, res) => {
     try {
 
-        const data = await Governmental.find();
+        const data = await Governmental.find().select('-govermentalCompanies');
         if (!data) {
             return res.status(404).json({ message: 'Governmental not found' });
         }
-        res.status(200).json({
-            message: "success",
-            results: data,
-        });
+        res.status(200).json(data);
 
     } catch (error) {
         res.status(500).json({ message: "Something went wrong" });
@@ -256,10 +253,7 @@ export const getGovermentalById = async (req, res) => {
         if (!data) {
             return res.status(404).json({ message: 'Governmental not found' });
         }
-        res.status(200).json({
-            message: "success",
-            results: data,
-        });
+        res.status(200).json(data);
 
     } catch (error) {
         console.log(error);
