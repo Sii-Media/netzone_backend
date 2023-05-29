@@ -216,10 +216,7 @@ export const getLocalCompanyById = async (req, res) => {
         if (!company) {
             return res.status(404).json({ message: 'no Data Found' });
         }
-        res.json({
-            msg: "success",
-            results: company,
-        });
+        res.json(company);
 
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -237,10 +234,7 @@ export const getLocalCompanyProducts = async (req, res) => {
         }
         const products = company.toObject().products;
 
-        res.json({
-            msg: "success",
-            results: products,
-        });
+        res.json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
