@@ -152,10 +152,7 @@ export const getCustomsCategory = async (req, res) => {
 
     try {
         const data = await Customs.find().select('-customsplaces');
-        res.json({
-            message: "success",
-            results: data,
-        });
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
 
@@ -167,10 +164,7 @@ export const getCustoms = async (req, res) => {
     try {
 
         const data = await Customs.find({}).populate('customsplaces');
-        res.json({
-            message: "success",
-            results: data,
-        });
+        res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -183,10 +177,7 @@ export const getCustomsById = async (req, res) => {
         if (!custom) {
             return res.status(404).json({ message: 'no Data Found' });
         }
-        res.json({
-            message: "success",
-            results: custom,
-        });
+        res.json(custom);
 
     } catch (error) {
 
