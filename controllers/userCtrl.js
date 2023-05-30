@@ -5,6 +5,8 @@ import { validationResult } from 'express-validator';
 import otpGenerator from 'otp-generator'
 import crypto from 'crypto';
 import Nexmo from 'nexmo';
+import mongoose from "mongoose";
+
 
 const nexmo = new Nexmo({
     apiKey: '7e88bc5b',
@@ -173,3 +175,131 @@ export const verifyOTPLogin = async (req, res) => {
         });
     });
 };
+
+export const addProductToFavorites = async (req, res) => {
+    const { userId, productId } = req.body;
+
+    try {
+        // Find the user by userId
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the product already exists in the favorites list
+        const isProductInFavorites = user.favorites.products.find(
+            (item) => item.productId.toString() === productId
+        );
+
+        if (isProductInFavorites) {
+            return res.status(400).json({ message: 'Product already in favorites' });
+        }
+
+        // Add the product to the favorites list
+        user.favorites.products.push({ productId });
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Product added to favorites' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+export const removeProductFromFavorites = async (req, res) => {
+    const { userId, productId } = req.body;
+
+    try {
+        // Find the user by userId
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the product exists in the favorites list
+        const productIndex = user.favorites.products.findIndex(
+            (item) => item.productId.toString() === productId
+        );
+
+        if (productIndex === -1) {
+            return res.status(400).json({ message: 'Product not found in favorites' });
+        }
+
+        // Remove the product from the favorites list
+        user.favorites.products.splice(productIndex, 1);
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'Product removed from favorites' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const clearFav = async (req, res) => {
+
+    const { userId } = req.body;
+
+    try {
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.favorites.products = [];
+        await user.save();
+
+        return res.status(200).json('Favorites cleared' );
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
+
+export const getAllFavorites = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Find the user by userId and populate the favorite products
+        const user = await userModel.findById(userId)
+            .populate({
+                path: 'favorites.products.productId',
+                select: 'name imageUrl category description price',
+                populate: { path: 'category', select: 'name' },
+            })
+            .exec();
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Extract the favorite products from the user object
+        const favoriteProducts = user.favorites.products.map((favorite) => {
+            const { productId } = favorite;
+            const { name, imageUrl, description, price, category } = productId;
+            const categoryName = category ? category.name : null;
+
+            return {
+                productId: productId._id,
+                name,
+                imageUrl,
+                description,
+                price,
+                category: categoryName,
+            };
+        });
+
+        res.status(200).json(favoriteProducts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}

@@ -77,7 +77,19 @@ const userSchema = mongoose.Schema({
                 quantity: { type: Number, required: true }
             }
         ]
+    },
+    favorites: {
+        products: [
+            {
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Products',
+                },
+            }
+        ]
     }
+
+
 
 },
     {
