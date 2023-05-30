@@ -202,7 +202,7 @@ export const addProductToFavorites = async (req, res) => {
         // Save the updated user
         await user.save();
 
-        res.status(200).json({ message: 'Product added to favorites' });
+        res.status(200).json('Product added to favorites');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -236,7 +236,7 @@ export const removeProductFromFavorites = async (req, res) => {
         // Save the updated user
         await user.save();
 
-        res.status(200).json({ message: 'Product removed from favorites' });
+        res.status(200).json('Product removed from favorites');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -257,7 +257,7 @@ export const clearFav = async (req, res) => {
         user.favorites.products = [];
         await user.save();
 
-        return res.status(200).json('Favorites cleared' );
+        return res.status(200).json('Favorites cleared');
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Server error' });
