@@ -180,25 +180,26 @@ export const addProductToFavorites = async (req, res) => {
     const { userId, productId } = req.body;
 
     try {
+        console.error('11111111');
         // Find the user by userId
         const user = await userModel.findById(userId);
-
+ console.error('22222222');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
+ console.error('3333333333');
         // Check if the product already exists in the favorites list
         const isProductInFavorites = user.favorites.products.find(
             (item) => item.productId.toString() === productId
         );
-
+ console.error('4444444444');
         if (isProductInFavorites) {
             return res.status(400).json({ message: 'Product already in favorites' });
         }
-
+ console.error('5555555555');
         // Add the product to the favorites list
         user.favorites.products.push({ productId });
-
+ console.error('6666666666');
         // Save the updated user
         await user.save();
 
