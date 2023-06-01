@@ -2,7 +2,7 @@ import { News } from "../models/news/newsModel.js"
 
 export const getAllNews = async (req, res) => {
     try {
-        const data = await News.find({});
+        const data = await News.find({}).populate('creator');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
