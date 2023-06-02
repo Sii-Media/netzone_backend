@@ -13,18 +13,26 @@ const newsSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    ownerName: {
-        type: String,
-        required: true,
-    },
-    ownerImage: {
-        type: String,
-        required: true,
-    },
+
     creator: {
+        required: true,
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Like",
+            default: [],
+        },
+    ],
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment",
+            default: [],
+        },
+    ],
 
 },
     { timestamps: true }
