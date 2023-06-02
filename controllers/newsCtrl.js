@@ -140,7 +140,7 @@ export const getComments = async (req, res) => {
             })
             .select("text user");
 
-        res.status(200).json({ comments });
+        res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
