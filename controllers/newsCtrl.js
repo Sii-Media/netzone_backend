@@ -24,7 +24,6 @@ export const getAllNews = async (req, res) => {
                 path: 'comments',
                 populate: {
                     path: 'user',
-                    select: 'username',
                 },
             });
 
