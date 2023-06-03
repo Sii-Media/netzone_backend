@@ -83,28 +83,7 @@ export const createNews = async (req, res) => {
 };
 
 
-export const addLikeToNews = async (req, res) => {
-    try {
-        const { newsId } = req.params;
-        const { userId } = req.body;
 
-        const like = new Like({
-            user: userId,
-            news: newsId,
-        });
-
-        await like.save();
-
-        const news = await News.findById(newsId);
-        news.likes.push(like._id);
-        await news.save();
-
-        res.status(200).json("Like added successfully");
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-
-    }
-};
 
 export const addCommentToNews = async (req, res) => {
     try {
@@ -146,14 +125,50 @@ export const getComments = async (req, res) => {
     }
 };
 
+
 export const getLikes = async (req, res) => {
     try {
         const { newsId } = req.params;
 
-        const likes = await Like.find({ news: newsId });
+        const likes = await User.find({ _id: { $in: newsId.likes } });
 
         res.status(200).json({ likes });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
+export const toggleLikeOnNews = async (req, res) => {
+    try {
+        const { newsId } = req.params;
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Invalid user ID' });
+        }
+
+        // Check if the user has already liked the news
+        const news = await News.findById(newsId);
+
+        if (!news) {
+            return res.status(404).json({ message: 'News not found' });
+        }
+
+        const existingLikeIndex = news.likes.findIndex(likeId => likeId.equals(userId));
+
+        if (existingLikeIndex !== -1) {
+            // If the like exists, remove it
+            news.likes.splice(existingLikeIndex, 1);
+            await news.save();
+
+            res.status(200).json("Like removed successfully");
+        } else {
+            // If the like doesn't exist, add it
+            news.likes.push(userId);
+            await news.save();
+
+            res.status(200).json("Like added successfully");
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
