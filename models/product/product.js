@@ -8,7 +8,7 @@ const ProductSchema = mongoose.Schema({
     //     required: true,
     // },
 
-    
+
     owner: {
         type: String,
         required: true,
@@ -37,6 +37,7 @@ const ProductSchema = mongoose.Schema({
     },
     images: [String],
     vedioUrl: String,
+    gifUrl: String,
     guarantee: Boolean,
     propert: String,
     madeIn: String,

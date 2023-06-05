@@ -61,7 +61,9 @@ const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === 'image/png' ||
         file.mimetype === 'image/jpg' ||
-        file.mimetype === 'image/jpeg'
+        file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'video/mp4' ||
+        file.mimetype === 'image/gif'
     ) {
         cb(null, true);
     } else {
@@ -81,7 +83,10 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'image', maxCount: 1 },
     { name: 'profilePhoto', maxCount: 1 },
     { name: 'coverPhoto', maxCount: 1 },
-    { name: 'bannerPhoto', maxCount: 1 }
+    { name: 'bannerPhoto', maxCount: 1 },
+    { name: 'video', maxCount: 1 },
+    { name: 'gif', maxCount: 1 },
+
 ]));
 
 
