@@ -38,7 +38,8 @@ const localCompanySchema = mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId, ref: 'Products',
         }
-    ]
+    ],
+    coverUrl: String,
 
 
 },
