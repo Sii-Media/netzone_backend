@@ -183,23 +183,23 @@ export const addProductToFavorites = async (req, res) => {
         console.error('11111111');
         // Find the user by userId
         const user = await userModel.findById(userId);
- console.error('22222222');
+        console.error('22222222');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
- console.error('3333333333');
+        console.error('3333333333');
         // Check if the product already exists in the favorites list
         const isProductInFavorites = user.favorites.products.find(
             (item) => item.productId.toString() === productId
         );
- console.error('4444444444');
+        console.error('4444444444');
         if (isProductInFavorites) {
             return res.status(400).json({ message: 'Product already in favorites' });
         }
- console.error('5555555555');
+        console.error('5555555555');
         // Add the product to the favorites list
         user.favorites.products.push({ productId });
- console.error('6666666666');
+        console.error('6666666666');
         // Save the updated user
         await user.save();
 
@@ -304,3 +304,58 @@ export const getAllFavorites = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+export const getUserById = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json(user);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const EditUser = async (req, res) => {
+    const { userId } = req.params;
+    const { username, email, firstMobile, secondeMobile, thirdMobile } = req.body;
+    let profileUrlImage;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if a profile photo is included in the request
+        if (req.files && req.files["profilePhoto"]) {
+            const profilePhoto = req.files["profilePhoto"][0];
+            profileUrlImage =
+                "https://net-zoon.onrender.com/" +
+                profilePhoto.path.replace(/\\/g, "/");
+        }
+
+        // Update the user fields
+        user.username = username;
+        user.email = email;
+        user.firstMobile = firstMobile;
+        user.secondeMobile = secondeMobile;
+        user.thirdMobile = thirdMobile;
+
+        // Update the profile photo only if it's included in the request
+        if (profileUrlImage) {
+            user.profilePhoto = profileUrlImage;
+        }
+
+        const updatedUser = await user.save();
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
