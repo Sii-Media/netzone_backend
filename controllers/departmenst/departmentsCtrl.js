@@ -53,11 +53,15 @@ export const getProductsByCategory = async (req, res) => {
         if (!categories) {
             return res.status(404).json({ message: `Category ${category} not found in department ${department}` });
         }
+
         const products = await categories.products;
+
         if (products) {
             return res.json({
                 message: "success",
-                results: products,
+                department,
+                category,
+                results: { products },
             });
         } else {
             res.status(404).send(`Category ${category} not found in department ${department}`);
