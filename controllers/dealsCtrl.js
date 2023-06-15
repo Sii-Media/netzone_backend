@@ -72,3 +72,54 @@ export const getDealById = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const AddDeal = async (req, res) => {
+
+    const { name, companyName, prevPrice, currentPrice, startDate, endDate, location, category } = req.body;
+    try {
+        const image = req.files['dealImage'][0];
+
+        if (!image) {
+            return res.status(404).json({ message: 'Attached file is not an image.' });
+        }
+
+        const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        const foundCategory = await DealsCategories.findOne({ name: category });
+
+        console.log(foundCategory);
+
+        if (!foundCategory) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        // Create a new deal item using the deal data
+        const dealData = {
+            name,
+            imgUrl,
+            companyName,
+            prevPrice,
+            currentPrice,
+            startDate,
+            endDate,
+            location,
+            category,
+        }
+
+        const deal = new DealsItems(dealData);
+
+        // Save the new deal item
+        await deal.save();
+
+        // Add the new deal item to the category's dealsItems array
+        foundCategory.dealsItems.push(deal._id);
+
+        // Save the updated category
+        await foundCategory.save();
+
+        return res.json('Success');
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+
+
+};
