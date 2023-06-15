@@ -39,7 +39,7 @@ const ProductSchema = mongoose.Schema({
     vedioUrl: String,
     gifUrl: String,
     guarantee: Boolean,
-    propert: String,
+    address: String,
     madeIn: String,
     year: Date,
 
