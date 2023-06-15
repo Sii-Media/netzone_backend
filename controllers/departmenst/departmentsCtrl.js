@@ -76,7 +76,7 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { name, description, price, images, guarantee, property, madeIn, year } = req.body;
+        const { owner, name, description, price, images, guarantee, property, madeIn, year } = req.body;
         const image = req.files['image'][0];
 
         if (!image) {
@@ -98,7 +98,7 @@ export const addProduct = async (req, res) => {
         }
 
         const productData = {
-            owner: 'owner', // assuming user is authenticated and req.user contains user information
+            owner: owner, // assuming user is authenticated and req.user contains user information
             name,
             imageUrl: urlImage,
             category: category._id,
