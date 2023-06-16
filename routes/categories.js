@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
 
 
@@ -24,9 +24,9 @@ router.get('/factory/:id', getFactoryById);
 
 
 //Custom routes
-router.get('/get-customs-categories',  getCustomsCategory);
-router.get('/get-customs',  getCustoms);
-router.get('/customs/:id',  getCustomsById);
+router.get('/get-customs-categories', getCustomsCategory);
+router.get('/get-customs', getCustoms);
+router.get('/customs/:id', getCustomsById);
 
 
 //local company routes
@@ -37,18 +37,18 @@ router.get('/local-company/get-products/:id', getLocalCompanyProducts);
 
 //govermental routes
 
-router.get('/govermental',getGovermental);
+router.get('/govermental', getGovermental);
 router.get('/govermental/:id', getGovermentalById);
 
 //Cars routes
 router.get('/cars', getAllCars);
-
+router.get('/cars-companies', getCarsCompanies);
 
 //Plans routes
 router.get('/planes', getAllPlans);
 router.get('/planes/getoldplanes', getAllUsedPlans);
 router.get('/planes/getnewplanes', getAllNewPlans);
-
+router.get('/planes-companies', getPlanesCompanies),
 
 
 router.post('/vehicle/create-vehicle', auth, createVehicle);

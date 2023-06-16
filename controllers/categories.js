@@ -16,6 +16,7 @@ import { validationResult } from 'express-validator';
 import userModel from '../models/userModel.js';
 import { Governmental } from '../models/categories/governmental/gonermental_model.js';
 import { customscategories } from '../models/categories/customs/custom_categories.js';
+import { VehicleCompany } from '../models/categories/vehicle/vehicle_company_model.js';
 
 
 //Categories controllers
@@ -297,7 +298,34 @@ export const getFactoryById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+//cars companies
 
+export const getCarsCompanies = async (req, res) => {
+
+    try {
+        const carsCompanies = await VehicleCompany.find({ type: 'cars' });
+
+        res.status(200).json(carsCompanies);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+};
+//planes companies
+
+export const getPlanesCompanies = async (req, res) => {
+
+    try {
+        const planesCompanies = await VehicleCompany.find({ type: 'planes' });
+
+        res.status(200).json(planesCompanies);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+};
 
 //Cars Controllers
 export const getAllCars = async (req, res) => {
