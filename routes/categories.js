@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
 
 
@@ -53,6 +53,6 @@ router.get('/planes-companies', getPlanesCompanies),
 
 router.post('/vehicle/create-vehicle', auth, createVehicle);
 router.get('/vehicle/:id', auth, getVehicleById);
-
+router.get('/company-vehicles',getCompaniesVehicles);
 
 export default router;
