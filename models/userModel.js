@@ -87,7 +87,13 @@ const userSchema = mongoose.Schema({
                 },
             }
         ]
-    }
+    },
+    accounts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Account",
+        },
+    ],
 
 
 

@@ -138,6 +138,15 @@ export const addProduct = async (req, res) => {
     }
 };
 
+export const getUserProducts = async (req, res) => {
+    const { username } = req.body;
+    try {
+        const products = await Product.find({ owner: username });
+        return res.status(200).json(products);
+    } catch (error) {
+        return res.status(500).json({ message: error });
+    }
+};
 
 
 // export const addProduct = async (req, res) => {
