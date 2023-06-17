@@ -100,6 +100,32 @@ export const signUp = async (req, res) => {
     }
 };
 
+export const changePassword = async (req, res) => {
+    const { userId } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ message: 'Invalid current password' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json('Password changed successfully');
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error in changing password' });
+    }
+};
+
 
 export const createOtp = async (params, callback) => {
     const otp = otpGenerator.generate(4, {
