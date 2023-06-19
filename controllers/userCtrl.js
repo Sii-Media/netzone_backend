@@ -6,6 +6,7 @@ import otpGenerator from 'otp-generator'
 import crypto from 'crypto';
 import Nexmo from 'nexmo';
 import mongoose from "mongoose";
+import { Account } from '../models/account/account_model.js';
 
 
 const nexmo = new Nexmo({
@@ -56,7 +57,7 @@ export const signUp = async (req, res) => {
         const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
         const coverUrlImage = 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/');
         const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
-        const existingUser = await userModel.findOne({ email });
+        const existingUser = await userModel.findOne({ username });
         if (existingUser) {
             return res.status(422).json({ message: "User already exists, please login!" });
         }
@@ -87,6 +88,10 @@ export const signUp = async (req, res) => {
             banerPhoto: banerUrlImage,
         });
 
+        // const account = await Account.create({ user: newUser._id });
+        // newUser.accounts.push(account._id);
+        // await newUser.save();
+
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
 
         res.status(201).json({
@@ -97,6 +102,55 @@ export const signUp = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error in registration" });
+    }
+};
+
+export const addAccount = async (req, res) => {
+    const { email, username } = req.body;
+
+    try {
+        const existingUser = await userModel.findOne({ email });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const newUser = await userModel.findOne({ username });
+
+        if (existingUser.accounts.includes(newUser._id)) {
+            return res.status(409).json({ message: "User already has this account" });
+        }
+
+        // Create a new account and associate it with the user
+        // const account = await Account.create({ user: existingUser._id });
+
+        existingUser.accounts.push(newUser._id);
+
+        await existingUser.save();
+
+        res.status(201).json(existingUser);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error creating account" });
+    }
+};
+
+export const getAccountByEmail = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await userModel.findOne({ email }).populate('accounts');
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const accounts = user.accounts;
+
+        res.status(200).json(accounts);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error retrieving accounts" });
     }
 };
 

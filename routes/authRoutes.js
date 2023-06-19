@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { EditUser, addProductToFavorites, changePassword, clearFav, getAllFavorites, getUserById, otpLogin, removeProductFromFavorites, signUp, signin, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { EditUser, addAccount, addProductToFavorites, changePassword, clearFav, getAccountByEmail, getAllFavorites, getUserById, otpLogin, removeProductFromFavorites, signUp, signin, verifyOTPLogin } from '../controllers/userCtrl.js';
 
 const router = express.Router();
 
@@ -35,7 +35,8 @@ router.post('/otpLogin', otpLogin);
 router.post('/verifyOtpLogin', verifyOTPLogin);
 
 router.put('/editUser/:userId', EditUser);
-
+router.get('/getuseraccounts', getAccountByEmail);
+router.post('/addaccount',addAccount);
 
 router.post('/favorites/add', addProductToFavorites);
 router.post('/favorites/remove', removeProductFromFavorites);
