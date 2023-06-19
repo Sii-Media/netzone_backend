@@ -8,8 +8,8 @@ const TendersItemsSchema = mongoose.Schema({
     startDate: { type: Date, required: true, },
     endDate: { type: Date, required: true, },
     price: { type: Number, required: true, min: 1 },
-    type: { type: String, required: true, },
-    value: { type: Number, required: true, min: 1 },
+    imageUrl: { type: String, required: true, },
+    // value: { type: Number, required: true, min: 1 },
     category: { type: String, required: true },
 
 }, { timestamps: true });

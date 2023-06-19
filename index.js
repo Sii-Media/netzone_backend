@@ -87,7 +87,8 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'video', maxCount: 1 },
     { name: 'gif', maxCount: 1 },
     { name: 'dealImage', maxCount: 1 },
-    
+    { name: 'tenderImage', maxCount: 1 },
+
 
 ]));
 

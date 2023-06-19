@@ -91,3 +91,44 @@ export const getTendersItemsbyMaxPrice = async (req, res) => {
 
 };
 
+export const addTender = async (req, res) => {
+    const { nameAr, nameEn, companyName, startDate, endDate, price, category } = req.body;
+
+    try {
+        const image = req.files['tenderImage'][0];
+
+        if (!image) {
+            return res.status(404).json({ message: 'Attached file is not an image.' });
+        }
+
+        const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        const foundCategory = await TendersCategories.findOne({ name: category });
+        if (!foundCategory) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        const tenderData = {
+            nameAr,
+            nameEn,
+            companyName,
+            startDate,
+            endDate,
+            price,
+            imageUrl: imgUrl,
+            category,
+        };
+
+        const tender = TendersItems(tenderData);
+
+        await tender.save();
+
+        foundCategory.tendersItems.push(tender._id);
+        await foundCategory.save();
+
+        return res.json('Success');
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
