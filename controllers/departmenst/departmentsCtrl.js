@@ -201,9 +201,9 @@ export const editProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { productId } = req.params;
-        const product = await Product.findById(productId);
+        // const product = await Product.findById(productId);
 
-        deleteFile(product.imageUrl);
+        // deleteFile(product.imageUrl);
         const deletedProduct = await Product.findByIdAndRemove(productId);
 
         if (!deletedProduct) {
