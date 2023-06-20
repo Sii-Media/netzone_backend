@@ -220,7 +220,13 @@ export const getLocalCompanyProducts = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const company = await LocalCompany.findById(id).populate('products');
+        const company = await LocalCompany.findById(id).populate('products').populate({
+            path: 'products',
+            populate: {
+                path: 'category',
+                select: 'name',
+            },
+        });
         if (!company) {
             return res.status(404).json({ message: 'no Data Found' });
         }
