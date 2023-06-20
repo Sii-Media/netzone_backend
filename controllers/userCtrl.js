@@ -106,7 +106,7 @@ export const signUp = async (req, res) => {
 };
 
 export const addAccount = async (req, res) => {
-    const { email, username } = req.body;
+    const { email, username, password } = req.body;
 
     try {
         const existingUser = await userModel.findOne({ email });
@@ -115,7 +115,10 @@ export const addAccount = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+
         const newUser = await userModel.findOne({ username });
+        const isPasswordCorrect = await bcrypt.compare(password, newUser.password);
+        if (!isPasswordCorrect) return res.status(401).json({ message: "Invalid credentials" });
 
         if (existingUser.accounts.includes(newUser._id)) {
             return res.status(409).json({ message: "User already has this account" });
@@ -125,9 +128,9 @@ export const addAccount = async (req, res) => {
         // const account = await Account.create({ user: existingUser._id });
 
         existingUser.accounts.push(newUser._id);
-
+        newUser.accounts.push(existingUser._id);
         await existingUser.save();
-
+        await newUser.save();
         res.status(201).json(existingUser);
     } catch (error) {
         console.log(error);
