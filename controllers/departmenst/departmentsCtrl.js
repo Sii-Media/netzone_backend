@@ -48,7 +48,13 @@ export const getProductsByCategory = async (req, res) => {
             return res.status(404).json({ message: `Department ${department} not found` });
         }
         console.log(departments._id);
-        const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id }).populate('products');
+        const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id }).populate('products').populate({
+            path: 'products',
+            populate: {
+                path: 'category',
+                select: 'name',
+            },
+        });
         console.log(categories);
         if (!categories) {
             return res.status(404).json({ message: `Category ${category} not found in department ${department}` });
