@@ -39,6 +39,25 @@ export const signin = async (req, res) => {
 }
 
 
+export const changeAccount = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(404).json({
+            success: false,
+            message: "Invalid email or password",
+        });
+    }
+    try {
+        const existingUser = await userModel.findOne({ email, password: password });
+        if (!existingUser) return res.status(401).json({ message: "User doesn't exist." });
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+        res.status(200).json({ result: existingUser, message: 'LogIn Successfuled', token: token });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
+
 
 
 // Handle user registration
