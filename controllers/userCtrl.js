@@ -424,7 +424,7 @@ export const getUserById = async (req, res) => {
 
 export const EditUser = async (req, res) => {
     const { userId } = req.params;
-    const { username, email, firstMobile, secondeMobile, thirdMobile } = req.body;
+    const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry } = req.body;
     let profileUrlImage;
 
     try {
@@ -447,6 +447,11 @@ export const EditUser = async (req, res) => {
         user.firstMobile = firstMobile;
         user.secondeMobile = secondeMobile;
         user.thirdMobile = thirdMobile;
+        user.subcategory = subcategory;
+        user.address = address;
+        user.companyProductsNumber = companyProductsNumber;
+        user.sellType = sellType;
+        user.toCountry = toCountry;
 
         // Update the profile photo only if it's included in the request
         if (profileUrlImage) {
