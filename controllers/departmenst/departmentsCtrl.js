@@ -1,6 +1,7 @@
 import { Departments } from "../../models/product/departmenst/departmenst_model.js";
 import { DepartmentsCategory } from "../../models/product/departmenst/categories/departments_categories_model.js";
 import { Product } from "../../models/product/product.js";
+import { deleteFile } from '../../utils/file.js';
 // import upload from "../../middlewares/upload.js";
 // import multer from "multer";
 
@@ -147,8 +148,7 @@ export const addProduct = async (req, res) => {
 export const editProduct = async (req, res) => {
     try {
         const { productId } = req.params;
-        // const { departmentName, categoryName } = req.body;
-        const { name, description, price, images, guarantee, address, madeIn, year } = req.body;
+        const { name, description, price, guarantee, address, madeIn, year } = req.body;
         const image = req.files['image'][0];
 
         if (!image) {
@@ -157,49 +157,39 @@ export const editProduct = async (req, res) => {
 
         const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 
-        // Find department by name
-        // const department = await Departments.findOne({ name: departmentName });
-        // if (!department) {
-        //     return res.status(404).json({ message: 'Department not found' });
-        // }
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            {
+                name: name,
+                imageUrl: urlImage,
+                description: description,
+                price: price,
+                guarantee: guarantee,
+                address: address,
+                madeIn: madeIn,
+                year: year,
+            },
+            { new: true }
+        );
 
-        // // Find category by name and department
-        // const category = await DepartmentsCategory.findOne({ name: categoryName, department: department._id });
-        // if (!category) {
-        //     return res.status(404).json({ message: 'Category not found' });
-        // }
-
-        const productData = {
-            name,
-            imageUrl: urlImage,
-            category: category._id,
-            description,
-            price,
-            images,
-            guarantee,
-            address,
-            madeIn,
-            year,
-        };
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
         // Add optional fields if they exist
         if (req.files['video']) {
             const video = req.files['video'][0];
             const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
-            productData.vedioUrl = urlVideo;
+            updatedProduct.vedioUrl = urlVideo;
         }
 
         if (req.files['gif']) {
             const gif = req.files['gif'][0];
             const gifUrl = 'https://net-zoon.onrender.com/' + gif.path.replace(/\\/g, '/');
-            productData.gifUrl = gifUrl;
+            updatedProduct.gifUrl = gifUrl;
         }
 
-        const updatedProduct = await Product.findByIdAndUpdate(productId, productData, { new: true });
-
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
+        await updatedProduct.save();
 
         return res.status(200).json('success');
     } catch (error) {
@@ -207,6 +197,28 @@ export const editProduct = async (req, res) => {
         return res.status(500).json({ message: error });
     }
 };
+
+export const deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const product = await Product.findById(productId);
+
+        deleteFile(product.imageUrl);
+        const deletedProduct = await Product.findByIdAndRemove(productId);
+
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+
+        return res.status(200).json('success');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error });
+    }
+};
+
+
 
 
 
