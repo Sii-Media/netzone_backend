@@ -6,7 +6,7 @@ import { Product } from "../../models/product/product.js";
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate('category', 'name');
         return res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -138,63 +138,81 @@ export const addProduct = async (req, res) => {
     }
 };
 
+export const editProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        // const { departmentName, categoryName } = req.body;
+        const { name, description, price, images, guarantee, address, madeIn, year } = req.body;
+        const image = req.files['image'][0];
+
+        if (!image) {
+            return res.status(404).json({ message: 'Attached file is not an image.' });
+        }
+
+        const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+
+        // Find department by name
+        // const department = await Departments.findOne({ name: departmentName });
+        // if (!department) {
+        //     return res.status(404).json({ message: 'Department not found' });
+        // }
+
+        // // Find category by name and department
+        // const category = await DepartmentsCategory.findOne({ name: categoryName, department: department._id });
+        // if (!category) {
+        //     return res.status(404).json({ message: 'Category not found' });
+        // }
+
+        const productData = {
+            name,
+            imageUrl: urlImage,
+            category: category._id,
+            description,
+            price,
+            images,
+            guarantee,
+            address,
+            madeIn,
+            year,
+        };
+
+        // Add optional fields if they exist
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            productData.vedioUrl = urlVideo;
+        }
+
+        if (req.files['gif']) {
+            const gif = req.files['gif'][0];
+            const gifUrl = 'https://net-zoon.onrender.com/' + gif.path.replace(/\\/g, '/');
+            productData.gifUrl = gifUrl;
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(productId, productData, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        return res.status(200).json('success');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: error });
+    }
+};
+
+
+
 export const getUserProducts = async (req, res) => {
     const { username } = req.body;
     try {
-        const products = await Product.find({ owner: username });
+        const products = await Product.find({ owner: username }).populate('category', 'name');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });
     }
 };
 
-
-// export const addProduct = async (req, res) => {
-//     try {
-//         const { departmentName, categoryName } = req.params;
-//         const { name, imageUrl, description, price, images, videoUrl, guarantee, property, madeIn, year } = req.body;
-
-//         // find department by name
-//         const department = await Departments.findOne({ name: departmentName });
-//         if (!department) {
-//             return res.status(404).json({ message: "Department not found" });
-//         }
-
-//         // find category by name and department
-//         const category = await DepartmentsCategory.findOne({ name: categoryName, department: department._id });
-//         if (!category) {
-//             return res.status(404).json({ message: "Category not found" });
-//         }
-
-//         // create new product
-//         const product = new Product({
-//             owner: 'owner', // assuming user is authenticated and req.user contains user information
-//             name,
-//             imageUrl,
-//             category: category._id,
-//             description,
-//             price,
-//             images,
-//             videoUrl,
-//             guarantee,
-//             property,
-//             madeIn,
-//             year,
-//         });
-
-//         // save product to database
-//         const savedProduct = await product.save();
-
-//         // add product to category's products list
-//         category.products.push(savedProduct._id);
-//         await category.save();
-
-//         return res.status(201).json(savedProduct);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ message: error });
-//     }
-
-// };
 
 
