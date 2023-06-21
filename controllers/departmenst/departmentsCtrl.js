@@ -149,29 +149,52 @@ export const editProduct = async (req, res) => {
     try {
         const { productId } = req.params;
         const { name, description, price, guarantee, address, madeIn, year } = req.body;
-        const image = req.files['image'][0];
-
-        if (!image) {
-            return res.status(404).json({ message: 'Attached file is not an image.' });
+        let urlImage;
+        if (req.files && req.files["image"]) {
+            const profilePhoto = req.files["image"][0];
+            urlImage =
+                "https://net-zoon.onrender.com/" +
+                profilePhoto.path.replace(/\\/g, "/");
         }
+        // const image = req.files['image'][0];
+        // if (!image) {
+        //     return res.status(404).json({ message: 'Attached file is not an image.' });
+        // }
 
-        const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        // const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        let updatedProduct;
+        if (req.files && req.files["image"]) {
+            updatedProduct = await Product.findByIdAndUpdate(
+                productId,
+                {
+                    name: name,
+                    imageUrl: urlImage,
+                    description: description,
+                    price: price,
+                    guarantee: guarantee,
+                    address: address,
+                    madeIn: madeIn,
+                    year: year,
+                },
+                { new: true }
+            );
 
-        const updatedProduct = await Product.findByIdAndUpdate(
-            productId,
-            {
-                name: name,
-                imageUrl: urlImage,
-                description: description,
-                price: price,
-                guarantee: guarantee,
-                address: address,
-                madeIn: madeIn,
-                year: year,
-            },
-            { new: true }
-        );
+        } else {
+            updatedProduct = await Product.findByIdAndUpdate(
+                productId,
+                {
+                    name: name,
 
+                    description: description,
+                    price: price,
+                    guarantee: guarantee,
+                    address: address,
+                    madeIn: madeIn,
+                    year: year,
+                },
+                { new: true }
+            );
+        }
         if (!updatedProduct) {
             return res.status(404).json({ message: 'Product not found' });
         }
