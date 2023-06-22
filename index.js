@@ -28,6 +28,7 @@ import openionsRoutes from './routes/openionsRoutes.js';
 import questionRoutes from './routes/questionRoutes.js';
 import requestRoutes from './routes/requestsRoutes.js';
 import complaintsRoutes from './routes/complaintsRoutes.js';
+import pushNotificationRoutes from './routes/push_notification_routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -120,6 +121,7 @@ app.use('/openions', openionsRoutes);
 app.use('/questions', questionRoutes);
 app.use('/requests', requestRoutes);
 app.use('/complaints', complaintsRoutes);
+app.use('/notifications', pushNotificationRoutes);
 
 
 
