@@ -113,7 +113,7 @@ export const AddDeal = async (req, res) => {
         // Save the updated category
         await foundCategory.save();
 
-        return res.json('Success');
+        return res.json(deal._id);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

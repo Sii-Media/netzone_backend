@@ -73,7 +73,7 @@ export const createNews = async (req, res) => {
         });
         const savedNews = await news.save();
         // console.log(savedNews);
-        res.status(201).json('success');
+        res.status(201).json(savedNews._id);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

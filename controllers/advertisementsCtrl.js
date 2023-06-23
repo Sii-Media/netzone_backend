@@ -83,7 +83,7 @@ export const createAds = async (req, res) => {
         });
 
         const savedAds = await newAds.save();
-        res.status(201).json('success');
+        res.status(201).json(savedAds._id);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
