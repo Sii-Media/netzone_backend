@@ -148,7 +148,7 @@ export const addProduct = async (req, res) => {
         category.products.push(savedProduct._id);
         await category.save();
 
-        return res.status(201).json('success');
+        return res.status(201).json(savedProduct._id);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: error });
