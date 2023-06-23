@@ -63,10 +63,7 @@ export const getDealById = async (req, res) => {
         if (!deal) {
             return res.status(404).json({ message: 'no Data Found' });
         }
-        return res.json({
-            msg: "success",
-            results: deal,
-        });
+        return res.json(deal);
 
     } catch (error) {
         return res.status(500).json({ message: error.message });

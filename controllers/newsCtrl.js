@@ -49,10 +49,7 @@ export const getNewsById = async (req, res) => {
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
-        return res.json({
-            msg: "success",
-            results: data,
-        });
+        return res.json(data);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

@@ -14,6 +14,16 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
+export const getProductById = async (req, res) => {
+    const {productId} = req.params;
+    try {
+        const product = await Product.findById(productId).populate('category', 'name');
+        return res.json(product);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 export const getCategoriesByDepartment = async (req, res) => {
     try {
 

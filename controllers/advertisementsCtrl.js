@@ -28,10 +28,7 @@ export const getAdvertisementById = async (req, res) => {
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
-        return res.json({
-            message: "success",
-            results: data,
-        });
+        return res.json(data);
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
