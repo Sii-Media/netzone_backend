@@ -58,7 +58,7 @@ export const sendPushNotification = async (req, res, next) => {
 
 export const getAllNotifications = async (req, res) => {
     try {
-        const notifications = await Notifications.find();
+        const notifications = await Notifications.find().sort({ createdAt: -1 });
 
         if (!notifications) {
             return res.status(404).json({ message: 'No data found' });
