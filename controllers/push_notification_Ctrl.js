@@ -17,24 +17,28 @@ var FCM = new fcm(serverKey);
 // const certPath = admin.credential.cert(serverKey);
 
 export const sendPushNotification = async (req, res, next) => {
-    const { username, imageUrl, text } = req.body;
+    const { username, imageUrl, text, category, itemId } = req.body;
     try {
         const notification = new Notifications({
             username: username,
             userProfileImage: imageUrl,
-            text: text
+            text: text,
+            category: category,
+            itemId: itemId
         });
         await notification.save();
         let message = {
             to: req.body.fcm_token,
             notification: {
                 title: 'Netzoon',
-                body: `${username} Add Something`,
+                body: `${username} added ${text} to ${category}`,
             },
             data: {
                 username: username,
                 imageUrl: imageUrl,
                 text: text,
+                category: category,
+                itemId: itemId
             }
         };
         FCM.send(message, function (err, resp) {

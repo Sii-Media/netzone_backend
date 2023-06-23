@@ -14,6 +14,14 @@ const notificationSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    category: {
+        type: String,
+        required: true,
+    },
+    itemId: {
+        type: String,
+        required: true,
+    },
 
 }, { timestamps: true });
 
