@@ -2,8 +2,11 @@ import admin from 'firebase-admin';
 import fcm from 'fcm-node';
 import { Notifications } from '../models/notification/notification_model.js';
 // import serviceAccount from '../config/serviceAccountKey.json' assert { type: "json" };
+import dotenv from 'dotenv';
 
-const serverKey = 'AAAArbtn5Qk:APA91bGfLGCIdF6NicedfL5W5yRdvEMq6UVnx7TiSsjZOjipiDLS93curDNfjVeM17g8Ep29yps9p_wCCQVaxopitSEY1o0fdjJHgFQM289nKmpvUGK4KWQDpLJOqnjCx7fN2kHHqxiH';
+dotenv.config();
+
+const serverKey = process.env.SERVER_KEY;
 
 
 var FCM = new fcm(serverKey);
