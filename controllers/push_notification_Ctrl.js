@@ -28,7 +28,7 @@ export const sendPushNotification = async (req, res, next) => {
         });
         await notification.save();
         let message = {
-            to: req.body.fcm_token,
+            to: req.body.fcmtoken,
             notification: {
                 title: 'Netzoon',
                 body: `${username} added ${text} to ${category}`,
@@ -47,9 +47,7 @@ export const sendPushNotification = async (req, res, next) => {
                     message: err
                 })
             } else {
-                return res.status(200).send({
-                    message: message.data
-                });
+                return res.status(200).send(message.data);
             }
         });
     } catch (error) {
