@@ -15,7 +15,7 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const getProductById = async (req, res) => {
-    const {productId} = req.params;
+    const { productId } = req.params;
     try {
         const product = await Product.findById(productId).populate('category', 'name');
         return res.json(product);
@@ -93,14 +93,17 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { owner, name, description, price, images, guarantee, address, madeIn, year } = req.body;
+        const { owner, name, description, price, guarantee, address, madeIn, year } = req.body;
         const image = req.files['image'][0];
+
 
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
 
         const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+
+
 
         // Find department by name
         const department = await Departments.findOne({ name: departmentName });
@@ -121,13 +124,29 @@ export const addProduct = async (req, res) => {
             category: category._id,
             description,
             price,
-            images,
             guarantee,
             address,
             madeIn,
             year,
-
         };
+
+        if (req.files['productimages']) {
+            const productImages = req.files['productimages'];
+            const imageUrls = [];
+            if (!productImages || !Array.isArray(productImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of productImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                productData.images=imageUrls;
+            }
+        }
 
         // Add optional fields if they exist
         if (req.files['video']) {

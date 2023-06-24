@@ -82,6 +82,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'image', maxCount: 1 },
+    { name: 'productimages', maxCount: 6 },
     { name: 'profilePhoto', maxCount: 1 },
     { name: 'coverPhoto', maxCount: 1 },
     { name: 'bannerPhoto', maxCount: 1 },
@@ -89,7 +90,6 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'gif', maxCount: 1 },
     { name: 'dealImage', maxCount: 1 },
     { name: 'tenderImage', maxCount: 1 },
-
 
 ]));
 
