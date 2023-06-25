@@ -422,6 +422,20 @@ export const getUserById = async (req, res) => {
     }
 };
 
+export const getUserByType = async (req, res) => {
+    const { userType } = req.body;
+    try {
+        const user = await userModel.find({ userType: userType });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 export const EditUser = async (req, res) => {
     const { userId } = req.params;
     const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry } = req.body;
