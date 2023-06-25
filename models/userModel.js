@@ -48,6 +48,9 @@ const userSchema = mongoose.Schema({
     profilePhoto: String,
     coverPhoto: String,
     banerPhoto: String,
+    bio: String,
+    description: String,
+    website: String,
     vehicles: [
         {
             type: mongoose.Schema.Types.ObjectId,
