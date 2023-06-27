@@ -28,7 +28,7 @@ export const sendPushNotification = async (req, res, next) => {
         });
         await notification.save();
         let message = {
-            to: req.body.fcmtoken,
+            to: '/topics/Netzoon',
             notification: {
                 title: 'Netzoon',
                 body: `${username} added ${text} to ${category}`,
