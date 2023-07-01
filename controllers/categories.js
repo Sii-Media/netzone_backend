@@ -338,7 +338,7 @@ export const getPlanesCompanies = async (req, res) => {
 
     try {
         // const planesCompanies = await VehicleCompany.find({ type: 'planes' });
-        const planesCompanies = await userModel.find({ userType: 'planes' });
+        const planesCompanies = await userModel.find({ userType: 'plans' });
 
         res.status(200).json(planesCompanies);
 
