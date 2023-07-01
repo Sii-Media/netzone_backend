@@ -309,7 +309,8 @@ export const getFactoryById = async (req, res) => {
 export const getCarsCompanies = async (req, res) => {
 
     try {
-        const carsCompanies = await VehicleCompany.find({ type: 'cars' });
+        // const carsCompanies = await VehicleCompany.find({ type: 'cars' });
+        const carsCompanies = await userModel.find({ userType: 'car' });
 
         res.status(200).json(carsCompanies);
 
@@ -322,9 +323,11 @@ export const getCarsCompanies = async (req, res) => {
 export const getCompaniesVehicles = async (req, res) => {
     try {
         const { type, id } = req.body;
-        const carsCompanies = await VehicleCompany.findOne({ type: type, _id: id }).populate('vehicles');
-        const vehicles = carsCompanies.vehicles;
-        res.status(200).json(vehicles);
+        // const carsCompanies = await VehicleCompany.findOne({ type: type, _id: id }).populate('vehicles');
+        // const vehicles = carsCompanies.vehicles;
+        // res.status(200).json(vehicles);
+        const carsCompanies = await Vehicle.find({ creator: id });
+        res.status(200).json(carsCompanies);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -334,7 +337,8 @@ export const getCompaniesVehicles = async (req, res) => {
 export const getPlanesCompanies = async (req, res) => {
 
     try {
-        const planesCompanies = await VehicleCompany.find({ type: 'planes' });
+        // const planesCompanies = await VehicleCompany.find({ type: 'planes' });
+        const planesCompanies = await userModel.find({ userType: 'planes' });
 
         res.status(200).json(planesCompanies);
 

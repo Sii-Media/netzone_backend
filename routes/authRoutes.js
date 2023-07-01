@@ -4,7 +4,7 @@ import { EditUser, addAccount, addProductToFavorites, changeAccount, changePassw
 
 const router = express.Router();
 
-const userType = ['local_company', 'user', 'car', 'ship', 'news_agency'];
+const userType = ['local_company', 'user', 'car', 'planes', 'ship', 'news_agency'];
 
 router.post('/register', [
     check('email').isEmail()
