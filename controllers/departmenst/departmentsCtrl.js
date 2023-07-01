@@ -66,6 +66,10 @@ export const getProductsByCategory = async (req, res) => {
                 path: 'category',
                 select: 'name',
             },
+            populate: {
+                path: 'owner',
+                select: 'username'
+            }
         });
         console.log(categories);
         if (!categories) {
@@ -280,7 +284,7 @@ export const getUserProducts = async (req, res) => {
     const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
 
     try {
-        const products = await Product.find({ owner: ownerId }).populate('category', 'name');
+        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner', 'username');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });
