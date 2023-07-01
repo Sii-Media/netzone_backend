@@ -2,12 +2,13 @@ import { Departments } from "../../models/product/departmenst/departmenst_model.
 import { DepartmentsCategory } from "../../models/product/departmenst/categories/departments_categories_model.js";
 import { Product } from "../../models/product/product.js";
 import { deleteFile } from '../../utils/file.js';
+import mongoose from "mongoose";
 // import upload from "../../middlewares/upload.js";
 // import multer from "multer";
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate('category', 'name');
+        const products = await Product.find().populate('category', 'name').populate('owner', 'username');
         return res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -17,7 +18,7 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     const { productId } = req.params;
     try {
-        const product = await Product.findById(productId).populate('category', 'name');
+        const product = await Product.findById(productId).populate('category', 'name').populate('owner', 'username');
         return res.json(product);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -144,7 +145,7 @@ export const addProduct = async (req, res) => {
 
                 const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
-                productData.images=imageUrls;
+                productData.images = imageUrls;
             }
         }
 
@@ -275,9 +276,11 @@ export const deleteProduct = async (req, res) => {
 
 
 export const getUserProducts = async (req, res) => {
-    const { username } = req.body;
+    const { userId } = req.body;
+    const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
+
     try {
-        const products = await Product.find({ owner: username }).populate('category', 'name');
+        const products = await Product.find({ owner: ownerId }).populate('category', 'name');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });
