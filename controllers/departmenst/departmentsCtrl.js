@@ -110,8 +110,8 @@ export const addProduct = async (req, res) => {
         const { departmentName, categoryName } = req.body;
         const { owner, name, description, price, guarantee, address, madeIn, year } = req.body;
         const image = req.files['image'][0];
-
-
+        
+        const ownerId = new mongoose.Types.ObjectId(owner);
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
@@ -133,7 +133,7 @@ export const addProduct = async (req, res) => {
         }
 
         const productData = {
-            owner: owner, // assuming user is authenticated and req.user contains user information
+            owner: ownerId, // assuming user is authenticated and req.user contains user information
             name,
             imageUrl: urlImage,
             category: category._id,
