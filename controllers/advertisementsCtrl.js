@@ -57,7 +57,7 @@ export const getAdvertisementByType = async (req, res) => {
 
 
 export const createAds = async (req, res) => {
-    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingImageList, advertisingVedio, advertisingType } = req.body;
+    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingType } = req.body;
 
     const image = req.files['image'][0]
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
@@ -77,10 +77,30 @@ export const createAds = async (req, res) => {
             advertisingYear,
             advertisingLocation,
             advertisingPrice,
-            advertisingImageList,
-            advertisingVedio,
             advertisingType
         });
+        if (req.files['advertisingImageList']) {
+            const adsImages = req.files['advertisingImageList'];
+            const imageUrls = [];
+            if (!adsImages || !Array.isArray(adsImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of adsImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                newAds.advertisingImageList = imageUrls;
+            }
+        }
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            newAds.advertisingVedio = urlVideo;
+        }
 
         const savedAds = await newAds.save();
         res.status(201).json(savedAds._id);
