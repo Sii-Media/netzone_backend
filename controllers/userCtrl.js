@@ -66,8 +66,8 @@ export const signUp = async (req, res) => {
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
     const coverPhoto = req.files['coverPhoto'][0];
-    const frontIdPhoto = req.files['frontIdPhoto'][0];
-    const backIdPhoto = req.files['backIdPhoto'][0];
+    const frontIdPhoto = req.files['frontIdPhoto'] ? req.files['frontIdPhoto'][0] : null;
+    const backIdPhoto = req.files['backIdPhoto'] ? req.files['backIdPhoto'][0] : null;
 
 
     try {
