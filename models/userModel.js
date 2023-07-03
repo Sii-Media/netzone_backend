@@ -37,6 +37,9 @@ const userSchema = mongoose.Schema({
         type: Boolean,
 
     },
+    deliverable: {
+        type: Boolean,
+    },
     subcategory: String,
     country: String,
     address: String,

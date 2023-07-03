@@ -62,7 +62,7 @@ export const changeAccount = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
-    const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, isFreeZoon, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const { username, email, password, userType, firstMobile, secondMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
     const coverPhoto = req.files['coverPhoto'][0];
@@ -101,6 +101,7 @@ export const signUp = async (req, res) => {
             secondMobile,
             thirdMobile,
             isFreeZoon: isFreeZoon,
+            deliverable: deliverable,
             subcategory,
             address,
             businessLicense,
