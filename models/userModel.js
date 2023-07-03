@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ['local_company', 'user', 'freezoon', 'factory', 'car','plans', 'ship', 'news_agency'],
+        enum: ['local_company', 'user', 'freezoon', 'factory', 'car', 'plans', 'ship', 'news_agency'],
 
     },
     firstMobile: {
@@ -48,6 +48,8 @@ const userSchema = mongoose.Schema({
     profilePhoto: String,
     coverPhoto: String,
     banerPhoto: String,
+    frontIdPhoto: String,
+    backIdPhoto: String,
     bio: String,
     description: String,
     website: String,

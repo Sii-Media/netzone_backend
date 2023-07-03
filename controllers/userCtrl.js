@@ -66,6 +66,8 @@ export const signUp = async (req, res) => {
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
     const coverPhoto = req.files['coverPhoto'][0];
+    const frontIdPhoto = req.files['frontIdPhoto'][0];
+    const backIdPhoto = req.files['backIdPhoto'][0];
 
 
     try {
@@ -76,6 +78,9 @@ export const signUp = async (req, res) => {
         const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
         const coverUrlImage = 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/');
         const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
+        const frontIdPhotoUrlImage = frontIdPhoto ? 'https://net-zoon.onrender.com/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
+        const backIdPhotoUrlImage = backIdPhoto ? 'https://net-zoon.onrender.com/' + backIdPhoto.path.replace(/\\/g, '/') : null;
+
         const existingUser = await userModel.findOne({ username });
         if (existingUser) {
             return res.status(422).json({ message: "User already exists, please login!" });
@@ -105,6 +110,8 @@ export const signUp = async (req, res) => {
             profilePhoto: profileUrlImage,
             coverPhoto: coverUrlImage,
             banerPhoto: banerUrlImage,
+            frontIdPhoto: frontIdPhotoUrlImage,
+            backIdPhoto: backIdPhotoUrlImage,
         });
 
         // const account = await Account.create({ user: newUser._id });
