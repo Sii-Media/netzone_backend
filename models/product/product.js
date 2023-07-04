@@ -27,6 +27,11 @@ const ProductSchema = mongoose.Schema({
         ref: 'DepartmentsCategory',
         required: true,
     },
+    condition: {
+        type: String,
+        required: true,
+        enum: ['new', 'used'],
+    },
     description: {
         type: String,
         required: true,

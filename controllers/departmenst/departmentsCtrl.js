@@ -3,6 +3,7 @@ import { DepartmentsCategory } from "../../models/product/departmenst/categories
 import { Product } from "../../models/product/product.js";
 import { deleteFile } from '../../utils/file.js';
 import mongoose from "mongoose";
+import userModel from "../../models/userModel.js";
 // import upload from "../../middlewares/upload.js";
 // import multer from "multer";
 
@@ -108,10 +109,14 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { owner, name, description, price, guarantee, address, madeIn, year } = req.body;
+        const { owner, name, condition, description, price, guarantee, address, madeIn, year } = req.body;
         const image = req.files['image'][0];
-        
+
         const ownerId = new mongoose.Types.ObjectId(owner);
+        // const existingUser = await userModel.findOne({ _id: ownerId });
+        // if (!existingUser) {
+        //     return res.status(500).json({ message: "User don't exists" });
+        // }
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
@@ -137,6 +142,7 @@ export const addProduct = async (req, res) => {
             name,
             imageUrl: urlImage,
             category: category._id,
+            condition: condition,
             description,
             price,
             guarantee,
