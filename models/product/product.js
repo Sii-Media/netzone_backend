@@ -29,7 +29,6 @@ const ProductSchema = mongoose.Schema({
     },
     condition: {
         type: String,
-        required: true,
         enum: ['new', 'used'],
     },
     description: {
