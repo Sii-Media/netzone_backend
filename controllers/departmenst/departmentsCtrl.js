@@ -9,7 +9,7 @@ import userModel from "../../models/userModel.js";
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate('category', 'name').populate('owner', 'username');
+        const products = await Product.find().populate('category', 'name').populate('owner', 'username userType');
         return res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
