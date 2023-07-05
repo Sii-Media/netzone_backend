@@ -528,6 +528,9 @@ export const addProductsToSelectedProducts = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        if (!Array.isArray(productIds)) {
+            return res.status(400).json({ message: 'Invalid productIds' });
+        }
         let newProductIds;
         if (productIds.length > 0) {
             newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
