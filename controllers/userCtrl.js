@@ -528,15 +528,15 @@ export const addProductsToSelectedProducts = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        if (!Array.isArray(productIds)) {
-            return res.status(400).json({ message: 'Invalid productIds' });
-        }
-        let newProductIds;
-        if (productIds.length > 0) {
-            newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
-        }
+        const productIdsArray = Array.isArray(productIds) ? productIds : [productIds];
 
-        newProductIds = productIds;
+        // let newProductIds;
+        // if (productIds.length > 0) {
+        //     newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
+        // }
+
+        // newProductIds = productIds;
+        const newProductIds = productIdsArray.filter(productId => !user.selectedProducts.includes(productId));
         user.selectedProducts.push(...newProductIds);
 
         await user.save();
