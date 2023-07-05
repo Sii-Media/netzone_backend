@@ -528,9 +528,12 @@ export const addProductsToSelectedProducts = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
+        let newProductIds;
+        if (productIds.length > 0) {
+            newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
+        }
 
-
+        newProductIds = productIds;
         user.selectedProducts.push(...newProductIds);
 
         await user.save();
