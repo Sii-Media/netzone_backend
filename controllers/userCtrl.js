@@ -488,3 +488,71 @@ export const EditUser = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const getSelectedProducts = async (req, res) => {
+
+    try {
+        const { userId } = req.params;
+        const user = await userModel.findById(userId).populate('selectedProducts');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const selectedProducts = user.selectedProducts;
+
+        res.json(selectedProducts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const addProductsToSelectedProducts = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { productIds } = req.body;
+
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
+
+
+        user.selectedProducts.push(...newProductIds);
+
+        await user.save();
+
+        res.json({ message: 'Products added to selectedProducts' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const deleteProductFromSelectedProducts = async (req, res) => {
+    try {
+        const { userId, productId } = req.params;
+        const user = await userModel.findById(userId);
+
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Remove the product ID from the user's selectedProducts
+        const index = user.selectedProducts.indexOf(productId);
+        if (index !== -1) {
+            user.selectedProducts.splice(index, 1);
+        }
+
+        // Save the updated user
+        await user.save();
+
+        res.json({ message: 'Product removed from selectedProducts' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};

@@ -70,6 +70,13 @@ const userSchema = mongoose.Schema({
             default: [],
         }
     ],
+    selectedProducts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Products',
+            default: [],
+        }
+    ],
     stripeCustomerId: {
         type: String,
     },
