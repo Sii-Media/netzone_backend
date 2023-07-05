@@ -493,7 +493,19 @@ export const getSelectedProducts = async (req, res) => {
 
     try {
         const { userId } = req.params;
-        const user = await userModel.findById(userId).populate('selectedProducts');
+        const user = await userModel.findById(userId).populate('selectedProducts').populate({
+            path: 'selectedProducts',
+            populate: [
+                {
+                    path: 'category',
+                    select: 'name',
+                },
+                {
+                    path: 'owner',
+                    select: 'username userType',
+                },
+            ]
+        });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
