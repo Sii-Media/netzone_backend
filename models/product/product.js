@@ -39,6 +39,9 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    quantity: {
+        type: Number,
+    },
     images: [String],
     vedioUrl: String,
     gifUrl: String,
