@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
 const advertisementSchema = mongoose.Schema({
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    purchasable: Boolean,
     advertisingTitle: {
         type: String,
         required: true,
@@ -27,11 +33,11 @@ const advertisementSchema = mongoose.Schema({
 
     advertisingBrand: {
         type: String,
-       
+
     },
     advertisingViews: {
         type: Number,
-       
+
     },
     advertisingYear: {
         type: String,

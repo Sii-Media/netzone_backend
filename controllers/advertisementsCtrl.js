@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Advertisement } from "../models/advertisements/advertisementsModel.js";
 
 
@@ -5,7 +6,7 @@ export const getAdvertisements = async (req, res) => {
 
     try {
 
-        const data = await Advertisement.find({});
+        const data = await Advertisement.find({}).populate('owner', 'username userType');
         return res.json({
             message: "success",
             results: data,
@@ -24,7 +25,7 @@ export const getAdvertisementById = async (req, res) => {
     const { id } = req.params;
     try {
 
-        const data = await Advertisement.findById(id);
+        const data = await Advertisement.findById(id).populate('owner', 'username userType');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -40,7 +41,7 @@ export const getAdvertisementByType = async (req, res) => {
 
     try {
 
-        const data = await Advertisement.find({ advertisingType: userAdvertisingType });
+        const data = await Advertisement.find({ advertisingType: userAdvertisingType }).populate('owner', 'username userType');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -57,15 +58,17 @@ export const getAdvertisementByType = async (req, res) => {
 
 
 export const createAds = async (req, res) => {
-    const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingType } = req.body;
+    const { owner, advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingType, purchasable } = req.body;
 
     const image = req.files['image'][0]
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
     const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 
+    const ownerId = new mongoose.Types.ObjectId(owner);
 
     try {
         const newAds = new Advertisement({
+            owner: ownerId,
             advertisingTitle,
             advertisingStartDate,
             advertisingEndDate,
@@ -77,7 +80,8 @@ export const createAds = async (req, res) => {
             advertisingYear,
             advertisingLocation,
             advertisingPrice,
-            advertisingType
+            advertisingType,
+            purchasable: purchasable
         });
         if (req.files['advertisingImageList']) {
             const adsImages = req.files['advertisingImageList'];
