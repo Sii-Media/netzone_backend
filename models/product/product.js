@@ -46,7 +46,8 @@ const ProductSchema = mongoose.Schema({
     address: String,
     madeIn: String,
     year: Date,
-
+    discountPercentage: Number,
+    priceAfterDiscount: Number,
 });
 
 export const Product = mongoose.model('Products', ProductSchema);

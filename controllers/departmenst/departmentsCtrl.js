@@ -109,7 +109,7 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { owner, name, condition, description, price, guarantee, address, madeIn, year } = req.body;
+        const { owner, name, condition, description, price, guarantee, address, madeIn, year, discountPercentage } = req.body;
         const image = req.files['image'][0];
 
         const ownerId = new mongoose.Types.ObjectId(owner);
@@ -137,6 +137,12 @@ export const addProduct = async (req, res) => {
             return res.status(404).json({ message: 'Category not found' });
         }
 
+        let discountedPrice = price;
+        if (discountPercentage && discountPercentage >= 1 && discountPercentage <= 100) {
+            const discount = price * (discountPercentage / 100);
+            discountedPrice = price - discount;
+        }
+
         const productData = {
             owner: ownerId, // assuming user is authenticated and req.user contains user information
             name,
@@ -149,6 +155,8 @@ export const addProduct = async (req, res) => {
             address,
             madeIn,
             year,
+            discountPercentage,
+            priceAfterDiscount: discountedPrice,
         };
 
         if (req.files['productimages']) {
