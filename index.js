@@ -29,6 +29,7 @@ import questionRoutes from './routes/questionRoutes.js';
 import requestRoutes from './routes/requestsRoutes.js';
 import complaintsRoutes from './routes/complaintsRoutes.js';
 import pushNotificationRoutes from './routes/push_notification_routes.js';
+import realestateRoutes from './routes/realestateRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -93,6 +94,7 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'dealImage', maxCount: 1 },
     { name: 'tenderImage', maxCount: 1 },
     { name: 'advertisingImageList', maxCount: 6 },
+    { name: 'realestateimages', maxCount: 6 },
 
 ]));
 
@@ -125,6 +127,7 @@ app.use('/questions', questionRoutes);
 app.use('/requests', requestRoutes);
 app.use('/complaints', complaintsRoutes);
 app.use('/notifications', pushNotificationRoutes);
+app.use('/real-estate', realestateRoutes);
 
 
 
