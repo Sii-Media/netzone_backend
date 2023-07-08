@@ -1,6 +1,7 @@
 
 
 import { RealEstate } from "../models/real_estate/real_estate_model.js";
+import userModel from "../models/userModel.js";
 
 export const getAllRealEstate = async (req, res) => {
     try {
@@ -157,5 +158,30 @@ export const deleteRealEstate = async (req, res) => {
         res.json("Real estate listing deleted successfully");
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const getRealEstateCompanies = async (req, res) => {
+    try {
+
+        const realEstateCompanies = await userModel.find({ userType: 'real_estate' });
+
+        res.status(200).json(realEstateCompanies);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getCompaniesRealEstates = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const companies = await RealEstate.find({ createdBy: id });
+        res.status(200).json(companies);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
     }
 };
