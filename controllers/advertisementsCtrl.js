@@ -14,11 +14,24 @@ export const getAdvertisements = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message,
-            data,
         });
-
     }
 
+};
+
+export const getUserAds = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const data = await Advertisement.find({ owner: userId }).populate('owner', 'username userType');
+        return res.json({
+            message: "success",
+            results: data,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
 };
 
 export const getAdvertisementById = async (req, res) => {
