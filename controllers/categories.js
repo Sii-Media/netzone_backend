@@ -351,7 +351,7 @@ export const getPlanesCompanies = async (req, res) => {
 //Cars Controllers
 export const getAllCars = async (req, res) => {
     try {
-        const cars = await Vehicle.find({ category: "cars" });
+        const cars = await Vehicle.find({ category: "cars" }).populate('creator', 'username');
         res.json({
             message: "success",
             results: cars,
@@ -364,30 +364,38 @@ export const getAllCars = async (req, res) => {
 
 export const getLatestCarsByCreator = async (req, res) => {
     try {
-        // Aggregate query to group by creator and get the latest car for each creator
         const latestCars = await Vehicle.aggregate([
             {
-                $match: { category: "cars" } // Filter by category: "cars"
+                $match: { category: "cars" }
             },
             {
-                $sort: { createdAt: -1 } // Sort by year in descending order
+                $sort: { createdAt: -1 }
             },
             {
                 $group: {
                     _id: "$creator",
-                    latestCar: { $first: "$$ROOT" } // Get the first document for each creator (latest car)
+                    latestCar: { $first: "$$ROOT" }
                 }
             },
             {
                 $replaceRoot: {
-                    newRoot: "$latestCar" // Replace the document with the latest car
+                    newRoot: "$latestCar"
                 }
             }
         ]);
 
+        // Get creator information for each car
+        const populatedLatestCars = await Promise.all(
+            latestCars.map(async (car) => {
+                const populatedCar = car;
+                populatedCar.creator = await userModel.findById(car.creator, "username");
+                return populatedCar;
+            })
+        );
+
         res.json({
             message: "success",
-            results: latestCars
+            results: populatedLatestCars
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -396,10 +404,11 @@ export const getLatestCarsByCreator = async (req, res) => {
 
 
 
+
 //Plans Controllers
 export const getAllPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans" });
+        const plans = await Vehicle.find({ category: "plans" }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -410,7 +419,7 @@ export const getAllPlans = async (req, res) => {
 };
 export const getAllUsedPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans", type: "old" });
+        const plans = await Vehicle.find({ category: "plans", type: "old" }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -422,7 +431,7 @@ export const getAllUsedPlans = async (req, res) => {
 
 export const getAllNewPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans", type: "new" });
+        const plans = await Vehicle.find({ category: "plans", type: "new" }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -436,7 +445,7 @@ export const getAllNewPlans = async (req, res) => {
 export const getVehicleById = async (req, res) => {
     try {
         const { id } = req.params;
-        const vehicle = await Vehicle.findById(id);
+        const vehicle = await Vehicle.findById(id).populate('creator', 'username');
         if (!vehicle) {
             return res.status(404).json({ message: 'Vehicle not found' });
         }
