@@ -177,7 +177,7 @@ export const getRealEstateCompanies = async (req, res) => {
 export const getCompaniesRealEstates = async (req, res) => {
     try {
         const { id } = req.params;
-        const companies = await RealEstate.find({ createdBy: id });
+        const companies = await RealEstate.find({ createdBy: id }).populate('createdBy', 'username');
         res.status(200).json(companies);
 
     } catch (error) {
