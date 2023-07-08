@@ -362,6 +362,39 @@ export const getAllCars = async (req, res) => {
 
 };
 
+export const getLatestCarsByCreator = async (req, res) => {
+    try {
+        // Aggregate query to group by creator and get the latest car for each creator
+        const latestCars = await Vehicle.aggregate([
+            {
+                $match: { category: "cars" } // Filter by category: "cars"
+            },
+            {
+                $sort: { createdAt: -1 } // Sort by year in descending order
+            },
+            {
+                $group: {
+                    _id: "$creator",
+                    latestCar: { $first: "$$ROOT" } // Get the first document for each creator (latest car)
+                }
+            },
+            {
+                $replaceRoot: {
+                    newRoot: "$latestCar" // Replace the document with the latest car
+                }
+            }
+        ]);
+
+        res.json({
+            message: "success",
+            results: latestCars
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 //Plans Controllers
 export const getAllPlans = async (req, res) => {
