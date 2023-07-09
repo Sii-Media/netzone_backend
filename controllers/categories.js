@@ -326,7 +326,7 @@ export const getCompaniesVehicles = async (req, res) => {
         // const carsCompanies = await VehicleCompany.findOne({ type: type, _id: id }).populate('vehicles');
         // const vehicles = carsCompanies.vehicles;
         // res.status(200).json(vehicles);
-        const carsCompanies = await Vehicle.find({ creator: id });
+        const carsCompanies = await Vehicle.find({ creator: id }).populate('creator', 'username');
         res.status(200).json(carsCompanies);
     } catch (error) {
         res.status(500).json({ message: error.message });
