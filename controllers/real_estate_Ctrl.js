@@ -68,7 +68,7 @@ export const addRealEstate = async (req, res) => {
 
         const savedRealEstate = await newRealEstate.save();
 
-        res.status(201).json(savedRealEstate);
+        res.status(201).json('The real estate has been added successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -138,7 +138,7 @@ export const editRealEstate = async (req, res) => {
             return res.status(404).json({ message: "Real estate listing not found" });
         }
 
-        res.json(updatedRealEstate);
+        res.json('The real estate has been edited successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
