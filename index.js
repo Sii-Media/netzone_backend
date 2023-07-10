@@ -95,6 +95,8 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'tenderImage', maxCount: 1 },
     { name: 'advertisingImageList', maxCount: 6 },
     { name: 'realestateimages', maxCount: 6 },
+    { name: 'carimages', maxCount: 6 },
+    
 
 ]));
 

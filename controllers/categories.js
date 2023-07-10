@@ -459,12 +459,17 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const createVehicle = async (req, res) => {
-    const { name, imageUrl, description, price, kilometers, year, location, type, category } = req.body;
+    const { creator, name, description, price, kilometers, year, location, type, category } = req.body;
+    const image = req.files['image'][0];
+    if (!image) {
+        return res.status(404).json({ message: 'Attached file is not an image.' });
+    }
+    const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
 
     try {
         const newVehicle = new Vehicle({
             name,
-            imageUrl,
+            imageUrl: urlImage,
             description,
             price,
             kilometers,
@@ -472,25 +477,50 @@ export const createVehicle = async (req, res) => {
             location,
             type,
             category,
-            creator: req.userId,
+            creator: creator,
+
         });
+
+        if (req.files['carimages']) {
+            const carImages = req.files['carimages'];
+            const imageUrls = [];
+            if (!carImages || !Array.isArray(carImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of carImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                newVehicle.carImages = imageUrls;
+            }
+        }
+
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            newVehicle.vedioUrl = urlVideo;
+        }
+
+
 
         const savedVehicle = await newVehicle.save();
 
         // Update the user's vehicles array if the user exists
-        if (ObjectId.isValid(req.userId)) {
-            const user = await userModel.findById(req.userId);
-            if (user) {
-                user.vehicles.push(savedVehicle);
-                await user.save();
-            }
-        }
+        // if (ObjectId.isValid(creator)) {
+        //     const user = await userModel.findById(req.userId);
+        //     if (user) {
+        //         user.vehicles.push(savedVehicle);
+        //         await user.save();
+        //     }
+        // }
 
-        res.status(201).json({
-            msg: 'success',
-            result: savedVehicle
-        });
+        res.status(201).json("the Vehicle has been added successfuly");
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };

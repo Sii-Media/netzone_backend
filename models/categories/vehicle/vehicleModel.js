@@ -40,7 +40,13 @@ const VehicleSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-    }
+    },
+    carImages: {
+        type: [String]
+    },
+    vedioUrl: String,
+
+
 }, { timestamps: true });
 
 

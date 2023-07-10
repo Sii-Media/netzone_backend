@@ -52,7 +52,7 @@ router.get('/planes/getnewplanes', getAllNewPlans);
 router.get('/planes-companies', getPlanesCompanies),
 
 
-router.post('/vehicle/create-vehicle', auth, createVehicle);
+router.post('/vehicle/create-vehicle', createVehicle);
 router.get('/vehicle/:id', auth, getVehicleById);
 router.get('/company-vehicles',getCompaniesVehicles);
 
