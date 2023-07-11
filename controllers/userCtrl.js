@@ -573,4 +573,55 @@ export const deleteProductFromSelectedProducts = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
     }
+
 };
+
+export const toggleFollow = async (req, res) => {
+    try {
+        const { currentUserId } = req.body
+        const otherUserId = req.params.otherUserId
+        if (currentUserId === otherUserId) {
+            return res.status(500).json({ msg: "You can't follow yourself!!!!!!!!" })
+        }
+        const currentUser = await userModel.findById(currentUserId)
+        const otherUser = await userModel.findById(otherUserId)
+        // if we don't follow user, we want to follow him, otherwise we unfollow him
+        if (!currentUser.followings.includes(otherUserId)) {
+            currentUser.followings.push(otherUserId)
+            otherUser.followers.push(currentUserId)
+            await currentUser.save()
+            await otherUser.save()
+            return res.status(200).json("You have successfully followed the user!")
+        } else {
+            currentUser.followings = currentUser.followings.pull(otherUserId)
+            otherUser.followers = otherUser.followers.pull(currentUserId)
+            await currentUser.save()
+            await otherUser.save()
+            return res.status(200).json("You have successfully unfollowed the user!")
+        }
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+};
+
+export const getUserFollowings = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await userModel.findById(userId).populate('followings', 'username profilePhoto');
+        res.status(200).json(user.followings);
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+};
+
+export const getUserFollowers = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await userModel.findById(userId).populate('followers', 'username profilePhoto');
+        res.status(200).json(user.followers);
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+}

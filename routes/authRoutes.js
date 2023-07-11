@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { EditUser, addAccount, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, otpLogin, removeProductFromFavorites, signUp, signin, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { EditUser, addAccount, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, otpLogin, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
 
 const router = express.Router();
 
@@ -49,4 +49,9 @@ router.get('/getUserByType', getUserByType);
 router.get('/getSelectedProducts/:userId', getSelectedProducts);
 router.post('/addToSelectedProducts/:userId', addProductsToSelectedProducts);
 router.delete('/deleteFromSelectedProducts/:userId/:productId', deleteProductFromSelectedProducts);
+
+router.put('/toggleFollow/:otherUserId', toggleFollow);
+router.get('/getUserFollowings/:userId', getUserFollowings);
+router.get('/getUserFollowers/:userId', getUserFollowers);
+
 export default router;
