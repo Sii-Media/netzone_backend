@@ -45,7 +45,7 @@ export const getAllNews = async (req, res) => {
 export const getNewsById = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await News.findById(id);
+        const data = await News.findById(id).populate('creator', 'username profilePhoto');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -166,6 +166,17 @@ export const toggleLikeOnNews = async (req, res) => {
 
             res.status(200).json("Like added successfully");
         }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getCompanyNews = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const news = await News.find({ creator: id }).populate('creator', 'username profilePhoto');
+        res.status(200).json(news);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
