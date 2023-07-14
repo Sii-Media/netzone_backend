@@ -51,6 +51,10 @@ const ProductSchema = mongoose.Schema({
     year: Date,
     discountPercentage: Number,
     priceAfterDiscount: Number,
+    country: {
+        type: String,
+        required: true,
+    },
 });
 
 export const Product = mongoose.model('Products', ProductSchema);

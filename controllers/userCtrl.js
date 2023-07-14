@@ -433,7 +433,14 @@ export const getUserById = async (req, res) => {
 export const getUserByType = async (req, res) => {
     const { userType } = req.body;
     try {
-        const user = await userModel.find({ userType: userType });
+        const { country } = req.query;
+        let user;
+        if (country) {
+            user = await userModel.find({ userType: userType, country: country });
+        } else {
+            user = await userModel.find({ userType: userType });
+        }
+        // const user = await userModel.find({ userType: userType });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }

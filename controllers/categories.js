@@ -309,8 +309,9 @@ export const getFactoryById = async (req, res) => {
 export const getCarsCompanies = async (req, res) => {
 
     try {
+        const { country } = req.query;
         // const carsCompanies = await VehicleCompany.find({ type: 'cars' });
-        const carsCompanies = await userModel.find({ userType: 'car' });
+        const carsCompanies = await userModel.find({ userType: 'car', country: country });
 
         res.status(200).json(carsCompanies);
 
@@ -337,8 +338,9 @@ export const getCompaniesVehicles = async (req, res) => {
 export const getPlanesCompanies = async (req, res) => {
 
     try {
+        const { country } = req.query;
         // const planesCompanies = await VehicleCompany.find({ type: 'planes' });
-        const planesCompanies = await userModel.find({ userType: 'plans' });
+        const planesCompanies = await userModel.find({ userType: 'plans', country: country });
 
         res.status(200).json(planesCompanies);
 
@@ -350,8 +352,9 @@ export const getPlanesCompanies = async (req, res) => {
 
 //Cars Controllers
 export const getAllCars = async (req, res) => {
+    const { country } = req.query;
     try {
-        const cars = await Vehicle.find({ category: "cars" }).populate('creator', 'username');
+        const cars = await Vehicle.find({ category: "cars", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: cars,
@@ -364,9 +367,10 @@ export const getAllCars = async (req, res) => {
 
 export const getLatestCarsByCreator = async (req, res) => {
     try {
+        const { country } = req.query;
         const latestCars = await Vehicle.aggregate([
             {
-                $match: { category: "cars" }
+                $match: { category: "cars", country: country }
             },
             {
                 $sort: { createdAt: -1 }
@@ -408,7 +412,8 @@ export const getLatestCarsByCreator = async (req, res) => {
 //Plans Controllers
 export const getAllPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans" }).populate('creator', 'username');
+        const { country } = req.query;
+        const plans = await Vehicle.find({ category: "plans", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -419,7 +424,8 @@ export const getAllPlans = async (req, res) => {
 };
 export const getAllUsedPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans", type: "old" }).populate('creator', 'username');
+        const { country } = req.query;
+        const plans = await Vehicle.find({ category: "plans", type: "old", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -431,7 +437,8 @@ export const getAllUsedPlans = async (req, res) => {
 
 export const getAllNewPlans = async (req, res) => {
     try {
-        const plans = await Vehicle.find({ category: "plans", type: "new" }).populate('creator', 'username');
+        const { country } = req.query;
+        const plans = await Vehicle.find({ category: "plans", type: "new", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -459,7 +466,7 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const createVehicle = async (req, res) => {
-    const { creator, name, description, price, kilometers, year, location, type, category } = req.body;
+    const { creator, name, description, price, kilometers, year, location, type, category, country } = req.body;
     const image = req.files['image'][0];
     if (!image) {
         return res.status(404).json({ message: 'Attached file is not an image.' });
@@ -478,7 +485,7 @@ export const createVehicle = async (req, res) => {
             type,
             category,
             creator: creator,
-
+            country: country
         });
 
         if (req.files['carimages']) {

@@ -21,8 +21,16 @@ export const getAllDealsCategories = async (req, res) => {
 
 export const getAllDeals = async (req, res) => {
     try {
+        const { country } = req.query;
 
-        const dealsItems = await DealsItems.find({});
+        let dealsItems;
+        if (country) {
+            dealsItems = await DealsItems.find({ country: country });
+        } else {
+            dealsItems = await DealsItems.find();
+        }
+
+        // const dealsItems = await DealsItems.find({ country: country });
         if (!dealsItems) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -38,8 +46,9 @@ export const getAllDeals = async (req, res) => {
 
 export const getAllDealsByCat = async (req, res) => {
     try {
+        const { country } = req.query;
         const { category } = req.body;
-        const dealsItems = await DealsItems.find({ category: category });
+        const dealsItems = await DealsItems.find({ category: category, country: country });
         if (!dealsItems) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -72,7 +81,7 @@ export const getDealById = async (req, res) => {
 
 export const AddDeal = async (req, res) => {
 
-    const { name, companyName, prevPrice, currentPrice, startDate, endDate, location, category } = req.body;
+    const { name, companyName, prevPrice, currentPrice, startDate, endDate, location, category, country } = req.body;
     try {
         const image = req.files['dealImage'][0];
 
@@ -100,6 +109,7 @@ export const AddDeal = async (req, res) => {
             endDate,
             location,
             category,
+            country
         }
 
         const deal = new DealsItems(dealData);

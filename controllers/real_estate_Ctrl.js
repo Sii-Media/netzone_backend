@@ -5,7 +5,14 @@ import userModel from "../models/userModel.js";
 
 export const getAllRealEstate = async (req, res) => {
     try {
-        const realEstates = await RealEstate.find().populate('createdBy', 'username');
+        const { country } = req.query;
+        let realEstates;
+        if (country) {
+            await RealEstate.find({ country: country }).populate('createdBy', 'username');
+        } else {
+            await RealEstate.find().populate('createdBy', 'username');
+        }
+        // const realEstates = await RealEstate.find().populate('createdBy', 'username');
         res.json(realEstates);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -25,7 +32,8 @@ export const addRealEstate = async (req, res) => {
             bedrooms,
             bathrooms,
             amenities,
-            createdBy
+            createdBy,
+            country
         } = req.body;
 
 
@@ -45,7 +53,8 @@ export const addRealEstate = async (req, res) => {
             bedrooms,
             bathrooms,
             amenities,
-            createdBy
+            createdBy,
+            country: country
         });
 
         if (req.files['realestateimages']) {
@@ -164,8 +173,15 @@ export const deleteRealEstate = async (req, res) => {
 
 export const getRealEstateCompanies = async (req, res) => {
     try {
+        const { country } = req.query;
 
-        const realEstateCompanies = await userModel.find({ userType: 'real_estate' });
+        let realEstateCompanies;
+        if (country) {
+            await userModel.find({ userType: 'real_estate', country: country });
+        } else {
+            await userModel.find({ userType: 'real_estate' });
+        }
+        // const realEstateCompanies = await userModel.find({ userType: 'real_estate' });
 
         res.status(200).json(realEstateCompanies);
 

@@ -45,6 +45,10 @@ const VehicleSchema = mongoose.Schema({
         type: [String]
     },
     vedioUrl: String,
+    country: {
+        type: String,
+        required: true,
+    },
 
 
 }, { timestamps: true });

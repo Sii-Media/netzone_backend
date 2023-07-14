@@ -11,6 +11,10 @@ const DealsItemsSchema = mongoose.Schema({
     endDate: { type: Date, required: true, },
     location: { type: String, required: true, },
     category: { type: String, required: true },
+    country: {
+        type: String,
+        required: true,
+    },
 
 }, { timestamps: true });
 

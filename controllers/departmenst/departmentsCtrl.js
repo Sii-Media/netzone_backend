@@ -9,7 +9,19 @@ import userModel from "../../models/userModel.js";
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate('category', 'name').populate('owner', 'username userType');
+        const { country } = req.query;
+        let products;
+
+        if (country) {
+            products = await Product.find({ country })
+                .populate('category', 'name')
+                .populate('owner', 'username userType');
+        } else {
+            products = await Product.find()
+                .populate('category', 'name')
+                .populate('owner', 'username userType');
+        }
+
         return res.json(products);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -51,12 +63,13 @@ export const getCategoriesByDepartment = async (req, res) => {
 
 export const getProductsByCategory = async (req, res) => {
     try {
+        const { country } = req.query;
 
         const { department, category } = req.body;
 
         await Product.find();
 
-        const departments = await Departments.findOne({ name: department });
+        const departments = await Departments.findOne({ name: department, country: country });
         if (!departments) {
             return res.status(404).json({ message: `Department ${department} not found` });
         }
@@ -109,7 +122,7 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { owner, name, condition, description, price, quantity, guarantee, address, madeIn, year, discountPercentage } = req.body;
+        const { owner, name, condition, description, price, quantity, guarantee, address, madeIn, year, discountPercentage, country } = req.body;
         const image = req.files['image'][0];
 
         const ownerId = new mongoose.Types.ObjectId(owner);
@@ -158,6 +171,7 @@ export const addProduct = async (req, res) => {
             year,
             discountPercentage,
             priceAfterDiscount: discountedPrice,
+            country: country,
         };
 
         if (req.files['productimages']) {
