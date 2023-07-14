@@ -69,7 +69,7 @@ export const getProductsByCategory = async (req, res) => {
 
         await Product.find();
 
-        const departments = await Departments.findOne({ name: department, country: country });
+        const departments = await Departments.findOne({ name: department });
         if (!departments) {
             return res.status(404).json({ message: `Department ${department} not found` });
         }
@@ -100,7 +100,7 @@ export const getProductsByCategory = async (req, res) => {
             return res.status(404).json({ message: `Category ${category} not found in department ${department}` });
         }
         categories.products.category = category;
-        const products = await categories.products;
+        const products = await categories.products.filter(product => product.country === country);
 
         if (products) {
             return res.json({
