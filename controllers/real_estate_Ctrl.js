@@ -177,9 +177,9 @@ export const getRealEstateCompanies = async (req, res) => {
 
         let realEstateCompanies;
         if (country) {
-            await userModel.find({ userType: 'real_estate', country: country });
+            realEstateCompanies = await userModel.find({ userType: 'real_estate', country: country });
         } else {
-            await userModel.find({ userType: 'real_estate' });
+            realEstateCompanies = await userModel.find({ userType: 'real_estate' });
         }
         // const realEstateCompanies = await userModel.find({ userType: 'real_estate' });
 
