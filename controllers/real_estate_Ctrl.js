@@ -8,12 +8,12 @@ export const getAllRealEstate = async (req, res) => {
         const { country } = req.query;
         let realEstates;
         if (country) {
-            await RealEstate.find({ country: country }).populate('createdBy', 'username');
+            realEstates = await RealEstate.find({ country: country }).populate('createdBy', 'username');
         } else {
-            await RealEstate.find().populate('createdBy', 'username');
+            realEstates = await RealEstate.find().populate('createdBy', 'username');
         }
         // const realEstates = await RealEstate.find().populate('createdBy', 'username');
-        res.json(realEstates);
+        return res.json(realEstates);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
