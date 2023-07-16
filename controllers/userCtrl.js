@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import Nexmo from 'nexmo';
 import mongoose from "mongoose";
 import { Account } from '../models/account/account_model.js';
+import { FactoryCategories } from '../models/categories/factory/factories_categories.js';
 
 
 const nexmo = new Nexmo({
@@ -63,6 +64,7 @@ export const changeAccount = async (req, res) => {
 // Handle user registration
 export const signUp = async (req, res) => {
     const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const { title } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
     const coverPhoto = req.files['coverPhoto'][0];
@@ -120,7 +122,22 @@ export const signUp = async (req, res) => {
         // await newUser.save();
 
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+        if (userType === 'factory') {
+            const factoryCategory = await FactoryCategories.findOneAndUpdate(
+                { title: title }, // Update this condition based on your requirements
+                { $push: { factory: newUser._id } },
+                { new: true }
+            );
 
+            // Handle case when FactoryCategories document doesn't exist
+            if (!factoryCategory) {
+                // Create a new FactoryCategories document
+                await FactoryCategories.create({
+                    title: title,
+                    factory: [newUser._id],
+                });
+            }
+        }
         res.status(201).json({
             result: newUser,
             message: "User created",
