@@ -63,6 +63,7 @@ export const changeAccount = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
+    const { country } = req.query;
     const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const { title } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
@@ -94,6 +95,8 @@ export const signUp = async (req, res) => {
 
         // Get the uploaded banner photo filename
 
+
+
         const newUser = await userModel.create({
             username,
             email,
@@ -115,6 +118,7 @@ export const signUp = async (req, res) => {
             banerPhoto: banerUrlImage,
             frontIdPhoto: frontIdPhotoUrlImage,
             backIdPhoto: backIdPhotoUrlImage,
+            country: country,
         });
 
         // const account = await Account.create({ user: newUser._id });
