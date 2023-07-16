@@ -8,7 +8,7 @@ const factoriesCategoriesSchema = mongoose.Schema({
     factory: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Factories',
+            ref: 'User',
         }
     ]
 },
