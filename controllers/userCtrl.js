@@ -63,7 +63,7 @@ export const changeAccount = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
-    const { country } = req.query;
+    const { country } = req.body;
     const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
     const { title } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
