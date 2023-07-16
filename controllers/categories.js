@@ -284,8 +284,23 @@ export const getAllFactoriesCategories = async (req, res) => {
 export const getAllFactories = async (req, res) => {
     try {
         const { id } = req.params;
+        const { country } = req.query;
+        let data;
+        if (country) {
+            data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate({
+                path: 'factory',
+                match: { country } // Filter the populated 'factory' based on the matching 'country' value
+            });
 
-        const data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate('factory');
+        } else {
+            data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate({
+                path: 'factory',
+                // Filter the populated 'factory' based on the matching 'country' value
+            });
+
+        }
+
+        // const data = await FactoryCategories.findById(id, { factory: 1, _id: 0 }).populate('factory');
         res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
