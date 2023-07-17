@@ -8,6 +8,7 @@ import Nexmo from 'nexmo';
 import mongoose from "mongoose";
 import { Account } from '../models/account/account_model.js';
 import { FactoryCategories } from '../models/categories/factory/factories_categories.js';
+import QB from 'quickblox';
 
 
 const nexmo = new Nexmo({
@@ -17,6 +18,15 @@ const nexmo = new Nexmo({
 
 
 const key = 'otp-secret-key';
+
+// const QB = QuickBlox({
+//     appId: '101248',
+//     authKey: '7QsUQCOppNXAmTq',
+//     authSecret: 's4XksyBADdYYkPa',
+//     accountKey: '6Ks95ZqZu8PNbwv4Yvz9'
+// });
+
+QB.init('101248', '7QsUQCOppNXAmTq', 's4XksyBADdYYkPa', '6Ks95ZqZu8PNbwv4Yvz9');
 
 
 export const signin = async (req, res) => {
@@ -95,58 +105,96 @@ export const signUp = async (req, res) => {
 
         // Get the uploaded banner photo filename
 
+        // Generate QuickBlox user ID
+        let qbUser;
+        QB.createSession(async function (error, session) {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ message: error });
 
+            } else {
+                var params = {
+                    login: username,
+                    password: password,
+                    full_name: username,
+                    email: email,
+                };
+                await QB.users.create(params, function (error, user) {
+                    if (error) {
+                        console.log(error);
+                        res.status(500).json({ message: error });
+                    } else {
+                        // Log in the user
+                        QB.login(params, async function (error, result) {
+                            if (error) {
+                                // Handle error
+                                res.status(500).json({ message: error });
+                            } else {
+                                console.log(result);
+                                qbUser = result
+                                // User is logged in
 
-        const newUser = await userModel.create({
-            username,
-            email,
-            password: hashedPassword,
-            userType,
-            firstMobile,
-            secondeMobile,
-            thirdMobile,
-            isFreeZoon: isFreeZoon,
-            deliverable: deliverable,
-            subcategory,
-            address,
-            businessLicense,
-            companyProductsNumber,
-            sellType,
-            toCountry,
-            profilePhoto: profileUrlImage,
-            coverPhoto: coverUrlImage,
-            banerPhoto: banerUrlImage,
-            frontIdPhoto: frontIdPhotoUrlImage,
-            backIdPhoto: backIdPhotoUrlImage,
-            country: country,
-        });
+                                const newUser = await userModel.create({
+                                    quickbloxId: result.id,
+                                    username,
+                                    email,
+                                    password: hashedPassword,
+                                    userType,
+                                    firstMobile,
+                                    secondeMobile,
+                                    thirdMobile,
+                                    isFreeZoon: isFreeZoon,
+                                    deliverable: deliverable,
+                                    subcategory,
+                                    address,
+                                    businessLicense,
+                                    companyProductsNumber,
+                                    sellType,
+                                    toCountry,
+                                    profilePhoto: profileUrlImage,
+                                    coverPhoto: coverUrlImage,
+                                    banerPhoto: banerUrlImage,
+                                    frontIdPhoto: frontIdPhotoUrlImage,
+                                    backIdPhoto: backIdPhotoUrlImage,
+                                    country: country,
+                                });
 
-        // const account = await Account.create({ user: newUser._id });
-        // newUser.accounts.push(account._id);
-        // await newUser.save();
+                                // const account = await Account.create({ user: newUser._id });
+                                // newUser.accounts.push(account._id);
+                                // await newUser.save();
 
-        const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
-        if (userType === 'factory') {
-            const factoryCategory = await FactoryCategories.findOneAndUpdate(
-                { title: title }, // Update this condition based on your requirements
-                { $push: { factory: newUser._id } },
-                { new: true }
-            );
+                                const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+                                if (userType === 'factory') {
+                                    const factoryCategory = await FactoryCategories.findOneAndUpdate(
+                                        { title: title }, // Update this condition based on your requirements
+                                        { $push: { factory: newUser._id } },
+                                        { new: true }
+                                    );
 
-            // Handle case when FactoryCategories document doesn't exist
-            if (!factoryCategory) {
-                // Create a new FactoryCategories document
-                await FactoryCategories.create({
-                    title: title,
-                    factory: [newUser._id],
+                                    // Handle case when FactoryCategories document doesn't exist
+                                    if (!factoryCategory) {
+                                        // Create a new FactoryCategories document
+                                        await FactoryCategories.create({
+                                            title: title,
+                                            factory: [newUser._id],
+                                        });
+                                    }
+                                }
+                                res.status(201).json({
+                                    result: newUser,
+                                    message: "User created",
+                                    token: token,
+                                });
+                            }
+                        });
+                    }
                 });
+
             }
-        }
-        res.status(201).json({
-            result: newUser,
-            message: "User created",
-            token: token,
         });
+
+
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error in registration" });

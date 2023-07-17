@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
 
+    quickbloxId: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
+
     username: {
         type: String,
         required: true,
