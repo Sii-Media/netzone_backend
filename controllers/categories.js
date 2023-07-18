@@ -481,7 +481,7 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const createVehicle = async (req, res) => {
-    const { creator, name, description, price, kilometers, year, location, type, category, country } = req.body;
+    const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber } = req.body;
     const image = req.files['image'][0];
     if (!image) {
         return res.status(404).json({ message: 'Attached file is not an image.' });
@@ -500,7 +500,8 @@ export const createVehicle = async (req, res) => {
             type,
             category,
             creator: creator,
-            country: country
+            country: country,
+            contactNumber: contactNumber
         });
 
         if (req.files['carimages']) {

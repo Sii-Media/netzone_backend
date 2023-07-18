@@ -89,6 +89,8 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'bannerPhoto', maxCount: 1 },
     { name: 'frontIdPhoto', maxCount: 1 },
     { name: 'backIdPhoto', maxCount: 1 },
+    { name: 'tradeLicensePhoto', maxCount: 1 },
+    { name: 'deliveryPermitPhoto', maxCount: 1 },
     { name: 'video', maxCount: 1 },
     { name: 'gif', maxCount: 1 },
     { name: 'dealImage', maxCount: 1 },

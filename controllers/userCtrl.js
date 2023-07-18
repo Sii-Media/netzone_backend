@@ -74,13 +74,17 @@ export const changeAccount = async (req, res) => {
 // Handle user registration
 export const signUp = async (req, res) => {
     const { country } = req.body;
-    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry } = req.body;
+    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
     const { title } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
     const coverPhoto = req.files['coverPhoto'][0];
     const frontIdPhoto = req.files['frontIdPhoto'] ? req.files['frontIdPhoto'][0] : null;
     const backIdPhoto = req.files['backIdPhoto'] ? req.files['backIdPhoto'][0] : null;
+
+    const tradeLicensePhoto = req.files['tradeLicensePhoto'] ? req.files['tradeLicensePhoto'][0] : null;
+    const deliveryPermitPhoto = req.files['deliveryPermitPhoto'] ? req.files['deliveryPermitPhoto'][0] : null;
+
 
 
     try {
@@ -93,6 +97,8 @@ export const signUp = async (req, res) => {
         const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
         const frontIdPhotoUrlImage = frontIdPhoto ? 'https://net-zoon.onrender.com/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
         const backIdPhotoUrlImage = backIdPhoto ? 'https://net-zoon.onrender.com/' + backIdPhoto.path.replace(/\\/g, '/') : null;
+        const tradeLicensePhotoUrl = tradeLicensePhoto ? 'https://net-zoon.onrender.com/' + tradeLicensePhoto.path.replace(/\\/g, '/') : null;
+        const deliveryPermitPhotoUrl = deliveryPermitPhoto ? 'https://net-zoon.onrender.com/' + deliveryPermitPhoto.path.replace(/\\/g, '/') : null;
 
         const existingUser = await userModel.findOne({ username });
         if (existingUser) {
@@ -156,7 +162,14 @@ export const signUp = async (req, res) => {
                                     banerPhoto: banerUrlImage,
                                     frontIdPhoto: frontIdPhotoUrlImage,
                                     backIdPhoto: backIdPhotoUrlImage,
+                                    tradeLicensePhoto: tradeLicensePhotoUrl,
+                                    deliveryPermitPhoto: deliveryPermitPhotoUrl,
                                     country: country,
+                                    isThereWarehouse: isThereWarehouse,
+                                    isThereFoodsDelivery: isThereFoodsDelivery,
+                                    deliveryType: deliveryType,
+                                    deliveryCarsNum: deliveryCarsNum,
+                                    deliveryMotorsNum: deliveryMotorsNum
                                 });
 
                                 // const account = await Account.create({ user: newUser._id });

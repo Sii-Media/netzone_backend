@@ -45,6 +45,7 @@ const VehicleSchema = mongoose.Schema({
         type: [String]
     },
     vedioUrl: String,
+    contactNumber: String,
     country: {
         type: String,
         required: true,

@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ['local_company', 'user', 'freezoon', 'factory', 'car', 'plans', 'sea_companies', 'news_agency', 'real_estate', 'trader'],
+        enum: ['local_company', 'user', 'freezoon', 'factory', 'car', 'plans', 'sea_companies', 'news_agency', 'real_estate', 'trader','delivery_company'],
 
     },
     firstMobile: {
@@ -62,6 +62,17 @@ const userSchema = mongoose.Schema({
     bio: String,
     description: String,
     website: String,
+    deliveryPermitPhoto: String,
+    tradeLicensePhoto: String,
+    isThereWarehouse: {
+        type: Boolean,
+    },
+    isThereFoodsDelivery: {
+        type: Boolean,
+    },
+    deliveryType: String,
+    deliveryCarsNum: Number,
+    deliveryMotorsNum: Number,
     vehicles: [
         {
             type: mongoose.Schema.Types.ObjectId,
