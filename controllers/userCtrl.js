@@ -128,12 +128,15 @@ export const signUp = async (req, res) => {
                 await QB.users.create(params, function (error, user) {
                     if (error) {
                         console.log(error);
+                        console.log('11111111111111');
                         res.status(500).json({ message: error });
                     } else {
                         // Log in the user
                         QB.login(params, async function (error, result) {
                             if (error) {
                                 // Handle error
+                                console.log('11111111111111');
+                                console.log(error);
                                 res.status(500).json({ message: error });
                             } else {
                                 console.log(result);
