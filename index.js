@@ -30,6 +30,7 @@ import requestRoutes from './routes/requestsRoutes.js';
 import complaintsRoutes from './routes/complaintsRoutes.js';
 import pushNotificationRoutes from './routes/push_notification_routes.js';
 import realestateRoutes from './routes/realestateRoutes.js';
+import deliveryServiceRoutes from './routes/delivery_servicesRoutes.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -98,7 +99,7 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).fields([
     { name: 'advertisingImageList', maxCount: 6 },
     { name: 'realestateimages', maxCount: 6 },
     { name: 'carimages', maxCount: 6 },
-    
+
 
 ]));
 
@@ -132,7 +133,7 @@ app.use('/requests', requestRoutes);
 app.use('/complaints', complaintsRoutes);
 app.use('/notifications', pushNotificationRoutes);
 app.use('/real-estate', realestateRoutes);
-
+app.use('/delivery', deliveryServiceRoutes);
 
 
 
