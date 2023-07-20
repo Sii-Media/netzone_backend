@@ -51,6 +51,7 @@ const ProductSchema = mongoose.Schema({
     year: Date,
     discountPercentage: Number,
     priceAfterDiscount: Number,
+    color: String,
     country: {
         type: String,
         required: true,
