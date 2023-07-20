@@ -71,7 +71,7 @@ export const getAdvertisementByType = async (req, res) => {
 
 
 export const createAds = async (req, res) => {
-    const { owner, advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingCountryAlphaCode, advertisingBrand, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingType, purchasable } = req.body;
+    const { owner, advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingViews, advertisingYear, advertisingLocation, advertisingPrice, advertisingType, purchasable, type, category, color, guarantee, contactNumber } = req.body;
 
     const image = req.files['image'][0]
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
@@ -87,14 +87,17 @@ export const createAds = async (req, res) => {
             advertisingEndDate,
             advertisingDescription,
             advertisingImage: urlImage,
-            advertisingCountryAlphaCode,
-            advertisingBrand,
             advertisingViews,
             advertisingYear,
             advertisingLocation,
             advertisingPrice,
             advertisingType,
-            purchasable: purchasable
+            purchasable: purchasable,
+            type,
+            category,
+            color,
+            guarantee,
+            contactNumber
         });
         if (req.files['advertisingImageList']) {
             const adsImages = req.files['advertisingImageList'];

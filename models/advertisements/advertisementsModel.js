@@ -27,14 +27,12 @@ const advertisementSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    advertisingCountryAlphaCode: {
-        type: String,
-    },
+    type: String,
+    category: String,
+    color: String,
+    guarantee: Boolean,
+    contactNumber: String,
 
-    advertisingBrand: {
-        type: String,
-
-    },
     advertisingViews: {
         type: Number,
 
