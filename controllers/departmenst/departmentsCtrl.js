@@ -227,7 +227,7 @@ export const getProductsByCategory = async (req, res) => {
         });
 
         if (filteredProducts.length === 0) {
-            return res.status(404).json({ message: "No products found with the provided filters" });
+            return res.status(404).json("No products found with the provided filters");
         }
 
         return res.json({
