@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ['local_company', 'user', 'freezoon', 'factory', 'car', 'plans', 'sea_companies', 'news_agency', 'real_estate', 'trader','delivery_company'],
+        enum: ['local_company', 'user', 'freezone', 'factory', 'car', 'plans', 'sea_companies', 'news_agency', 'real_estate', 'trader', 'delivery_company'],
 
     },
     firstMobile: {
@@ -41,8 +41,8 @@ const userSchema = mongoose.Schema({
     },
     isFreeZoon: {
         type: Boolean,
-
     },
+    freezoneCity: String,
     deliverable: {
         type: Boolean,
     },
