@@ -28,11 +28,56 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
+
 export const getProductById = async (req, res) => {
     const { productId } = req.params;
     try {
         const product = await Product.findById(productId).populate('category', 'name').populate('owner', 'username');
         return res.json(product);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const filterOnProducts = async (req, res) => {
+    try {
+        const { country, priceMin, priceMax, owner, condition } = req.query;
+        let query = {};
+        if (country) {
+            query.country = country;
+        }
+
+        if (priceMin && !isNaN(priceMin)) {
+            query.price = { $gte: parseFloat(priceMin) };
+        }
+
+        if (priceMax && !isNaN(priceMax)) {
+            if (query.price) {
+                query.price.$lte = parseFloat(priceMax);
+            } else {
+                query.price = { $lte: parseFloat(priceMax) };
+            }
+        }
+
+        if (owner) {
+            // Find the owner by name and retrieve its ObjectId
+            const foundOwner = await userModel.findOne({ username: owner });
+            if (foundOwner) {
+                query.owner = foundOwner._id; // Use the ObjectId in the query
+            } else {
+                // Handle the case where the owner name is not found
+                return res.status(404).json({ message: "Owner not found" });
+            }
+        }
+
+        if (condition) {
+            query.condition = condition;
+        }
+        let products = await Product.find(query)
+            .populate('category', 'name')
+            .populate('owner', 'username userType');
+        return res.json(products);
+
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -61,9 +106,67 @@ export const getCategoriesByDepartment = async (req, res) => {
     }
 }
 
+// export const getProductsByCategory = async (req, res) => {
+//     try {
+//         const { country } = req.query;
+
+//         const { department, category } = req.body;
+
+//         await Product.find();
+
+//         const departments = await Departments.findOne({ name: department });
+//         if (!departments) {
+//             return res.status(404).json({ message: `Department ${department} not found` });
+//         }
+//         console.log(departments._id);
+//         // const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id }).populate('products').populate({
+//         //     path: 'products',
+//         //     populate: {
+//         //         path: 'category',
+//         //         select: 'name',
+//         //     },
+//         // });
+//         const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id })
+//             .populate({
+//                 path: 'products',
+//                 populate: [
+//                     {
+//                         path: 'category',
+//                         select: 'name',
+//                     },
+//                     {
+//                         path: 'owner',
+//                         select: 'username',
+//                     },
+//                 ],
+//             });
+//         console.log(categories);
+//         if (!categories) {
+//             return res.status(404).json({ message: `Category ${category} not found in department ${department}` });
+//         }
+//         categories.products.category = category;
+//         const products = await categories.products.filter(product => product.country === country);
+
+//         if (products) {
+//             return res.json({
+//                 message: "success",
+//                 department,
+//                 category,
+//                 results: products,
+//             });
+//         } else {
+//             res.status(404).send(`Category ${category} not found in department ${department}`);
+
+//         }
+//     } catch (error) {
+//         return res.status(500).json({ message: error.message });
+
+//     }
+// };
+
 export const getProductsByCategory = async (req, res) => {
     try {
-        const { country } = req.query;
+        const { country, priceMin, priceMax, owner, condition } = req.query;
 
         const { department, category } = req.body;
 
@@ -73,14 +176,7 @@ export const getProductsByCategory = async (req, res) => {
         if (!departments) {
             return res.status(404).json({ message: `Department ${department} not found` });
         }
-        console.log(departments._id);
-        // const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id }).populate('products').populate({
-        //     path: 'products',
-        //     populate: {
-        //         path: 'category',
-        //         select: 'name',
-        //     },
-        // });
+
         const categories = await DepartmentsCategory.findOne({ name: category, department: departments._id })
             .populate({
                 path: 'products',
@@ -95,29 +191,57 @@ export const getProductsByCategory = async (req, res) => {
                     },
                 ],
             });
-        console.log(categories);
+
         if (!categories) {
             return res.status(404).json({ message: `Category ${category} not found in department ${department}` });
         }
-        categories.products.category = category;
-        const products = await categories.products.filter(product => product.country === country);
 
-        if (products) {
-            return res.json({
-                message: "success",
-                department,
-                category,
-                results: products,
-            });
-        } else {
-            res.status(404).send(`Category ${category} not found in department ${department}`);
+        // Apply the filters based on the provided query parameters
+        const filteredProducts = categories.products.filter((product) => {
+            // Filter by country
+            if (country && product.country !== country) {
+                return false;
+            }
 
+            // Filter by priceMin
+            if (priceMin && parseFloat(product.price) < parseFloat(priceMin)) {
+                return false;
+            }
+
+            // Filter by priceMax
+            if (priceMax && parseFloat(product.price) > parseFloat(priceMax)) {
+                return false;
+            }
+
+            // Filter by owner
+            if (owner && product.owner.username !== owner) {
+                return false;
+            }
+
+            // Filter by condition
+            if (condition && product.condition !== condition) {
+                return false;
+            }
+
+            return true;
+        });
+
+        if (filteredProducts.length === 0) {
+            return res.status(404).json({ message: "No products found with the provided filters" });
         }
+
+        return res.json({
+            message: "success",
+            department,
+            category,
+            results: filteredProducts,
+        });
+
     } catch (error) {
         return res.status(500).json({ message: error.message });
-
     }
 };
+
 
 export const addProduct = async (req, res) => {
     try {
