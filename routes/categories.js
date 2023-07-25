@@ -56,6 +56,6 @@ router.get('/planes-companies', getPlanesCompanies),
 
 router.post('/vehicle/create-vehicle', createVehicle);
 router.get('/vehicle/:id', auth, getVehicleById);
-router.get('/company-vehicles',getCompaniesVehicles);
+router.get('/company-vehicles/:id',getCompaniesVehicles);
 
 export default router;

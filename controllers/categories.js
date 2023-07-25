@@ -338,7 +338,7 @@ export const getCarsCompanies = async (req, res) => {
 
 export const getCompaniesVehicles = async (req, res) => {
     try {
-        const { type, id } = req.body;
+        const { id } = req.params;
         // const carsCompanies = await VehicleCompany.findOne({ type: type, _id: id }).populate('vehicles');
         // const vehicles = carsCompanies.vehicles;
         // res.status(200).json(vehicles);

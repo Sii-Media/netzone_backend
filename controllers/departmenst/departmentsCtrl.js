@@ -86,7 +86,7 @@ export const filterOnProducts = async (req, res) => {
 export const getCategoriesByDepartment = async (req, res) => {
     try {
 
-        const { department } = req.body;
+        const { department } = req.query;
         const departmentres = await Departments.findOne({
             name: department
         }).populate('departmentsCategory');
@@ -168,7 +168,7 @@ export const getProductsByCategory = async (req, res) => {
     try {
         const { country, priceMin, priceMax, owner, condition } = req.query;
 
-        const { department, category } = req.body;
+        const { department, category } = req.query;
 
         await Product.find();
 
@@ -444,7 +444,7 @@ export const deleteProduct = async (req, res) => {
 
 
 export const getUserProducts = async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
 
     try {

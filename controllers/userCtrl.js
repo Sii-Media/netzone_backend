@@ -311,7 +311,7 @@ export const addAccount = async (req, res) => {
 };
 
 export const getAccountByEmail = async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
 
     try {
         const user = await userModel.findOne({ email }).populate('accounts');
@@ -576,7 +576,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const getUserByType = async (req, res) => {
-    const { userType } = req.body;
+    const { userType } = req.query;
     try {
         const { country } = req.query;
         let user;

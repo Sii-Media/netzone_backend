@@ -47,7 +47,7 @@ export const getAllDeals = async (req, res) => {
 export const getAllDealsByCat = async (req, res) => {
     try {
         const { country } = req.query;
-        const { category } = req.body;
+        const { category } = req.query;
         const dealsItems = await DealsItems.find({ category: category, country: country });
         if (!dealsItems) {
             return res.status(404).json({ message: 'no Data Found' });
