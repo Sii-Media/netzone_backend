@@ -15,12 +15,17 @@ export const getCompanyServices = async (req, res) => {
 export const addCompanyService = async (req, res) => {
     try {
         const { title, description, price, owner } = req.body;
+        const image = req.files['image'] ? req.files['image'][0] : null;
+
+        const imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
+
 
         const newService = new CompanyServices({
             title,
             description,
             price,
-            owner
+            owner,
+            imageUrl: imageUrl,
         });
         await newService.save();
         res.status(201).json('The service has been added successfully');

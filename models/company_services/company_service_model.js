@@ -18,6 +18,7 @@ const CompanyServiceSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    imageUrl: String
 });
 
 
