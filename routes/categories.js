@@ -2,6 +2,7 @@ import express from 'express';
 import { check } from 'express-validator';
 import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
+import { addCompanyService, getCompanyServices } from '../controllers/company_serviceCtrl.js';
 
 
 const router = express.Router();
@@ -33,7 +34,8 @@ router.get('/customs/:id', getCustomsById);
 router.get('/local-company', getAllLocalCompanies);
 router.get('/local-company/:id', getLocalCompanyById);
 router.get('/local-company/get-products/:id', getLocalCompanyProducts);
-
+router.get('/local-company/get-services/:id',getCompanyServices);
+router.post('/local-company/add-service',addCompanyService);
 
 //govermental routes
 
