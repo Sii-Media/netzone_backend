@@ -74,7 +74,7 @@ export const changeAccount = async (req, res) => {
 // Handle user registration
 export const signUp = async (req, res) => {
     const { country } = req.body;
-    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
+    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
     const { title } = req.body;
     const profilePhoto = req.files['profilePhoto'][0];
     const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
@@ -229,6 +229,9 @@ export const signUp = async (req, res) => {
             companyProductsNumber,
             sellType,
             toCountry,
+            website: website,
+            slogn: slogn,
+            link: link,
             profilePhoto: profileUrlImage,
             coverPhoto: coverUrlImage,
             banerPhoto: banerUrlImage,

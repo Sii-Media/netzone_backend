@@ -65,6 +65,8 @@ const userSchema = mongoose.Schema({
     bio: String,
     description: String,
     website: String,
+    slogn: String,
+    link: String,
     deliveryPermitPhoto: String,
     tradeLicensePhoto: String,
     isThereWarehouse: {
