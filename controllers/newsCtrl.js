@@ -95,7 +95,7 @@ export const editNews = async (req, res) => {
         existingNews.title = title;
         existingNews.description = description;
         existingNews.creator = creator;
-        
+
         if (req.files['image']) {
             const image = req.files['image'][0];
             const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
@@ -105,7 +105,7 @@ export const editNews = async (req, res) => {
         // existingNews.ownerImage = ownerImage;
 
         const updatedNews = await existingNews.save();
-        res.json({ message: 'News updated successfully', updatedNews });
+        res.json({ updatedNews });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
