@@ -130,3 +130,58 @@ export const AddDeal = async (req, res) => {
 
 
 };
+
+export const editDeal = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, companyName, prevPrice, currentPrice, startDate, endDate, location, category, country } = req.body;
+
+
+        // Check if deals item with the given ID exists
+        const existingDeal = await DealsItems.findById(id);
+        if (!existingDeal) {
+            return res.status(404).json({ message: 'Deals item not found' });
+        }
+
+
+        existingDeal.name = name;
+        existingDeal.companyName = companyName;
+        existingDeal.prevPrice = prevPrice;
+        existingDeal.currentPrice = currentPrice;
+        existingDeal.startDate = startDate;
+        existingDeal.endDate = endDate;
+        existingDeal.location = location;
+        existingDeal.category = category;
+        existingDeal.country = country;
+
+        if (req.files['dealImage']) {
+            const image = req.files['dealImage'][0];
+            const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            existingDeal.imgUrl = imgUrl;
+        }
+
+        const updatedDeal = await existingDeal.save();
+        res.json({ message: 'Deals item updated successfully', updatedDeal });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteDeal = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Check if deals item with the given ID exists
+        const existingDeal = await DealsItems.findById(id);
+        if (!existingDeal) {
+            return res.status(404).json('Deals item not found' );
+        }
+
+        // Delete the deals item
+        await DealsItems.findByIdAndRemove(id);
+
+        res.json('Deals item deleted successfully' );
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

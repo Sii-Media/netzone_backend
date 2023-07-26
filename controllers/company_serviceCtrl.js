@@ -34,3 +34,47 @@ export const addCompanyService = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const editCompanyService = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, price } = req.body;
+        const image = req.files['image'] ? req.files['image'][0] : null;
+
+        // Check if the company service with the given ID exists
+        const existingService = await CompanyServices.findById(id);
+        if (!existingService) {
+            return res.status(404).json({ message: 'Company service not found' });
+        }
+
+        // Update company service fields
+        existingService.title = title;
+        existingService.description = description;
+        existingService.price = price;
+        existingService.imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
+
+        await existingService.save();
+        res.json({ message: 'Company service updated successfully', updatedService: existingService });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteCompanyService = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Check if the company service with the given ID exists
+        const existingService = await CompanyServices.findById(id);
+        if (!existingService) {
+            return res.status(404).json('Company service not found');
+        }
+
+        // Delete the company service
+        await CompanyServices.findByIdAndRemove(id);
+
+        res.json('Company service deleted successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

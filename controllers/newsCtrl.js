@@ -79,6 +79,56 @@ export const createNews = async (req, res) => {
     }
 };
 
+export const editNews = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, creator } = req.body;
+
+
+        // Check if news with given ID exists
+        const existingNews = await News.findById(id);
+        if (!existingNews) {
+            return res.status(404).json({ message: 'News not found' });
+        }
+
+        // Update news fields
+        existingNews.title = title;
+        existingNews.description = description;
+        existingNews.creator = creator;
+        
+        if (req.files['image']) {
+            const image = req.files['image'][0];
+            const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            existingNews.imgUrl = urlImage;
+        }
+        // existingNews.ownerName = ownerName;
+        // existingNews.ownerImage = ownerImage;
+
+        const updatedNews = await existingNews.save();
+        res.json({ message: 'News updated successfully', updatedNews });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteNews = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Check if news with given ID exists
+        const existingNews = await News.findById(id);
+        if (!existingNews) {
+            return res.status(404).json('News not found');
+        }
+
+        // Delete the news
+        await News.findByIdAndRemove(id);
+
+        res.json('News deleted successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 

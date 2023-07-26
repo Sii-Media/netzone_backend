@@ -130,11 +130,86 @@ export const createAds = async (req, res) => {
 }
 
 
-// export const createtest = async(req, res) => {
+export const editAdvertisement = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { advertisingTitle, advertisingStartDate, advertisingEndDate, advertisingDescription, advertisingYear, advertisingLocation, advertisingPrice, advertisingType, purchasable, type, category, color, guarantee, contactNumber } = req.body;
 
-//     if (!req.file) {
-//         res.status(422).json({ message: error.message });
-//     }
-//     const adsImageUrl = await req.file.path;
-//     res.send(adsImageUrl);
-// }
+        // Check if advertisement with the given ID exists
+        const existingAd = await Advertisement.findById(id);
+        if (!existingAd) {
+            return res.status(404).json({ message: 'Advertisement not found' });
+        }
+
+
+        existingAd.advertisingTitle = advertisingTitle;
+        existingAd.advertisingStartDate = advertisingStartDate;
+        existingAd.advertisingEndDate = advertisingEndDate;
+        existingAd.advertisingDescription = advertisingDescription;
+        existingAd.advertisingYear = advertisingYear;
+        existingAd.advertisingLocation = advertisingLocation;
+        existingAd.advertisingPrice = advertisingPrice;
+        existingAd.advertisingType = advertisingType;
+        existingAd.purchasable = purchasable;
+        existingAd.type = type;
+        existingAd.category = category;
+        existingAd.color = color;
+        existingAd.guarantee = guarantee;
+        existingAd.contactNumber = contactNumber;
+
+
+        if (req.files['image']) {
+            const image = req.files['image'][0];
+            const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            existingAd.advertisingImage = urlImage;
+        }
+
+        if (req.files['advertisingImageList']) {
+            const adsImages = req.files['advertisingImageList'];
+            const imageUrls = [];
+            if (!adsImages || !Array.isArray(adsImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of adsImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+            }
+            existingAd.advertisingImageList = imageUrls;
+        }
+
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            existingAd.advertisingVedio = urlVideo;
+        }
+
+        const updatedAd = await existingAd.save();
+        res.json({ message: 'Advertisement updated successfully', updatedAd });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteAdvertisement = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+
+        const existingAd = await Advertisement.findById(id);
+        if (!existingAd) {
+            return res.status(404).json('Advertisement not found');
+        }
+
+        // Delete the advertisement
+        await Advertisement.findByIdAndRemove(id);
+
+        res.json('Advertisement deleted successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

@@ -2,7 +2,7 @@ import express from 'express';
 import { check } from 'express-validator';
 import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
-import { addCompanyService, getCompanyServices } from '../controllers/company_serviceCtrl.js';
+import { addCompanyService, deleteCompanyService, editCompanyService, getCompanyServices } from '../controllers/company_serviceCtrl.js';
 
 
 const router = express.Router();
@@ -34,8 +34,10 @@ router.get('/customs/:id', getCustomsById);
 router.get('/local-company', getAllLocalCompanies);
 router.get('/local-company/:id', getLocalCompanyById);
 router.get('/local-company/get-products/:id', getLocalCompanyProducts);
-router.get('/local-company/get-services/:id',getCompanyServices);
-router.post('/local-company/add-service',addCompanyService);
+router.get('/local-company/get-services/:id', getCompanyServices);
+router.post('/local-company/add-service', addCompanyService);
+router.put('/local-company/:id', editCompanyService);
+router.delete('/local-company/:id', deleteCompanyService);
 
 //govermental routes
 
@@ -45,7 +47,7 @@ router.get('/govermental/:id', getGovermentalById);
 //Cars routes
 router.get('/cars', getAllCars);
 router.get('/cars-companies', getCarsCompanies);
-router.get('/latest-cars-by-creator',getLatestCarsByCreator);
+router.get('/latest-cars-by-creator', getLatestCarsByCreator);
 
 //Plans routes
 router.get('/planes', getAllPlans);
@@ -54,8 +56,8 @@ router.get('/planes/getnewplanes', getAllNewPlans);
 router.get('/planes-companies', getPlanesCompanies),
 
 
-router.post('/vehicle/create-vehicle', createVehicle);
+    router.post('/vehicle/create-vehicle', createVehicle);
 router.get('/vehicle/:id', auth, getVehicleById);
-router.get('/company-vehicles/:id',getCompaniesVehicles);
+router.get('/company-vehicles/:id', getCompaniesVehicles);
 
 export default router;
