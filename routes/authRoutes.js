@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { EditUser, addAccount, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, otpLogin, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { EditUser, addAccount, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
 
 const router = express.Router();
 
@@ -53,5 +53,9 @@ router.delete('/deleteFromSelectedProducts/:userId/:productId', deleteProductFro
 router.put('/toggleFollow/:otherUserId', toggleFollow);
 router.get('/getUserFollowings/:userId', getUserFollowings);
 router.get('/getUserFollowers/:userId', getUserFollowers);
+
+
+router.post('/:id/rate',rateUser);
+router.get('/:id/rating',getUserTotalRating);
 
 export default router;

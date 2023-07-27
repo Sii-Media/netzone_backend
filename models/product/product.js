@@ -56,6 +56,14 @@ const ProductSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    ratings: [
+        {
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+            rating: { type: Number, required: true, min: 1, max: 5 }
+        }
+    ],
+    totalRatings: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 }
 });
 
 export const Product = mongoose.model('Products', ProductSchema);

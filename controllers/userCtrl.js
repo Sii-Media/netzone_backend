@@ -780,3 +780,59 @@ export const getUserFollowers = async (req, res) => {
     }
 
 }
+
+
+
+export const rateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { rating, userId } = req.body;
+
+
+
+        const existingUser = await userModel.findById(id);
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+
+        const alreadyRated = existingUser.ratings.some(rate => rate.user.equals(userId));
+        if (alreadyRated) {
+            return res.status(400).json('You have already rated this User');
+        }
+
+        // Validate the rating value (assumed to be between 1 and 5)
+        console.log(rating);
+        if (rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'Invalid rating value' });
+        }
+
+        // Add the new rating to the service
+        existingUser.ratings.push({ user: userId, rating });
+        existingUser.totalRatings += 1;
+
+        // Calculate the average rating
+        const totalRatingSum = existingUser.ratings.reduce((sum, rate) => sum + rate.rating, 0);
+        existingUser.averageRating = totalRatingSum / existingUser.totalRatings;
+
+        await existingUser.save();
+        res.json('User rated successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const getUserTotalRating = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Check if the company service with the given ID exists
+        const existingUser = await userModel.findById(id);
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ averageRating: existingUser.averageRating });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

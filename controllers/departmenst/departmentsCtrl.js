@@ -238,7 +238,7 @@ export const getProductsByCategory = async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(500).json( error.message );
+        return res.status(500).json(error.message);
     }
 };
 
@@ -456,4 +456,57 @@ export const getUserProducts = async (req, res) => {
 };
 
 
+export const rateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { rating, userId } = req.body;
+
+
+
+        const existingProduct = await Product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+
+        const alreadyRated = existingProduct.ratings.some(rate => rate.user.equals(userId));
+        if (alreadyRated) {
+            return res.status(400).json('You have already rated this service');
+        }
+
+        // Validate the rating value (assumed to be between 1 and 5)
+        console.log(rating);
+        if (rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'Invalid rating value' });
+        }
+
+        // Add the new rating to the service
+        existingProduct.ratings.push({ user: userId, rating });
+        existingProduct.totalRatings += 1;
+
+        // Calculate the average rating
+        const totalRatingSum = existingProduct.ratings.reduce((sum, rate) => sum + rate.rating, 0);
+        existingProduct.averageRating = totalRatingSum / existingProduct.totalRatings;
+
+        await existingProduct.save();
+        res.json({ message: 'Product rated successfully', updatedProduct: existingProduct });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const getProductTotalRating = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Check if the company service with the given ID exists
+        const existingProduct = await Product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).json({ message: 'Company service not found' });
+        }
+
+        res.json({ averageRating: existingProduct.averageRating });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 

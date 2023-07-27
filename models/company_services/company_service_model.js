@@ -19,7 +19,15 @@ const CompanyServiceSchema = new mongoose.Schema({
     },
     imageUrl: String,
     serviceImageList: [{ type: String }],
-    whatsAppNumber: String
+    whatsAppNumber: String,
+    ratings: [
+        {
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+            rating: { type: Number, required: true, min: 1, max: 5 }
+        }
+    ],
+    totalRatings: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 0 }
 });
 
 
