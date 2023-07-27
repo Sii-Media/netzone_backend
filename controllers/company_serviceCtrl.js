@@ -14,10 +14,11 @@ export const getCompanyServices = async (req, res) => {
 
 export const addCompanyService = async (req, res) => {
     try {
-        const { title, description, price, owner } = req.body;
+        const { title, description, price, owner, whatsAppNumber } = req.body;
         const image = req.files['image'] ? req.files['image'][0] : null;
 
         const imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
+
 
 
         const newService = new CompanyServices({
@@ -26,7 +27,29 @@ export const addCompanyService = async (req, res) => {
             price,
             owner,
             imageUrl: imageUrl,
+            whatsAppNumber: whatsAppNumber,
         });
+
+
+
+        if (req.files['serviceImageList']) {
+            const serviceImages = req.files['serviceImageList'];
+            const imageUrls = [];
+            if (!serviceImages || !Array.isArray(serviceImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of serviceImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                newService.serviceImageList = imageUrls;
+            }
+        }
+
         await newService.save();
         res.status(201).json('The service has been added successfully');
 

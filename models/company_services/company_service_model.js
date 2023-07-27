@@ -11,14 +11,15 @@ const CompanyServiceSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    imageUrl: String
+    imageUrl: String,
+    serviceImageList: [{ type: String }],
+    whatsAppNumber: String
 });
 
 
