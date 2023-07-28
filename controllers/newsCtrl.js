@@ -105,7 +105,7 @@ export const editNews = async (req, res) => {
         // existingNews.ownerImage = ownerImage;
 
         const updatedNews = await existingNews.save();
-        res.json({ updatedNews });
+        res.json('updated news successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
