@@ -161,7 +161,7 @@ export const editDeal = async (req, res) => {
         }
 
         const updatedDeal = await existingDeal.save();
-        res.json({ message: 'Deals item updated successfully', updatedDeal });
+        res.json('Deals item updated successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -174,13 +174,13 @@ export const deleteDeal = async (req, res) => {
         // Check if deals item with the given ID exists
         const existingDeal = await DealsItems.findById(id);
         if (!existingDeal) {
-            return res.status(404).json('Deals item not found' );
+            return res.status(404).json('Deals item not found');
         }
 
         // Delete the deals item
         await DealsItems.findByIdAndRemove(id);
 
-        res.json('Deals item deleted successfully' );
+        res.json('Deals item deleted successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
