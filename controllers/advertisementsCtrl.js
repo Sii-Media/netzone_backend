@@ -189,7 +189,7 @@ export const editAdvertisement = async (req, res) => {
         }
 
         const updatedAd = await existingAd.save();
-        res.json({ message: 'Advertisement updated successfully', updatedAd });
+        res.json( 'Advertisement updated successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
