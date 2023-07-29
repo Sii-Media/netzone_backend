@@ -62,7 +62,7 @@ export const editCompanyService = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, price } = req.body;
-        const image = req.files['image'] ? req.files['image'][0] : null;
+
 
         // Check if the company service with the given ID exists
         const existingService = await CompanyServices.findById(id);
@@ -74,7 +74,12 @@ export const editCompanyService = async (req, res) => {
         existingService.title = title;
         existingService.description = description;
         existingService.price = price;
-        existingService.imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
+
+        if (req.files['image']) {
+            const image = req.files['image'][0];
+            const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            existingAd.advertisingImage = urlImage;
+        }
 
         if (req.files['serviceImageList']) {
             const serviceImages = req.files['serviceImageList'];
