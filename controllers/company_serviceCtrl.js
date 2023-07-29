@@ -76,8 +76,26 @@ export const editCompanyService = async (req, res) => {
         existingService.price = price;
         existingService.imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
 
+        if (req.files['serviceImageList']) {
+            const serviceImages = req.files['serviceImageList'];
+            const imageUrls = [];
+            if (!serviceImages || !Array.isArray(serviceImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of serviceImages) {
+                if (!image) {
+                    return res.status(404).json('Attached file is not an image.');
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                existingService.serviceImageList = imageUrls;
+            }
+        }
+
         await existingService.save();
-        res.json({ message: 'Company service updated successfully', updatedService: existingService });
+        res.json('Company service updated successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -123,7 +141,7 @@ export const rateCompanyService = async (req, res) => {
 
         // Validate the rating value (assumed to be between 1 and 5)
         console.log(rating);
-        if (  rating < 1 || rating > 5) {
+        if (rating < 1 || rating > 5) {
             return res.status(400).json({ message: 'Invalid rating value' });
         }
 
