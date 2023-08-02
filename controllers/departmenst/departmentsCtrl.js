@@ -448,7 +448,7 @@ export const getUserProducts = async (req, res) => {
     const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
 
     try {
-        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner', 'username');
+        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner', 'username userType');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });
