@@ -584,9 +584,9 @@ export const getUserByType = async (req, res) => {
         const { country } = req.query;
         let user;
         if (country) {
-            user = await userModel.find({ userType: userType, country: country });
+            user = await userModel.find({ userType: userType, country: country }).select('-password');
         } else {
-            user = await userModel.find({ userType: userType });
+            user = await userModel.find({ userType: userType }).select('-password');
         }
         // const user = await userModel.find({ userType: userType });
         if (!user) {
