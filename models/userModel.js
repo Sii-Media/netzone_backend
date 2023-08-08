@@ -154,7 +154,16 @@ const userSchema = mongoose.Schema({
         }
     ],
     totalRatings: { type: Number, default: 0 },
-    averageRating: { type: Number, default: 0 }
+    averageRating: { type: Number, default: 0 },
+    uniqueProfileVisitors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    profileViews: {
+        type: Number,
+        default: 0
+    },
 
 },
     {

@@ -566,7 +566,7 @@ export const getUserById = async (req, res) => {
     const { userId } = req.params;
 
     try {
-        const user = await userModel.findById(userId);
+        const user = await userModel.findById(userId).select('-password');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -834,5 +834,29 @@ export const getUserTotalRating = async (req, res) => {
         res.json({ averageRating: existingUser.averageRating });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const addNumberOfVisitors = async (req, res) => {
+    const { viewerUserId } = req.body;
+    const profileUserId = req.params.userId;
+    try {
+        const user = await userModel.findById(profileUserId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (!user.uniqueProfileVisitors.includes(viewerUserId)) {
+
+            user.uniqueProfileVisitors.push(viewerUserId);
+            user.profileViews += 1;
+
+            await user.save();
+        }
+
+        return res.status(200).json({ message: 'Profile viewed successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
     }
 };
