@@ -54,9 +54,9 @@ router.put('/toggleFollow/:otherUserId', toggleFollow);
 router.get('/getUserFollowings/:userId', getUserFollowings);
 router.get('/getUserFollowers/:userId', getUserFollowers);
 
-
+router.post('/:userId/addvisitor', addNumberOfVisitors);
 router.post('/:id/rate', rateUser);
 router.get('/:id/rating', getUserTotalRating);
-router.post('/:userId/addvisitor', addNumberOfVisitors);
+
 
 export default router;
