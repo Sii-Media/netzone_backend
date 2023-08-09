@@ -848,7 +848,7 @@ export const addNumberOfVisitors = async (req, res) => {
         }
         if (!user.uniqueProfileVisitors.includes(viewerUserId)) {
 
-            user.uniqueProfileVisitors.push(viewerUserId);
+            user.uniqueProfileVisitors.push(mongoose.Types.ObjectId(viewerUserId));
             user.profileViews += 1;
 
             await user.save();
