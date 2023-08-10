@@ -46,14 +46,34 @@ export const getAllDeals = async (req, res) => {
 
 export const getAllDealsByCat = async (req, res) => {
     try {
-        const { country } = req.query;
-        const { category } = req.query;
-        const dealsItems = await DealsItems.find({ category: category, country: country });
-        if (!dealsItems) {
-            return res.status(404).json({ message: 'no Data Found' });
+        const { country, category, companyName, minPrice, maxPrice } = req.query;
+
+
+        const filterCriteria = {
+            category: category,
+            country: country,
+        };
+
+        if (companyName) {
+            filterCriteria.companyName = companyName;
         }
+
+        if (minPrice !== undefined && maxPrice !== undefined) {
+            filterCriteria.currentPrice = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
+        } else if (minPrice !== undefined) {
+            filterCriteria.currentPrice = { $gte: parseFloat(minPrice) };
+        } else if (maxPrice !== undefined) {
+            filterCriteria.currentPrice = { $lte: parseFloat(maxPrice) };
+        }
+
+        const dealsItems = await DealsItems.find(filterCriteria);
+
+        if (!dealsItems || dealsItems.length === 0) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+
         return res.json({
-            message: "success",
+            message: "Success",
             results: dealsItems,
         });
 
@@ -61,6 +81,7 @@ export const getAllDealsByCat = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 
 
 
