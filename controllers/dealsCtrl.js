@@ -58,11 +58,11 @@ export const getAllDealsByCat = async (req, res) => {
             filterCriteria.companyName = companyName;
         }
 
-        if (minPrice !== undefined && maxPrice !== undefined) {
+        if (minPrice && maxPrice) {
             filterCriteria.currentPrice = { $gte: parseFloat(minPrice), $lte: parseFloat(maxPrice) };
-        } else if (minPrice !== undefined) {
+        } else if (minPrice) {
             filterCriteria.currentPrice = { $gte: parseFloat(minPrice) };
-        } else if (maxPrice !== undefined) {
+        } else if (maxPrice) {
             filterCriteria.currentPrice = { $lte: parseFloat(maxPrice) };
         }
 
@@ -78,6 +78,7 @@ export const getAllDealsByCat = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: error.message });
     }
 };
