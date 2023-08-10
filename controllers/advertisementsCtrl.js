@@ -1,23 +1,81 @@
 import mongoose from "mongoose";
 import { Advertisement } from "../models/advertisements/advertisementsModel.js";
+import userModel from "../models/userModel.js";
 
 
 export const getAdvertisements = async (req, res) => {
-
     try {
+        const {
+            priceMin,
+            priceMax,
+            owner,
+            purchasable,
+            startDate,
+            endDate,
+            year,
+            type
+        } = req.query;
 
-        const data = await Advertisement.find({}).populate('owner', 'username userType');
+        const query = {};
+
+        if (priceMin !== undefined && priceMax !== undefined) {
+            query.advertisingPrice = {
+                $gte: parseFloat(priceMin),
+                $lte: parseFloat(priceMax)
+            };
+        } else if (priceMin !== undefined) {
+            query.advertisingPrice = {
+                $gte: parseFloat(priceMin)
+            };
+        } else if (priceMax !== undefined) {
+            query.advertisingPrice = {
+                $lte: parseFloat(priceMax)
+            };
+        }
+
+        if (owner) {
+            const ownerId = await userModel.findOne({ username: owner });
+
+            if (ownerId) {
+                query.owner = new mongoose.Types.ObjectId(ownerId._id);
+            }
+
+        }
+
+        if (purchasable !== undefined) {
+            query.purchasable = purchasable === "true";
+        }
+
+        if (startDate && endDate) {
+            query.advertisingStartDate = { $lt: endDate };
+            query.advertisingEndDate = { $gt: startDate };
+        } else if (startDate) {
+            query.advertisingStartDate = startDate;
+        } else if (endDate) {
+            query.advertisingEndDate = endDate;
+        }
+
+        if (year) {
+            query.advertisingYear = year;
+        }
+
+        if (type) {
+            query.advertisingType = type;
+        }
+
+        const data = await Advertisement.find(query).populate('owner', 'username userType');
+
         return res.json({
             message: "success",
-            results: data,
+            results: data
         });
     } catch (error) {
         return res.status(500).json({
-            message: error.message,
+            message: error.message
         });
     }
-
 };
+
 
 export const getUserAds = async (req, res) => {
     try {
@@ -189,7 +247,7 @@ export const editAdvertisement = async (req, res) => {
         }
 
         const updatedAd = await existingAd.save();
-        res.json( 'Advertisement updated successfully');
+        res.json('Advertisement updated successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
