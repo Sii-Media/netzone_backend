@@ -367,9 +367,38 @@ export const getPlanesCompanies = async (req, res) => {
 
 //Cars Controllers
 export const getAllCars = async (req, res) => {
-    const { country } = req.query;
+    const { country, creator, priceMin, priceMax, type } = req.query;
     try {
-        const cars = await Vehicle.find({ category: "cars", country: country }).populate('creator', 'username');
+        const filters = {
+            category: "cars",
+            country: country,
+        };
+        if (creator) {
+
+            const ownerId = await userModel.findOne({ username: creator });
+
+            if (ownerId) {
+                filters.creator = new mongoose.Types.ObjectId(ownerId._id);
+            }
+        }
+        if (type) {
+            filters.type = type;
+        }
+        if (priceMin !== undefined && priceMax !== undefined) {
+            filters.price = {
+                $gte: parseFloat(priceMin),
+                $lte: parseFloat(priceMax)
+            };
+        } else if (priceMin !== undefined) {
+            filters.price = {
+                $gte: parseFloat(priceMin)
+            };
+        } else if (priceMax !== undefined) {
+            filters.price = {
+                $lte: parseFloat(priceMax)
+            };
+        }
+        const cars = await Vehicle.find(filters).populate('creator', 'username');
         res.json({
             message: "success",
             results: cars,
