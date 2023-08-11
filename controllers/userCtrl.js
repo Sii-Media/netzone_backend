@@ -860,3 +860,17 @@ export const addNumberOfVisitors = async (req, res) => {
 
     }
 };
+export const getVisitors = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await userModel.findById(id)
+        .populate('uniqueProfileVisitors', 'username email profilePhoto'); // Add fields you want to populate
+    
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+        return res.status(200).json(user.uniqueProfileVisitors);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
