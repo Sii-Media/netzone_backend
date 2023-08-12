@@ -455,16 +455,56 @@ export const getLatestCarsByCreator = async (req, res) => {
 
 //Plans Controllers
 export const getAllPlans = async (req, res) => {
+    const { country, creator, priceMin, priceMax, type } = req.query;
     try {
-        const { country } = req.query;
-        const plans = await Vehicle.find({ category: "plans", country: country }).populate('creator', 'username');
+        const filters = {
+            category: "plans",
+            country: country,
+        };
+        if (creator) {
+
+            const ownerId = await userModel.findOne({ username: creator });
+
+            if (ownerId) {
+                filters.creator = new mongoose.Types.ObjectId(ownerId._id);
+            }
+        }
+        if (type) {
+            filters.type = type;
+        }
+        if (priceMin !== undefined && priceMax !== undefined) {
+            filters.price = {
+                $gte: parseFloat(priceMin),
+                $lte: parseFloat(priceMax)
+            };
+        } else if (priceMin !== undefined) {
+            filters.price = {
+                $gte: parseFloat(priceMin)
+            };
+        } else if (priceMax !== undefined) {
+            filters.price = {
+                $lte: parseFloat(priceMax)
+            };
+        }
+        const cars = await Vehicle.find(filters).populate('creator', 'username');
         res.json({
             message: "success",
-            results: plans,
+            results: cars,
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+
+    // try {
+    //     const { country } = req.query;
+    //     const plans = await Vehicle.find({ category: "plans", country: country }).populate('creator', 'username');
+    //     res.json({
+    //         message: "success",
+    //         results: plans,
+    //     });
+    // } catch (error) {
+    //     res.status(500).json({ message: error.message });
+    // }
 };
 export const getAllUsedPlans = async (req, res) => {
     try {
@@ -510,7 +550,7 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const createVehicle = async (req, res) => {
-    const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee } = req.body;
+    const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee, forWhat } = req.body;
     const image = req.files['image'][0];
     if (!image) {
         return res.status(404).json({ message: 'Attached file is not an image.' });
@@ -545,7 +585,8 @@ export const createVehicle = async (req, res) => {
             extras,
             technicalFeatures,
             steeringSide,
-            guarantee
+            guarantee,
+            forWhat: forWhat,
         });
 
         if (req.files['carimages']) {

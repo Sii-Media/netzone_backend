@@ -61,6 +61,7 @@ const VehicleSchema = mongoose.Schema({
     technicalFeatures: String,
     steeringSide: String,
     guarantee: Boolean,
+    forWhat: String,
     country: {
         type: String,
         required: true,
