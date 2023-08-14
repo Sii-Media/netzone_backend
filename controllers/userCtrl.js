@@ -73,21 +73,22 @@ export const changeAccount = async (req, res) => {
 
 // Handle user registration
 export const signUp = async (req, res) => {
-    const { country } = req.body;
-    const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
-    const { title } = req.body;
-    const profilePhoto = req.files['profilePhoto'][0];
-    const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
-    const coverPhoto = req.files['coverPhoto'][0];
-    const frontIdPhoto = req.files['frontIdPhoto'] ? req.files['frontIdPhoto'][0] : null;
-    const backIdPhoto = req.files['backIdPhoto'] ? req.files['backIdPhoto'][0] : null;
-
-    const tradeLicensePhoto = req.files['tradeLicensePhoto'] ? req.files['tradeLicensePhoto'][0] : null;
-    const deliveryPermitPhoto = req.files['deliveryPermitPhoto'] ? req.files['deliveryPermitPhoto'][0] : null;
-
-
-
     try {
+        const { country } = req.body;
+        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
+        const { title } = req.body;
+        const profilePhoto = req.files['profilePhoto'][0];
+        const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
+        const coverPhoto = req.files['coverPhoto'][0];
+        const frontIdPhoto = req.files['frontIdPhoto'] ? req.files['frontIdPhoto'][0] : null;
+        const backIdPhoto = req.files['backIdPhoto'] ? req.files['backIdPhoto'][0] : null;
+
+        const tradeLicensePhoto = req.files['tradeLicensePhoto'] ? req.files['tradeLicensePhoto'][0] : null;
+        const deliveryPermitPhoto = req.files['deliveryPermitPhoto'] ? req.files['deliveryPermitPhoto'][0] : null;
+
+
+
+
         const error = validationResult(req);
         if (!error.isEmpty()) {
             return res.json(error);
@@ -107,108 +108,6 @@ export const signUp = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Upload the profile photo and banner photo using multer
-
-        // Get the uploaded banner photo filename
-
-        // Generate QuickBlox user ID
-        // let qbUser;
-        // QB.createSession(async function (error, session) {
-        //     if (error) {
-        //         console.log(error);
-        //         res.status(500).json({ message: error });
-
-        //     } else {
-        //         var params = {
-        //             login: username,
-        //             password: password,
-        //             full_name: username,
-        //             email: email,
-        //         };
-        //         await QB.users.create(params, function (error, user) {
-        //             if (error) {
-        //                 console.log(error);
-        //                 console.log('11111111111111');
-        //                 res.status(500).json({ message: error });
-        //             } else {
-        //                 // Log in the user
-        //                 QB.login(params, async function (error, result) {
-        //                     if (error) {
-        //                         // Handle error
-        //                         console.log('11111111111111');
-        //                         console.log(error);
-        //                         res.status(500).json({ message: error });
-        //                     } else {
-        //                         console.log(result);
-        //                         qbUser = result
-        //                         // User is logged in
-
-        //                         const newUser = await userModel.create({
-        //                             quickbloxId: result.id,
-        //                             username,
-        //                             email,
-        //                             password: hashedPassword,
-        //                             userType,
-        //                             firstMobile,
-        //                             secondeMobile,
-        //                             thirdMobile,
-        //                             isFreeZoon: isFreeZoon,
-        //                             deliverable: deliverable,
-        //                             subcategory,
-        //                             address,
-        //                             businessLicense,
-        //                             companyProductsNumber,
-        //                             sellType,
-        //                             toCountry,
-        //                             profilePhoto: profileUrlImage,
-        //                             coverPhoto: coverUrlImage,
-        //                             banerPhoto: banerUrlImage,
-        //                             frontIdPhoto: frontIdPhotoUrlImage,
-        //                             backIdPhoto: backIdPhotoUrlImage,
-        //                             tradeLicensePhoto: tradeLicensePhotoUrl,
-        //                             deliveryPermitPhoto: deliveryPermitPhotoUrl,
-        //                             country: country,
-        //                             isThereWarehouse: isThereWarehouse,
-        //                             isThereFoodsDelivery: isThereFoodsDelivery,
-        //                             deliveryType: deliveryType,
-        //                             deliveryCarsNum: deliveryCarsNum,
-        //                             deliveryMotorsNum: deliveryMotorsNum
-        //                         });
-
-        //                         // const account = await Account.create({ user: newUser._id });
-        //                         // newUser.accounts.push(account._id);
-        //                         // await newUser.save();
-
-        //                         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
-        //                         if (userType === 'factory') {
-        //                             const factoryCategory = await FactoryCategories.findOneAndUpdate(
-        //                                 { title: title }, // Update this condition based on your requirements
-        //                                 { $push: { factory: newUser._id } },
-        //                                 { new: true }
-        //                             );
-
-        //                             // Handle case when FactoryCategories document doesn't exist
-        //                             if (!factoryCategory) {
-        //                                 // Create a new FactoryCategories document
-        //                                 await FactoryCategories.create({
-        //                                     title: title,
-        //                                     factory: [newUser._id],
-        //                                 });
-        //                             }
-        //                         }
-        //                         res.status(201).json({
-        //                             result: newUser,
-        //                             message: "User created",
-        //                             token: token,
-        //                         });
-        //                     }
-        //                 });
-        //             }
-        //         });
-
-        //     }
-        // },
-        // );
 
         const newUser = await userModel.create({
             // quickbloxId: result.id,
@@ -864,13 +763,121 @@ export const getVisitors = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await userModel.findById(id)
-        .populate('uniqueProfileVisitors', 'username email profilePhoto'); // Add fields you want to populate
-    
-    if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-    }
+            .populate('uniqueProfileVisitors', 'username email profilePhoto'); // Add fields you want to populate
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         return res.status(200).json(user.uniqueProfileVisitors);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+
+
+
+
+// Upload the profile photo and banner photo using multer
+
+// Get the uploaded banner photo filename
+
+// Generate QuickBlox user ID
+// let qbUser;
+// QB.createSession(async function (error, session) {
+//     if (error) {
+//         console.log(error);
+//         res.status(500).json({ message: error });
+
+//     } else {
+//         var params = {
+//             login: username,
+//             password: password,
+//             full_name: username,
+//             email: email,
+//         };
+//         await QB.users.create(params, function (error, user) {
+//             if (error) {
+//                 console.log(error);
+//                 console.log('11111111111111');
+//                 res.status(500).json({ message: error });
+//             } else {
+//                 // Log in the user
+//                 QB.login(params, async function (error, result) {
+//                     if (error) {
+//                         // Handle error
+//                         console.log('11111111111111');
+//                         console.log(error);
+//                         res.status(500).json({ message: error });
+//                     } else {
+//                         console.log(result);
+//                         qbUser = result
+//                         // User is logged in
+
+//                         const newUser = await userModel.create({
+//                             quickbloxId: result.id,
+//                             username,
+//                             email,
+//                             password: hashedPassword,
+//                             userType,
+//                             firstMobile,
+//                             secondeMobile,
+//                             thirdMobile,
+//                             isFreeZoon: isFreeZoon,
+//                             deliverable: deliverable,
+//                             subcategory,
+//                             address,
+//                             businessLicense,
+//                             companyProductsNumber,
+//                             sellType,
+//                             toCountry,
+//                             profilePhoto: profileUrlImage,
+//                             coverPhoto: coverUrlImage,
+//                             banerPhoto: banerUrlImage,
+//                             frontIdPhoto: frontIdPhotoUrlImage,
+//                             backIdPhoto: backIdPhotoUrlImage,
+//                             tradeLicensePhoto: tradeLicensePhotoUrl,
+//                             deliveryPermitPhoto: deliveryPermitPhotoUrl,
+//                             country: country,
+//                             isThereWarehouse: isThereWarehouse,
+//                             isThereFoodsDelivery: isThereFoodsDelivery,
+//                             deliveryType: deliveryType,
+//                             deliveryCarsNum: deliveryCarsNum,
+//                             deliveryMotorsNum: deliveryMotorsNum
+//                         });
+
+//                         // const account = await Account.create({ user: newUser._id });
+//                         // newUser.accounts.push(account._id);
+//                         // await newUser.save();
+
+//                         const token = jwt.sign({ email: newUser.email, id: newUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+//                         if (userType === 'factory') {
+//                             const factoryCategory = await FactoryCategories.findOneAndUpdate(
+//                                 { title: title }, // Update this condition based on your requirements
+//                                 { $push: { factory: newUser._id } },
+//                                 { new: true }
+//                             );
+
+//                             // Handle case when FactoryCategories document doesn't exist
+//                             if (!factoryCategory) {
+//                                 // Create a new FactoryCategories document
+//                                 await FactoryCategories.create({
+//                                     title: title,
+//                                     factory: [newUser._id],
+//                                 });
+//                             }
+//                         }
+//                         res.status(201).json({
+//                             result: newUser,
+//                             message: "User created",
+//                             token: token,
+//                         });
+//                     }
+//                 });
+//             }
+//         });
+
+//     }
+// },
+// );
