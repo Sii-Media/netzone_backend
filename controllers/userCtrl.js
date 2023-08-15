@@ -74,6 +74,7 @@ export const changeAccount = async (req, res) => {
 // Handle user registration
 export const signUp = async (req, res) => {
     try {
+
         const { country } = req.body;
         const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
         const { title } = req.body;
@@ -746,6 +747,8 @@ export const addNumberOfVisitors = async (req, res) => {
     const { viewerUserId } = req.body;
     const profileUserId = req.params.userId;
     try {
+        const viewerUser = await userModel.findById(viewerUserId);
+        if (!viewerUser) { return res.status(404).json({ message: 'viewerUser not found' }); }
         const user = await userModel.findById(profileUserId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
