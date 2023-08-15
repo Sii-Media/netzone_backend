@@ -45,6 +45,9 @@ const userSchema = mongoose.Schema({
     isService: {
         type: Boolean,
     },
+    isSelectable: {
+        type: Boolean,
+    },
     freezoneCity: String,
     deliverable: {
         type: Boolean,

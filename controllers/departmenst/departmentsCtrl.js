@@ -27,6 +27,41 @@ export const getAllProducts = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+export const getSelectableProducts = async (req, res) => {
+    try {
+        const { country } = req.query;
+        let selectableProducts;
+
+        if (country) {
+            selectableProducts = await Product.find({ country })
+                .populate({
+                    path: 'owner',
+                    select: 'username userType isSelectable',
+                    match: { isSelectable: true }
+                })
+                .populate('category', 'name')
+                .exec();
+        } else {
+            selectableProducts = await Product.find()
+                .populate({
+                    path: 'owner',
+                    select: 'username userType isSelectable',
+                    match: { isSelectable: true }
+                })
+                .populate('category', 'name')
+                .exec();
+        }
+
+
+        const filteredProducts = selectableProducts.filter(product => product.owner !== null);
+
+        return res.json(filteredProducts);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 
 export const getProductById = async (req, res) => {

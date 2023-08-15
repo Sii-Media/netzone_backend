@@ -75,7 +75,7 @@ export const changeAccount = async (req, res) => {
 export const signUp = async (req, res) => {
     try {
         const { country } = req.body;
-        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
+        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
         const { title } = req.body;
         const profilePhoto = req.files['profilePhoto'] ? req.files['profilePhoto'][0] : null;
         const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
@@ -120,6 +120,7 @@ export const signUp = async (req, res) => {
             thirdMobile,
             isFreeZoon: isFreeZoon,
             isService: isService,
+            isSelectable: isSelectable,
             freezoneCity: freezoneCity,
             deliverable: deliverable,
             subcategory,
@@ -500,7 +501,7 @@ export const getUserByType = async (req, res) => {
 
 export const EditUser = async (req, res) => {
     const { userId } = req.params;
-    const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry } = req.body;
+    const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry, bio, description, website, slogn, link } = req.body;
     let profileUrlImage;
 
     try {
@@ -528,7 +529,11 @@ export const EditUser = async (req, res) => {
         user.companyProductsNumber = companyProductsNumber;
         user.sellType = sellType;
         user.toCountry = toCountry;
-
+        user.bio = bio;
+        user.description = description;
+        user.website = website;
+        user.link = link;
+        user.slogn = slogn;
         // Update the profile photo only if it's included in the request
         if (profileUrlImage) {
             user.profilePhoto = profileUrlImage;
