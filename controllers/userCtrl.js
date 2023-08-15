@@ -77,9 +77,9 @@ export const signUp = async (req, res) => {
         const { country } = req.body;
         const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
         const { title } = req.body;
-        const profilePhoto = req.files['profilePhoto'][0];
+        const profilePhoto = req.files['profilePhoto'][0] ? req.files['profilePhoto'][0] : null;
         const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
-        const coverPhoto = req.files['coverPhoto'][0];
+        const coverPhoto = req.files['coverPhoto'][0] ? req.files['coverPhoto'][0] : null;
         const frontIdPhoto = req.files['frontIdPhoto'] ? req.files['frontIdPhoto'][0] : null;
         const backIdPhoto = req.files['backIdPhoto'] ? req.files['backIdPhoto'][0] : null;
 
@@ -93,8 +93,8 @@ export const signUp = async (req, res) => {
         if (!error.isEmpty()) {
             return res.json(error);
         }
-        const profileUrlImage = 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/');
-        const coverUrlImage = 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/');
+        const profileUrlImage = profilePhoto ? 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/') : null;
+        const coverUrlImage = coverPhoto ? 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/') : null;
         const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
         const frontIdPhotoUrlImage = frontIdPhoto ? 'https://net-zoon.onrender.com/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
         const backIdPhotoUrlImage = backIdPhoto ? 'https://net-zoon.onrender.com/' + backIdPhoto.path.replace(/\\/g, '/') : null;
