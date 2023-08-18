@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { EditUser, addAccount, addNumberOfVisitors, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, getVisitors, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { EditUser, addAccount, addNumberOfVisitors, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, deleteUser, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, getVisitors, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
 
 const router = express.Router();
 
@@ -58,6 +58,6 @@ router.post('/:userId/addvisitor', addNumberOfVisitors);
 router.get('/:id/visitors',getVisitors);
 router.post('/:id/rate', rateUser);
 router.get('/:id/rating', getUserTotalRating);
-
+router.delete('/:id',deleteUser);
 
 export default router;
