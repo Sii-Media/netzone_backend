@@ -505,7 +505,7 @@ export const EditUser = async (req, res) => {
     const { userId } = req.params;
     const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry, bio, description, website, slogn, link } = req.body;
     let profileUrlImage;
-
+    let coverUrlImage;
     try {
         const user = await userModel.findById(userId);
         if (!user) {
@@ -518,6 +518,12 @@ export const EditUser = async (req, res) => {
             profileUrlImage =
                 "https://net-zoon.onrender.com/" +
                 profilePhoto.path.replace(/\\/g, "/");
+        }
+        if (req.files && req.files["coverPhoto"]) {
+            const coverPhoto = req.files["coverPhoto"][0];
+            coverPhoto =
+                "https://net-zoon.onrender.com/" +
+                coverPhoto.path.replace(/\\/g, "/");
         }
 
         // Update the user fields
@@ -539,6 +545,9 @@ export const EditUser = async (req, res) => {
         // Update the profile photo only if it's included in the request
         if (profileUrlImage) {
             user.profilePhoto = profileUrlImage;
+        }
+        if (coverUrlImage) {
+            user.coverPhoto = coverUrlImage;
         }
 
         const updatedUser = await user.save();
