@@ -14,7 +14,7 @@ export const getCompanyServices = async (req, res) => {
 
 export const addCompanyService = async (req, res) => {
     try {
-        const { title, description, price, owner, whatsAppNumber } = req.body;
+        const { title, description, price, owner, whatsAppNumber, bio } = req.body;
         const image = req.files['image'] ? req.files['image'][0] : null;
 
         const imageUrl = image ? 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/') : null;
@@ -28,6 +28,7 @@ export const addCompanyService = async (req, res) => {
             owner,
             imageUrl: imageUrl,
             whatsAppNumber: whatsAppNumber,
+            bio: bio,
         });
 
 
@@ -49,6 +50,11 @@ export const addCompanyService = async (req, res) => {
                 newService.serviceImageList = imageUrls;
             }
         }
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            newService.vedioUrl = urlVideo;
+        }
 
         await newService.save();
         res.status(201).json('The service has been added successfully');
@@ -61,7 +67,7 @@ export const addCompanyService = async (req, res) => {
 export const editCompanyService = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, price } = req.body;
+        const { title, description, price,whatsAppNumber, bio } = req.body;
 
 
         // Check if the company service with the given ID exists
@@ -74,6 +80,9 @@ export const editCompanyService = async (req, res) => {
         existingService.title = title;
         existingService.description = description;
         existingService.price = price;
+        existingService.whatsAppNumber = whatsAppNumber;
+        existingService.bio = bio;
+        
 
         if (req.files['image']) {
             const image = req.files['image'][0];
@@ -97,6 +106,11 @@ export const editCompanyService = async (req, res) => {
                 imageUrls.push(imageUrl);
                 existingService.serviceImageList = imageUrls;
             }
+        }
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            existingService.vedioUrl = urlVideo;
         }
 
         await existingService.save();

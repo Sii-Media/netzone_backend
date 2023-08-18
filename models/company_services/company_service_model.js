@@ -20,6 +20,8 @@ const CompanyServiceSchema = new mongoose.Schema({
     imageUrl: String,
     serviceImageList: [{ type: String }],
     whatsAppNumber: String,
+    bio: String,
+    vedioUrl: String,
     ratings: [
         {
             user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
