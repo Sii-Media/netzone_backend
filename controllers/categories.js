@@ -355,7 +355,7 @@ export const getPlanesCompanies = async (req, res) => {
     try {
         const { country } = req.query;
         // const planesCompanies = await VehicleCompany.find({ type: 'planes' });
-        const planesCompanies = await userModel.find({ userType: 'plans', country: country });
+        const planesCompanies = await userModel.find({ userType: 'planes', country: country });
 
         res.status(200).json(planesCompanies);
 
@@ -509,7 +509,7 @@ export const getAllPlans = async (req, res) => {
 export const getAllUsedPlans = async (req, res) => {
     try {
         const { country } = req.query;
-        const plans = await Vehicle.find({ category: "plans", type: "old", country: country }).populate('creator', 'username');
+        const plans = await Vehicle.find({ category: "planes", type: "old", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,
@@ -522,7 +522,7 @@ export const getAllUsedPlans = async (req, res) => {
 export const getAllNewPlans = async (req, res) => {
     try {
         const { country } = req.query;
-        const plans = await Vehicle.find({ category: "plans", type: "new", country: country }).populate('creator', 'username');
+        const plans = await Vehicle.find({ category: "planes", type: "new", country: country }).populate('creator', 'username');
         res.json({
             message: "success",
             results: plans,

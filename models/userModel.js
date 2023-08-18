@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ['local_company', 'user', 'freezone', 'factory', 'car', 'plans', 'sea_companies', 'news_agency', 'real_estate', 'trader', 'delivery_company'],
+        enum: ['local_company', 'user', 'freezone', 'factory', 'car', 'planes', 'sea_companies', 'news_agency', 'real_estate', 'trader', 'delivery_company'],
 
     },
     firstMobile: {
