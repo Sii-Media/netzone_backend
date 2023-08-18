@@ -521,7 +521,7 @@ export const EditUser = async (req, res) => {
         }
         if (req.files && req.files["coverPhoto"]) {
             const coverPhoto = req.files["coverPhoto"][0];
-            coverPhoto =
+            coverUrlImage =
                 "https://net-zoon.onrender.com/" +
                 coverPhoto.path.replace(/\\/g, "/");
         }
@@ -795,9 +795,8 @@ export const getVisitors = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id; // Get the user ID from the request parameters
-
-        // Find the user by ID and remove it
+        const userId = req.params.id; 
+       
         const deletedUser = await userModel.findByIdAndDelete(userId);
 
         if (!deletedUser) {
