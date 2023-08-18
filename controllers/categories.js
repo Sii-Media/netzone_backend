@@ -458,7 +458,7 @@ export const getAllPlans = async (req, res) => {
     const { country, creator, priceMin, priceMax, type } = req.query;
     try {
         const filters = {
-            category: "plans",
+            category: "planes",
             country: country,
         };
         if (creator) {
@@ -550,14 +550,13 @@ export const getVehicleById = async (req, res) => {
 };
 
 export const createVehicle = async (req, res) => {
-    const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee, forWhat } = req.body;
-    const image = req.files['image'][0];
-    if (!image) {
-        return res.status(404).json({ message: 'Attached file is not an image.' });
-    }
-    const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
-
     try {
+        const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee, forWhat } = req.body;
+        const image = req.files['image'][0];
+        if (!image) {
+            return res.status(404).json({ message: 'Attached file is not an image.' });
+        }
+        const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
         const newVehicle = new Vehicle({
             name,
             imageUrl: urlImage,
