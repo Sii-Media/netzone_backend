@@ -365,6 +365,23 @@ export const getPlanesCompanies = async (req, res) => {
 
 };
 
+// Sea Companies
+
+export const getSeaCompanies = async (req, res) => {
+
+    try {
+        const { country } = req.query;
+        // const planesCompanies = await VehicleCompany.find({ type: 'planes' });
+        const seaCompanies = await userModel.find({ userType: 'sea_companies', country: country });
+
+        res.status(200).json(seaCompanies);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+};
+
 //Cars Controllers
 export const getAllCars = async (req, res) => {
     const { country, creator, priceMin, priceMax, type } = req.query;
