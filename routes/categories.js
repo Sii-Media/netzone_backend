@@ -36,7 +36,7 @@ router.get('/local-company/:id', getLocalCompanyById);
 router.get('/local-company/get-products/:id', getLocalCompanyProducts);
 router.get('/local-company/get-services/:id', getCompanyServices);
 router.post('/local-company/add-service', addCompanyService);
-router.put('/local-company/:id', editCompanyService);
+router.put('/local-company/edit-service/:id', editCompanyService);
 router.delete('/local-company/:id', deleteCompanyService);
 router.post('/local-company/services/:id/rate', rateCompanyService);
 router.get('/local-company/services/:id/rating', getTotalRating);
