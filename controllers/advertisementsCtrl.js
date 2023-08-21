@@ -272,4 +272,27 @@ export const deleteAdvertisement = async (req, res) => {
     }
 };
 
+export const addNumberOfVisitors = async (req, res) => {
+    try {
+        const { viewerUserId } = req.body;
+        const adsId = req.params.adsId;
+        const viewerUser = await userModel.findById(new mongoose.Types.ObjectId(viewerUserId));
+        if (!viewerUser) { return res.status(404).json({ message: 'viewerUser not found' }); }
+        const ads = await Advertisement.findById(adsId);
+        if (!ads) {
+            return res.status(404).json({ message: 'ads not found' });
+        }
+        if (!ads.adsVisitors.includes(viewerUserId)) {
 
+            ads.adsVisitors.push(new mongoose.Types.ObjectId(viewerUserId));
+            ads.adsViews += 1;
+
+            await ads.save();
+        }
+
+        return res.status(200).json({ message: 'ads viewed successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
+    }
+};

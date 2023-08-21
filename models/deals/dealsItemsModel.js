@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
 const DealsItemsSchema = mongoose.Schema({
-
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     name: { type: String, required: true, },
     imgUrl: { type: String, required: true, },
     companyName: { type: String, required: true, },

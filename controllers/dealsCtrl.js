@@ -25,7 +25,7 @@ export const getAllDeals = async (req, res) => {
 
         let dealsItems;
         if (country) {
-            dealsItems = await DealsItems.find({ country: country });
+            dealsItems = await DealsItems.find({ country: country }).populate('owner', 'username userType');
         } else {
             dealsItems = await DealsItems.find();
         }
@@ -66,7 +66,7 @@ export const getAllDealsByCat = async (req, res) => {
             filterCriteria.currentPrice = { $lte: parseFloat(maxPrice) };
         }
 
-        const dealsItems = await DealsItems.find(filterCriteria);
+        const dealsItems = await DealsItems.find(filterCriteria).populate('owner', 'username userType');
 
         if (!dealsItems || dealsItems.length === 0) {
             return res.status(404).json({ message: 'No data found' });
@@ -90,7 +90,7 @@ export const getDealById = async (req, res) => {
     const { id } = req.params;
     try {
 
-        const deal = await DealsItems.findById(id);
+        const deal = await DealsItems.findById(id).populate('owner', 'username userType');
         if (!deal) {
             return res.status(404).json({ message: 'no Data Found' });
         }
@@ -103,8 +103,9 @@ export const getDealById = async (req, res) => {
 
 export const AddDeal = async (req, res) => {
 
-    const { name, companyName, prevPrice, currentPrice, startDate, endDate, location, category, country } = req.body;
+    const { owner, name, companyName, prevPrice, currentPrice, startDate, endDate, location, category, country } = req.body;
     try {
+        const ownerId = new mongoose.Types.ObjectId(owner);
         const image = req.files['dealImage'][0];
 
         if (!image) {
@@ -122,6 +123,7 @@ export const AddDeal = async (req, res) => {
 
         // Create a new deal item using the deal data
         const dealData = {
+            owner: ownerId,
             name,
             imgUrl,
             companyName,

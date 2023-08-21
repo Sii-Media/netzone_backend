@@ -56,6 +56,15 @@ const advertisementSchema = mongoose.Schema({
         required: true,
         enum: ['company', 'car', 'planes', 'real_estate', 'product', 'service']
     },
+    adsVisitors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    adsViews: {
+        type: Number,
+        default: 0
+    },
 
 }, { timestamps: true });
 

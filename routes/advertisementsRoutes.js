@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAds, deleteAdvertisement, editAdvertisement, getAdvertisementById, getAdvertisementByType, getAdvertisements, getUserAds } from '../controllers/advertisementsCtrl.js';
+import { addNumberOfVisitors, createAds, deleteAdvertisement, editAdvertisement, getAdvertisementById, getAdvertisementByType, getAdvertisements, getUserAds } from '../controllers/advertisementsCtrl.js';
 import auth from '../middlewares/auth.js';
 const router = express.Router();
 
@@ -11,6 +11,6 @@ router.get('/getUserAds/:userId', getUserAds);
 router.get('/:id', getAdvertisementById);
 router.put('/:id', editAdvertisement);
 router.delete('/:id', deleteAdvertisement);
-
+router.put('/:adsId/addvisitor', addNumberOfVisitors);
 
 export default router;
