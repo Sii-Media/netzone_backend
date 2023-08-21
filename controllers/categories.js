@@ -648,3 +648,137 @@ export const createVehicle = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+// export const editVehicle = async (req, res) => {
+//     try {
+//         const vehicleId = req.params.id;
+//         const { name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee, forWhat } = req.body;
+
+//         const vehicle = await Vehicle.findById(vehicleId);
+
+//         if (!vehicle) {
+//             return res.status(404).json({ message: "Vehicle not found" });
+//         }
+//         vehicle.name = name;
+//         vehicle.description = description;
+//         vehicle.price = price;
+//         vehicle.kilometers = kilometers;
+//         vehicle.year = year;
+//         vehicle.location = location;
+//         vehicle.type = type;
+//         vehicle.category = category;
+//         vehicle.country = country;
+//         vehicle.contactNumber = contactNumber;
+//         vehicle.exteriorColor = exteriorColor;
+//         vehicle.interiorColor = interiorColor;
+//         vehicle.doors = doors;
+//         vehicle.bodyCondition = bodyCondition;
+//         vehicle.bodyType = bodyType;
+//         vehicle.mechanicalCondition = mechanicalCondition;
+//         vehicle.seatingCapacity = seatingCapacity;
+//         vehicle.numofCylinders = numofCylinders;
+//         vehicle.transmissionType = transmissionType;
+//         vehicle.horsepower = horsepower;
+//         vehicle.fuelType = fuelType;
+//         vehicle.extras = extras;
+//         vehicle.technicalFeatures = technicalFeatures;
+//         vehicle.steeringSide = steeringSide;
+//         vehicle.guarantee = guarantee;
+//         vehicle.forWhat = forWhat;
+
+//         if (req.files['image']) {
+//             const image = req.files['image'][0];
+//             const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+//             vehicle.imageUrl = urlImage;
+//         }
+
+//         if (req.files['carimages']) {
+//             const carImages = req.files['carimages'];
+//             const imageUrls = [];
+//             if (!carImages || !Array.isArray(carImages)) {
+//                 return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+//             }
+
+//             for (const image of carImages) {
+//                 if (!image) {
+//                     return res.status(404).json({ message: 'Attached file is not an image.' });
+//                 }
+
+//                 const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+//                 imageUrls.push(imageUrl);
+//                 vehicle.carImages = imageUrls;
+//             }
+//         }
+//         if (req.files['video']) {
+//             const video = req.files['video'][0];
+//             const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+//             vehicle.vedioUrl = urlVideo;
+//         }
+//         await vehicle.save();
+//         res.json('Vehicle updated successfully');
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: error.message });
+//     }
+
+// }
+
+export const editVehicle = async (req, res) => {
+    try {
+        const vehicleId = req.params.id; // Assuming the ID of the vehicle to edit is passed as a URL parameter
+        const updates = req.body; // Updated data for the vehicle
+
+        // Find the vehicle by its ID
+        const vehicle = await Vehicle.findById(vehicleId);
+
+        if (!vehicle) {
+            return res.status(404).json({ message: "Vehicle not found" });
+        }
+
+        if (req.files['image']) {
+            const image = req.files['image'][0];
+            const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            vehicle.imageUrl = urlImage;
+        }
+
+        if (req.files['carimages']) {
+            const carImages = req.files['carimages'];
+            const imageUrls = [];
+            if (!carImages || !Array.isArray(carImages)) {
+                return res.status(404).json({ message: 'Attached files are missing or invalid.' });
+            }
+
+            for (const image of carImages) {
+                if (!image) {
+                    return res.status(404).json({ message: 'Attached file is not an image.' });
+                }
+
+                const imageUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+                imageUrls.push(imageUrl);
+                vehicle.carImages = imageUrls;
+            }
+        }
+        if (req.files['video']) {
+            const video = req.files['video'][0];
+            const urlVideo = 'https://net-zoon.onrender.com/' + video.path.replace(/\\/g, '/');
+            vehicle.vedioUrl = urlVideo;
+        }
+
+
+        // Update vehicle properties based on the updates provided in the request body
+        for (const key in updates) {
+            if (vehicle.schema.paths[key]) {
+                vehicle[key] = updates[key];
+            }
+        }
+
+        // Save the updated vehicle
+        const updatedVehicle = await vehicle.save();
+
+        res.status(200).json({ message: "Vehicle updated successfully", updatedVehicle });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};

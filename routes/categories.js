@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, getSeaCompanies, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, getSeaCompanies, editVehicle, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
 import { addCompanyService, deleteCompanyService, editCompanyService, getCompanyServices, getServiceById, getTotalRating, rateCompanyService } from '../controllers/company_serviceCtrl.js';
 
@@ -35,7 +35,7 @@ router.get('/local-company', getAllLocalCompanies);
 router.get('/local-company/:id', getLocalCompanyById);
 router.get('/local-company/get-products/:id', getLocalCompanyProducts);
 router.get('/local-company/get-services/:id', getCompanyServices);
-router.get('/local-company/get-service/:id',getServiceById);
+router.get('/local-company/get-service/:id', getServiceById);
 router.post('/local-company/add-service', addCompanyService);
 router.put('/local-company/edit-service/:id', editCompanyService);
 router.delete('/local-company/service/:id', deleteCompanyService);
@@ -57,10 +57,11 @@ router.get('/planes/getoldplanes', getAllUsedPlans);
 router.get('/planes/getnewplanes', getAllNewPlans);
 router.get('/planes-companies', getPlanesCompanies),
 
-router.get('/sea-companies', getSeaCompanies),
+    router.get('/sea-companies', getSeaCompanies),
 
 
-    router.post('/vehicle/create-vehicle', createVehicle);
+router.post('/vehicle/create-vehicle', createVehicle);
+router.put('/vehicle/edit-vehicle/:id', editVehicle);
 router.get('/vehicle/:id', getVehicleById);
 router.get('/company-vehicles/:id', getCompaniesVehicles);
 
