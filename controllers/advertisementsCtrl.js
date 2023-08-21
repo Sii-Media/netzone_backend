@@ -96,7 +96,7 @@ export const getAdvertisementById = async (req, res) => {
     const { id } = req.params;
     try {
 
-        const data = await Advertisement.findById(id).populate('owner', 'username userType profilePhoto');
+        const data = await Advertisement.findById(id).populate('owner', 'username userType profilePhoto firstMobile');
         if (!data) {
             return res.status(404).json({ message: 'no Data Found' });
         }
