@@ -56,7 +56,7 @@ router.get('/planes/getoldplanes', getAllUsedPlans);
 router.get('/planes/getnewplanes', getAllNewPlans);
 router.get('/planes-companies', getPlanesCompanies),
 
-    router.get('/sea-companies', getSeaCompanies),
+router.get('/sea-companies', getSeaCompanies),
 
 
     router.post('/vehicle/create-vehicle', createVehicle);

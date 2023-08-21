@@ -54,6 +54,7 @@ const advertisementSchema = mongoose.Schema({
     advertisingType: {
         type: String,
         required: true,
+        enum: ['company', 'car', 'planes', 'real_estate', 'product', 'service']
     },
 
 }, { timestamps: true });
