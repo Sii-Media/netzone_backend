@@ -782,3 +782,23 @@ export const editVehicle = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+export const deleteVehicle = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+
+        const existingVehicle = await Vehicle.findById(id);
+        if (!existingVehicle) {
+            return res.status(404).json('Vehicle not found');
+        }
+
+        // Delete the advertisement
+        await Vehicle.findByIdAndRemove(id);
+
+        res.json('Vehicle deleted successfully');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

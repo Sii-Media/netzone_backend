@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, getSeaCompanies, editVehicle, } from '../controllers/categories.js';
+import { createCategory, createfreezoon, getAllCategories, getAllFactories, getAllFactoriesCategories, getCustomsCategory, getFreezoon, getAllLocalCompanies, getLocalCompanyProducts, getLocalCompanyById, getAllCars, getAllPlans, createVehicle, getVehicleById, getCustoms, getCustomsById, getFactoryById, getFreezoonById, getAllUsedPlans, getAllNewPlans, getGovermental, getGovermentalById, getCarsCompanies, getPlanesCompanies, getCompaniesVehicles, getLatestCarsByCreator, getSeaCompanies, editVehicle, deleteVehicle, } from '../controllers/categories.js';
 import auth from '../middlewares/auth.js';
 import { addCompanyService, deleteCompanyService, editCompanyService, getCompanyServices, getServiceById, getTotalRating, rateCompanyService } from '../controllers/company_serviceCtrl.js';
 
@@ -60,8 +60,9 @@ router.get('/planes-companies', getPlanesCompanies),
     router.get('/sea-companies', getSeaCompanies),
 
 
-router.post('/vehicle/create-vehicle', createVehicle);
+    router.post('/vehicle/create-vehicle', createVehicle);
 router.put('/vehicle/edit-vehicle/:id', editVehicle);
+router.delete('/vehicle/:id', deleteVehicle);
 router.get('/vehicle/:id', getVehicleById);
 router.get('/company-vehicles/:id', getCompaniesVehicles);
 
