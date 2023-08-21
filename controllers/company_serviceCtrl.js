@@ -97,7 +97,7 @@ export const editCompanyService = async (req, res) => {
         if (req.files['image']) {
             const image = req.files['image'][0];
             const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
-            existingAd.advertisingImage = urlImage;
+            existingService.imageUrl = urlImage;
         }
 
         if (req.files['serviceImageList']) {
@@ -126,6 +126,7 @@ export const editCompanyService = async (req, res) => {
         await existingService.save();
         res.json('Company service updated successfully');
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
