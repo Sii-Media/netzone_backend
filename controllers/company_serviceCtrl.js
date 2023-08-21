@@ -12,6 +12,16 @@ export const getCompanyServices = async (req, res) => {
     }
 };
 
+export const getServiceById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await CompanyServices.findById(id).populate('owner', 'username');
+        res.status(200).json(service);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 export const addCompanyService = async (req, res) => {
     try {
         const { title, description, price, owner, whatsAppNumber, bio } = req.body;
@@ -67,7 +77,7 @@ export const addCompanyService = async (req, res) => {
 export const editCompanyService = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, price,whatsAppNumber, bio } = req.body;
+        const { title, description, price, whatsAppNumber, bio } = req.body;
 
 
         // Check if the company service with the given ID exists
@@ -82,7 +92,7 @@ export const editCompanyService = async (req, res) => {
         existingService.price = price;
         existingService.whatsAppNumber = whatsAppNumber;
         existingService.bio = bio;
-        
+
 
         if (req.files['image']) {
             const image = req.files['image'][0];
