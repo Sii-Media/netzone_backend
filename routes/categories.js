@@ -60,7 +60,7 @@ router.get('/sea-companies', getSeaCompanies),
 
 
     router.post('/vehicle/create-vehicle', createVehicle);
-router.get('/vehicle/:id', auth, getVehicleById);
+router.get('/vehicle/:id', getVehicleById);
 router.get('/company-vehicles/:id', getCompaniesVehicles);
 
 export default router;
