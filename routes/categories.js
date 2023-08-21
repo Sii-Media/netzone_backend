@@ -38,7 +38,7 @@ router.get('/local-company/get-services/:id', getCompanyServices);
 router.get('/local-company/get-service/:id',getServiceById);
 router.post('/local-company/add-service', addCompanyService);
 router.put('/local-company/edit-service/:id', editCompanyService);
-router.delete('/local-company/:id', deleteCompanyService);
+router.delete('/local-company/service/:id', deleteCompanyService);
 router.post('/local-company/services/:id/rate', rateCompanyService);
 router.get('/local-company/services/:id/rating', getTotalRating);
 //govermental routes
