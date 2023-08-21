@@ -653,8 +653,8 @@ export const toggleFollow = async (req, res) => {
         if (currentUserId === otherUserId) {
             return res.status(500).json({ msg: "You can't follow yourself!!!!!!!!" })
         }
-        const currentUser = await userModel.findById(new mongoose.Types.ObjectId(currentUserId))
-        const otherUser = await userModel.findById(new mongoose.Types.ObjectId(otherUserId))
+        const currentUser = await userModel.findById(currentUserId)
+        const otherUser = await userModel.findById(otherUserId)
         // if we don't follow user, we want to follow him, otherwise we unfollow him
         if (!currentUser.followings.includes(otherUserId)) {
             currentUser.followings.push(otherUserId)
@@ -795,8 +795,8 @@ export const getVisitors = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id;
-
+        const userId = req.params.id; 
+       
         const deletedUser = await userModel.findByIdAndDelete(userId);
 
         if (!deletedUser) {
