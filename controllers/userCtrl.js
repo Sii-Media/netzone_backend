@@ -648,6 +648,9 @@ export const deleteProductFromSelectedProducts = async (req, res) => {
 
 export const toggleFollow = async (req, res) => {
     try {
+        console.log(req.params);
+        console.log(req.body);
+
         const { currentUserId } = req.body
         const otherUserId = req.params.otherUserId
         if (currentUserId === otherUserId) {
@@ -670,31 +673,76 @@ export const toggleFollow = async (req, res) => {
             return res.status(200).json("You have successfully unfollowed the user!")
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json(error.message)
     }
 };
 
+// export const getUserFollowings = async (req, res) => {
+//     try {
+//         const userId = req.params.userId;
+//         const user = await userModel.findById(userId).populate('followings');
+//         res.status(200).json(user.followings);
+//     } catch (error) {
+//         return res.status(500).json(error.message)
+//     }
+
+// };
 export const getUserFollowings = async (req, res) => {
     try {
         const userId = req.params.userId;
         const user = await userModel.findById(userId).populate('followings');
-        res.status(200).json(user.followings);
-    } catch (error) {
-        return res.status(500).json(error.message)
-    }
 
+        // Use a Set to store unique followings
+        const uniqueFollowingsSet = new Set();
+
+        // Iterate through the followings and add them to the Set
+        user.followings.forEach((following) => {
+            uniqueFollowingsSet.add(following);
+        });
+
+        // Convert the Set back to an array
+        const uniqueFollowings = Array.from(uniqueFollowingsSet);
+
+        res.status(200).json(uniqueFollowings);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 };
 
+
+// export const getUserFollowers = async (req, res) => {
+//     try {
+//         const userId = req.params.userId;
+//         const user = await userModel.findById(userId).populate('followers');
+//         res.status(200).json(user.followers);
+//     } catch (error) {
+//         return res.status(500).json(error.message)
+//     }
+
+// }
 export const getUserFollowers = async (req, res) => {
     try {
         const userId = req.params.userId;
         const user = await userModel.findById(userId).populate('followers');
-        res.status(200).json(user.followers);
-    } catch (error) {
-        return res.status(500).json(error.message)
-    }
 
-}
+        // Use a Set to store unique followers
+        const uniqueFollowersSet = new Set();
+
+        // Iterate through the followers and add them to the Set
+        user.followers.forEach((follower) => {
+            uniqueFollowersSet.add(follower);
+        });
+        console.log(uniqueFollowersSet);
+        // Convert the Set back to an array
+        const uniqueFollowers = Array.from(uniqueFollowersSet);
+
+        res.status(200).json(uniqueFollowers);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+};
+
 
 
 
@@ -795,8 +843,8 @@ export const getVisitors = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id; 
-       
+        const userId = req.params.id;
+
         const deletedUser = await userModel.findByIdAndDelete(userId);
 
         if (!deletedUser) {
