@@ -678,16 +678,7 @@ export const toggleFollow = async (req, res) => {
     }
 };
 
-// export const getUserFollowings = async (req, res) => {
-//     try {
-//         const userId = req.params.userId;
-//         const user = await userModel.findById(userId).populate('followings');
-//         res.status(200).json(user.followings);
-//     } catch (error) {
-//         return res.status(500).json(error.message)
-//     }
 
-// };
 export const getUserFollowings = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -711,16 +702,7 @@ export const getUserFollowings = async (req, res) => {
 };
 
 
-// export const getUserFollowers = async (req, res) => {
-//     try {
-//         const userId = req.params.userId;
-//         const user = await userModel.findById(userId).populate('followers');
-//         res.status(200).json(user.followers);
-//     } catch (error) {
-//         return res.status(500).json(error.message)
-//     }
 
-// }
 export const getUserFollowers = async (req, res) => {
     try {
         const userId = req.params.userId;
