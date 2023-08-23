@@ -201,3 +201,16 @@ export const getCompaniesRealEstates = async (req, res) => {
 
     }
 };
+
+export const getRealEstateById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const realEstate = await RealEstate.findById(id).populate('createdBy', 'username');
+
+        res.status(200).json(realEstate);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
+    }
+};
