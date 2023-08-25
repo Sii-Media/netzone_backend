@@ -162,7 +162,7 @@ export const getComments = async (req, res) => {
         const comments = await Comment.find({ news: newsId })
             .populate({
                 path: "user",
-                select: "username",
+                select: "username userType profilePhoto",
             })
             .select("text user");
 
