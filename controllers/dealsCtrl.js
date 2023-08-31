@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { DealsCategories } from "../models/deals/dealsCategoriesModel.js";
 import { DealsItems } from "../models/deals/dealsItemsModel.js";
 
@@ -149,6 +150,7 @@ export const AddDeal = async (req, res) => {
 
         return res.json(deal._id);
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: error.message });
     }
 
