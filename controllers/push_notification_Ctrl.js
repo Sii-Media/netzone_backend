@@ -3,6 +3,7 @@ import fcm from 'fcm-node';
 import { Notifications } from '../models/notification/notification_model.js';
 // import serviceAccount from '../config/serviceAccountKey.json' assert { type: "json" };
 import dotenv from 'dotenv';
+import userModel from '../models/userModel.js';
 
 dotenv.config();
 
@@ -27,6 +28,12 @@ export const sendPushNotification = async (req, res, next) => {
             itemId: itemId
         });
         await notification.save();
+        const users = await userModel.find();
+
+        for (const user of users) {
+            user.unreadNotifications.push(notification);
+            await user.save();
+        }
         let message = {
             to: '/topics/Netzoon',
             notification: {
@@ -67,6 +74,33 @@ export const getAllNotifications = async (req, res) => {
 
         return res.json(notifications);
 
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const markAllNotificationsAsRead = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        await userModel.findByIdAndUpdate(userId, { unreadNotifications: [] });
+
+        return res.status(200).json('All notifications marked as read');
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getUnreadNotifications = async (req, res) => {
+
+    try {
+        const targetUserId = req.params.userId;
+        const user = await userModel.findById(targetUserId).populate('unreadNotifications');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json(user.unreadNotifications);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
