@@ -136,7 +136,7 @@ app.use('/complaints', complaintsRoutes);
 app.use('/notifications', pushNotificationRoutes);
 app.use('/real-estate', realestateRoutes);
 app.use('/delivery', deliveryServiceRoutes);
-app.use(stripeAccount);
+// app.use(stripeAccount);
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(PORT, () => {
