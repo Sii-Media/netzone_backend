@@ -77,7 +77,7 @@ export const signUp = async (req, res) => {
     try {
 
         const { country } = req.body;
-        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
+        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, bio, description, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum } = req.body;
         const { title } = req.body;
         const profilePhoto = req.files['profilePhoto'] ? req.files['profilePhoto'][0] : null;
         const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
@@ -131,6 +131,8 @@ export const signUp = async (req, res) => {
             companyProductsNumber,
             sellType,
             toCountry,
+            bio,
+            description,
             website: website,
             slogn: slogn,
             link: link,
@@ -594,12 +596,13 @@ export const addProductsToSelectedProducts = async (req, res) => {
         const { productIds } = req.body;
 
         const user = await userModel.findById(userId);
-
+        console.log(productIds);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
         const productIdsArray = Array.isArray(productIds) ? productIds : [productIds];
-
+        console.log('----------------------------------------------------');
+        console.log(productIdsArray);
         // let newProductIds;
         // if (productIds.length > 0) {
         //     newProductIds = productIds.filter(productId => !user.selectedProducts.includes(productId));
@@ -608,7 +611,8 @@ export const addProductsToSelectedProducts = async (req, res) => {
         // newProductIds = productIds;
         const newProductIds = productIdsArray.filter(productId => !user.selectedProducts.includes(productId));
         user.selectedProducts.push(...newProductIds);
-
+        console.log('--------------------------------');
+        console.log(newProductIds);
         await user.save();
 
         res.json({ message: 'Products added to selectedProducts' });
