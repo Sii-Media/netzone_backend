@@ -33,6 +33,7 @@ import realestateRoutes from './routes/realestateRoutes.js';
 import deliveryServiceRoutes from './routes/delivery_servicesRoutes.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
+import stripeAccount from './services/stripe_service.js';
 
 const app = express();
 dotenv.config();
@@ -135,7 +136,7 @@ app.use('/complaints', complaintsRoutes);
 app.use('/notifications', pushNotificationRoutes);
 app.use('/real-estate', realestateRoutes);
 app.use('/delivery', deliveryServiceRoutes);
-
+app.use(stripeAccount);
 
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(PORT, () => {
