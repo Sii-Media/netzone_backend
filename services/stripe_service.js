@@ -1,6 +1,10 @@
 import Stripe from "stripe";
+import dotenv from 'dotenv';
+
 // pages/api/stripe/account/index.js
 // const stripe = require("stripe")(process.env.STRIPE_API_SECRET)
+dotenv.config();
+
 const host = process.env.NEXT_PUBLIC_HOST
 
 const stripe = new Stripe(process.env.STRIPE_API_SECRET);
@@ -57,32 +61,34 @@ const stripe = new Stripe(process.env.STRIPE_API_SECRET);
 
 
 
- const stripeAccount = async (req, res) => {
-    const { method } = req
-    if (method === "GET") {
-        // CREATE CONNECTED ACCOUNT
-        const { mobile } = req.query
-        const account = await stripe.accounts.create({
-            type: "express",
-        })
-        const accountLinks = await stripe.accountLinks.create({
-            account: account.id,
-            refresh_url: `${host}/api/stripe/account/reauth?account_id=${account.id}`,
-            return_url: `${host}/register${mobile ? "-mobile" : ""}?account_id=${account.id
-                }&result=success`,
-            type: "account_onboarding",
-        })
-        if (mobile) {
-            // In case of request generated from the flutter app, return a json response
-            res.status(200).json({ success: true, url: accountLinks.url })
+export const stripeAccount = async (req, res) => {
+    try {
+        const { method } = req
+        if (method === "GET") {
+            // CREATE CONNECTED ACCOUNT
+            const { mobile } = req.query
+            const account = await stripe.accounts.create({
+                type: "express",
+            })
+            const accountLinks = await stripe.accountLinks.create({
+                account: account.id,
+                refresh_url: `${host}/api/stripe/account/reauth?account_id=${account.id}`,
+                return_url: `${host}/register${mobile ? "-mobile" : ""}?account_id=${account.id
+                    }&result=success`,
+                type: "account_onboarding",
+            })
+            if (mobile) {
+                // In case of request generated from the flutter app, return a json response
+                res.status(200).json({ success: true, url: accountLinks.url })
+            }
+            else {
+                // In case of request generated from the web app, redirect
+                res.redirect(accountLinks.url)
+            }
         }
-        else {
-            // In case of request generated from the web app, redirect
-            res.redirect(accountLinks.url)
-        }
+        else if (method === "DELETE") { } else if (method === "POST") { }
+    } catch (error) {
+    return    res.status(500).json(error);
     }
-    else if (method === "DELETE") { } else if (method === "POST") { }
 }
 
-
-export default stripeAccount;

@@ -1,6 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 import { EditUser, addAccount, addNumberOfVisitors, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, deleteUser, getAccountByEmail, getAllFavorites, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, getVisitors, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { stripeAccount } from '../services/stripe_service.js';
 
 const router = express.Router();
 
@@ -55,9 +56,12 @@ router.get('/getUserFollowings/:userId', getUserFollowings);
 router.get('/getUserFollowers/:userId', getUserFollowers);
 
 router.post('/:userId/addvisitor', addNumberOfVisitors);
-router.get('/:id/visitors',getVisitors);
+router.get('/:id/visitors', getVisitors);
 router.post('/:id/rate', rateUser);
 router.get('/:id/rating', getUserTotalRating);
-router.delete('/:id',deleteUser);
+router.delete('/:id', deleteUser);
+
+
+router.get('/api/stripe/account', stripeAccount);
 
 export default router;
