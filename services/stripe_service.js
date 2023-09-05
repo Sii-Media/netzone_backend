@@ -57,7 +57,7 @@ export const generatePaymentIntent = async (params, callback) => {
 
 
 
-const stripeAccount = async (req, res) => {
+export const stripeAccount = async (req, res) => {
     const { method } = req
     if (method === "GET") {
         // CREATE CONNECTED ACCOUNT
@@ -84,4 +84,4 @@ const stripeAccount = async (req, res) => {
     else if (method === "DELETE") { } else if (method === "POST") { }
 }
 
-export default stripeAccount
+
