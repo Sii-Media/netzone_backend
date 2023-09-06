@@ -35,6 +35,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 // import stripeAccount from './services/stripe_service.js';
 
+// import { resetCounts } from './scheduled-tasks/resetCounts.js';
+// import cron from 'node-cron';
+
+
 const app = express();
 dotenv.config();
 
@@ -138,7 +142,7 @@ app.use('/real-estate', realestateRoutes);
 app.use('/delivery', deliveryServiceRoutes);
 // app.use(stripeAccount);
 // app.use('/api/stripe/account',stripeAccount);
-
+// cron.schedule('0 0 * * *', resetCounts);
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(PORT, () => {
     console.log(`Server Running on ${PORT}`)

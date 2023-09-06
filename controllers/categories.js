@@ -569,6 +569,34 @@ export const getVehicleById = async (req, res) => {
 export const createVehicle = async (req, res) => {
     try {
         const { creator, name, description, price, kilometers, year, location, type, category, country, contactNumber, exteriorColor, interiorColor, doors, bodyCondition, bodyType, mechanicalCondition, seatingCapacity, numofCylinders, transmissionType, horsepower, fuelType, extras, technicalFeatures, steeringSide, guarantee, forWhat } = req.body;
+
+
+        const user = await userModel.findById(creator);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (user.subscriptionExpireDate && user.subscriptionExpireDate <= new Date()) {
+            return res.status(403).json('Your subscription has expired, and you cannot add new real estate listings.');
+        }
+        if (category == 'cars') {
+            if (user.carsListingsRemaining <= 0) {
+                return res.status(403).json('You have reached the monthly limit for cars listings');
+            }
+            user.carsListingsRemaining -= 1;
+        }
+
+
+        if (category == 'planes') {
+            if (user.planesListingsRemaining <= 0) {
+                return res.status(403).json('You have reached the monthly limit for planes listings');
+            }
+            user.planesListingsRemaining -= 1;
+        }
+
+        await user.save();
+
+
         const image = req.files['image'][0];
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
@@ -643,6 +671,44 @@ export const createVehicle = async (req, res) => {
         // }
 
         res.status(201).json("the Vehicle has been added successfuly");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const resetVehicleCount = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const newSubscriptionExpireDate = new Date();
+
+        newSubscriptionExpireDate.setDate(newSubscriptionExpireDate.getDate() + 30);
+        user.subscriptionExpireDate = newSubscriptionExpireDate;
+
+        if (user.userType == 'car') {
+
+            const remainingcarsFromLastMonth = user.carsListingsRemaining || 0;
+            user.carsListingsRemaining = remainingcarsFromLastMonth + 50;
+        }
+        if (user.userType == 'planes') {
+
+            const remainingplanesFromLastMonth = user.planesListingsRemaining || 0;
+            user.planesListingsRemaining = remainingplanesFromLastMonth + 50;
+
+        }
+        if (user.userType == 'real_estate') {
+            const remainingFromLastMonth = user.realEstateListingsRemaining || 0;
+            user.realEstateListingsRemaining = remainingFromLastMonth + 50;
+        }
+
+        user.save();
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });

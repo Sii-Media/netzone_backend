@@ -36,6 +36,21 @@ export const addRealEstate = async (req, res) => {
             country
         } = req.body;
 
+        const user = await userModel.findById(createdBy);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (user.subscriptionExpireDate && user.subscriptionExpireDate <= new Date()) {
+            return res.status(403).json('Your subscription has expired, and you cannot add new real estate listings.');
+        }
+
+        if (user.realEstateListingsRemaining <= 0) {
+            return res.status(403).json('You have reached the monthly limit for real estate listings');
+        }
+
+        user.realEstateListingsRemaining -= 1;
+        await user.save();
 
         const image = req.files['image'][0];
         if (!image) {

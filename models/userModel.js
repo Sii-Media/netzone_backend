@@ -175,6 +175,17 @@ const userSchema = mongoose.Schema({
         },
     ],
 
+    subscriptionExpireDate: {
+        type: Date,
+    },
+    realEstateListingsRemaining: { type: Number, default: 50 },
+    advertisementsRemaining: { type: Number, default: 3 },
+    carsListingsRemaining: { type: Number, default: 50 },
+    planesListingsRemaining: { type: Number, default: 50 },
+    profitRatio: {
+        type: Number,
+    }
+
 },
     {
         // Set the select option to exclude the password field by default
