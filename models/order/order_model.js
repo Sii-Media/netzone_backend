@@ -23,7 +23,7 @@ const orderSchema = mongoose.Schema({
             },
         }
     ],
-    grandTotla: {
+    grandTotal: {
         type: Number,
         required: true,
     },
@@ -32,6 +32,9 @@ const orderSchema = mongoose.Schema({
         required: true,
     },
     transactionId: {
+        type: String,
+    },
+    orderEvent: {
         type: String,
     }
 },

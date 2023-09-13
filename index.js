@@ -31,6 +31,7 @@ import complaintsRoutes from './routes/complaintsRoutes.js';
 import pushNotificationRoutes from './routes/push_notification_routes.js';
 import realestateRoutes from './routes/realestateRoutes.js';
 import deliveryServiceRoutes from './routes/delivery_servicesRoutes.js'
+import orderRoutes from './routes/order_routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 // import stripeAccount from './services/stripe_service.js';
@@ -143,6 +144,7 @@ app.use('/delivery', deliveryServiceRoutes);
 // app.use(stripeAccount);
 // app.use('/api/stripe/account',stripeAccount);
 // cron.schedule('0 0 * * *', resetCounts);
+app.use('/order', orderRoutes);
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(PORT, () => {
     console.log(`Server Running on ${PORT}`)

@@ -6,6 +6,10 @@ const LegalAdviceSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    textEn: {
+        type: String,
+        required: true,
+    },
 });
 
 
