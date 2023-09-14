@@ -184,7 +184,21 @@ const userSchema = mongoose.Schema({
     planesListingsRemaining: { type: Number, default: 50 },
     profitRatio: {
         type: Number,
+    },
+    city: {
+        type: String,
+    },
+    addressDetails: {
+        type: String,
+    },
+    floorNum: {
+        type: Number,
+    },
+    locationType: {
+        type: String,
+        enum: ['home', 'work']
     }
+
 
 },
     {

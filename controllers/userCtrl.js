@@ -77,7 +77,7 @@ export const signUp = async (req, res) => {
     try {
 
         const { country } = req.body;
-        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, bio, description, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum, profitRatio } = req.body;
+        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, bio, description, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum, profitRatio, city, addressDetails, floorNum, locationType } = req.body;
         const { title } = req.body;
         const profilePhoto = req.files['profilePhoto'] ? req.files['profilePhoto'][0] : null;
         const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
@@ -151,6 +151,10 @@ export const signUp = async (req, res) => {
             deliveryCarsNum: deliveryCarsNum,
             deliveryMotorsNum: deliveryMotorsNum,
             profitRatio: profitRatio,
+            city:city,
+            addressDetails:addressDetails,
+            floorNum:floorNum,
+            locationType: locationType,
         });
         if (userType == 'car' || 'planes' || 'sea_companies' || 'real_estate') {
             const subscriptionExpireDate = new Date();

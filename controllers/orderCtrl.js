@@ -66,7 +66,7 @@ export const saveOrder = async (req, res) => {
         const orderModel = new Order({
             userId: userId,
             products: products,
-            orderStatus: 'pending',
+            orderStatus: orderStatus,
             grandTotal: grandTotal,
             orderEvent: orderEvent,
         });
