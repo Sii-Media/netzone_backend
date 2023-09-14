@@ -87,7 +87,10 @@ export const getUserOrders = async (req, res) => {
     try {
         const userOrders = await Order.find({ userId }).populate({
             path: 'products.product',
-            populate: { path: 'category', select: 'name' },
+            populate: [
+                { path: 'category', select: 'name' },
+                { path: 'owner', select: 'username userType' }
+            ],
         });
 
         if (!userOrders || userOrders.length === 0) {
