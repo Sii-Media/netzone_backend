@@ -72,7 +72,7 @@ export const saveOrder = async (req, res) => {
         });
         const response = await orderModel.save();
         console.log(response);
-        return res.status(200).json('success');
+        return res.status(200).json(response);
 
     } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ export const getUserOrders = async (req, res) => {
     try {
         const userOrders = await Order.find({ userId }).populate({
             path: 'products.product',
-            populate : {path: 'category', select: 'name' },
+            populate: { path: 'category', select: 'name' },
         });
 
         if (!userOrders || userOrders.length === 0) {
@@ -95,6 +95,21 @@ export const getUserOrders = async (req, res) => {
         }
 
         res.status(200).json(userOrders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const deleteOrder = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const order = await Order.findById(id);
+        if (!order) {
+            return res.status(404).json('Order not found');
+        }
+        await Order.findByIdAndRemove(id);
+        res.json('Order deleted successfully');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
