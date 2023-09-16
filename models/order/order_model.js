@@ -36,7 +36,19 @@ const orderSchema = mongoose.Schema({
     },
     orderEvent: {
         type: String,
-    }
+    },
+    shippingAddress: {
+        type: String,
+    },
+    mobile: {
+        type: String,
+    },
+    subTotal: {
+        type: Number,
+    },
+    serviceFee: {
+        type: Number,
+    },
 },
     {
         timestamps: true,

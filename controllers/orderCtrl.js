@@ -55,7 +55,7 @@ export const findAll = (req, res, next) => {
 
 export const saveOrder = async (req, res) => {
     const { userId } = req.params;
-    const { products, grandTotal, orderStatus, transactionId, orderEvent } = req.body;
+    const { products, grandTotal, orderStatus, transactionId, orderEvent, shippingAddress, mobile, subTotal, serviceFee } = req.body;
 
     try {
         const user = await userModel.findById(userId);
@@ -69,6 +69,10 @@ export const saveOrder = async (req, res) => {
             orderStatus: orderStatus,
             grandTotal: grandTotal,
             orderEvent: orderEvent,
+            shippingAddress: shippingAddress,
+            mobile: mobile,
+            subTotal: subTotal,
+            serviceFee: serviceFee,
         });
         const response = await orderModel.save();
         console.log(response);
