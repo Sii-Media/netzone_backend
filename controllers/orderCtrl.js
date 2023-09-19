@@ -97,10 +97,6 @@ export const getUserOrders = async (req, res) => {
             ],
         });
 
-        if (!userOrders || userOrders.length === 0) {
-            return res.status(404).json({ message: "No orders found for this user." });
-        }
-
         res.status(200).json(userOrders);
     } catch (error) {
         console.error(error);
