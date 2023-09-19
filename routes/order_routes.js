@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTheOrder, deleteOrder, findAll, getUserOrders, saveOrder, updateTheOrder } from '../controllers/orderCtrl.js'
+import { createTheOrder, deleteOrder, findAll, getOrderById, getUserOrders, saveOrder, updateTheOrder } from '../controllers/orderCtrl.js'
 
 
 
@@ -15,6 +15,7 @@ router.post('/order/:userId', createTheOrder);
 router.put('/order/:userId', updateTheOrder);
 router.post('/save/:userId', saveOrder);
 router.delete('/delete/:id', deleteOrder);
+router.get('/:id', getOrderById);
 
 
 

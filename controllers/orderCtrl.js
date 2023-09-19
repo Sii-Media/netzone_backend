@@ -58,6 +58,7 @@ export const saveOrder = async (req, res) => {
     const { products, grandTotal, orderStatus, transactionId, orderEvent, shippingAddress, mobile, subTotal, serviceFee } = req.body;
 
     try {
+        console.log(req.body);
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -103,6 +104,23 @@ export const getUserOrders = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+export const getOrderById = async (req, res) => {
+    const { id } = req.params;
+    try {
+
+        const order = await Order.findById(id).populate({
+            path: 'products.product',
+            populate: [
+                { path: 'category', select: 'name' },
+                { path: 'owner', select: 'username userType' }
+            ],
+        });
+        res.status(200).json(order);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 export const deleteOrder = async (req, res) => {
     try {
