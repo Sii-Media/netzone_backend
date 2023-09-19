@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { DealsCategories } from "../models/deals/dealsCategoriesModel.js";
 import { DealsItems } from "../models/deals/dealsItemsModel.js";
+import { PurchDeals } from "../models/deals/purch_deal_model.js";
+import userModel from "../models/userModel.js";
 
 
 export const getAllDealsCategories = async (req, res) => {
@@ -209,5 +211,46 @@ export const deleteDeal = async (req, res) => {
         res.json('Deals item deleted successfully');
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const savePurchDeal = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { deals, grandTotal, shippingAddress, mobile } = req.body;
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const purchDealsModel = new PurchDeals({
+            userId: userId,
+            deals,
+            grandTotal,
+            shippingAddress,
+            mobile
+        });
+        const response = await purchDealsModel.save();
+        console.log(response);
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getUserPurchDeal = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const deals = await PurchDeals.find({ userId }).populate({
+            path: 'deals.deals',
+            populate: [
+                { path: 'owner', select: 'username userType' }
+            ],
+        });
+        res.status(200).json(deals);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };

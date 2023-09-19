@@ -1,5 +1,5 @@
 import express from 'express';
-import { AddDeal, deleteDeal, editDeal, getAllDeals, getAllDealsByCat, getAllDealsCategories, getDealById } from '../controllers/dealsCtrl.js';
+import { AddDeal, deleteDeal, editDeal, getAllDeals, getAllDealsByCat, getAllDealsCategories, getDealById, getUserPurchDeal, savePurchDeal } from '../controllers/dealsCtrl.js';
 import auth from '../middlewares/auth.js';
 
 const router = express.Router();
@@ -12,5 +12,8 @@ router.get('/:id', getDealById);
 router.post('/addDeal', AddDeal);
 router.put('/:id', editDeal);
 router.delete('/:id', deleteDeal);
+router.post('/purch/save/:userId',savePurchDeal);
+router.get('/purch/:userId',getUserPurchDeal);
+
 
 export default router;
