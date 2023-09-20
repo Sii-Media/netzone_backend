@@ -34,6 +34,7 @@ import deliveryServiceRoutes from './routes/delivery_servicesRoutes.js'
 import orderRoutes from './routes/order_routes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import helmet from 'helmet';
 // import stripeAccount from './services/stripe_service.js';
 
 // import { resetCounts } from './scheduled-tasks/resetCounts.js';
@@ -80,7 +81,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
