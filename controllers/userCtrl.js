@@ -8,7 +8,7 @@ import Nexmo from 'nexmo';
 import mongoose from "mongoose";
 import { Account } from '../models/account/account_model.js';
 import { FactoryCategories } from '../models/categories/factory/factories_categories.js';
-import QB from 'quickblox';
+
 
 
 const nexmo = new Nexmo({
