@@ -95,13 +95,13 @@ export const signUp = async (req, res) => {
         if (!error.isEmpty()) {
             return res.json(error);
         }
-        const profileUrlImage = profilePhoto ? 'https://net-zoon.onrender.com/' + profilePhoto.path.replace(/\\/g, '/') : null;
-        const coverUrlImage = coverPhoto ? 'https://net-zoon.onrender.com/' + coverPhoto.path.replace(/\\/g, '/') : null;
-        const banerUrlImage = bannerPhoto ? 'https://net-zoon.onrender.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
-        const frontIdPhotoUrlImage = frontIdPhoto ? 'https://net-zoon.onrender.com/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
-        const backIdPhotoUrlImage = backIdPhoto ? 'https://net-zoon.onrender.com/' + backIdPhoto.path.replace(/\\/g, '/') : null;
-        const tradeLicensePhotoUrl = tradeLicensePhoto ? 'https://net-zoon.onrender.com/' + tradeLicensePhoto.path.replace(/\\/g, '/') : null;
-        const deliveryPermitPhotoUrl = deliveryPermitPhoto ? 'https://net-zoon.onrender.com/' + deliveryPermitPhoto.path.replace(/\\/g, '/') : null;
+        const profileUrlImage = profilePhoto ? 'http://145.14.158.175/' + profilePhoto.path.replace(/\\/g, '/') : null;
+        const coverUrlImage = coverPhoto ? 'http://145.14.158.175/' + coverPhoto.path.replace(/\\/g, '/') : null;
+        const banerUrlImage = bannerPhoto ? 'http://145.14.158.175/' + bannerPhoto.path.replace(/\\/g, '/') : null;
+        const frontIdPhotoUrlImage = frontIdPhoto ? 'http://145.14.158.175/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
+        const backIdPhotoUrlImage = backIdPhoto ? 'http://145.14.158.175/' + backIdPhoto.path.replace(/\\/g, '/') : null;
+        const tradeLicensePhotoUrl = tradeLicensePhoto ? 'http://145.14.158.175/' + tradeLicensePhoto.path.replace(/\\/g, '/') : null;
+        const deliveryPermitPhotoUrl = deliveryPermitPhoto ? 'http://145.14.158.175/' + deliveryPermitPhoto.path.replace(/\\/g, '/') : null;
 
         const existingUser = await userModel.findOne({ username });
         if (existingUser) {
@@ -539,13 +539,13 @@ export const EditUser = async (req, res) => {
         if (req.files && req.files["profilePhoto"]) {
             const profilePhoto = req.files["profilePhoto"][0];
             profileUrlImage =
-                "https://net-zoon.onrender.com/" +
+                "http://145.14.158.175/" +
                 profilePhoto.path.replace(/\\/g, "/");
         }
         if (req.files && req.files["coverPhoto"]) {
             const coverPhoto = req.files["coverPhoto"][0];
             coverUrlImage =
-                "https://net-zoon.onrender.com/" +
+                "http://145.14.158.175/" +
                 coverPhoto.path.replace(/\\/g, "/");
         }
 

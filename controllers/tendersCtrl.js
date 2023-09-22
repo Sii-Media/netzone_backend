@@ -101,7 +101,7 @@ export const addTender = async (req, res) => {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
 
-        const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        const imgUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
         const foundCategory = await TendersCategories.findOne({ name: category });
         if (!foundCategory) {
             return res.status(404).json({ message: 'Category not found' });

@@ -61,7 +61,7 @@ export const createNews = async (req, res) => {
         const { title, description, imgUrl, ownerName, ownerImage, creator } = req.body;
         const image = req.files['image'][0]
         if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
-        const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
 
         const news = new News({
             title,
@@ -98,7 +98,7 @@ export const editNews = async (req, res) => {
 
         if (req.files['image']) {
             const image = req.files['image'][0];
-            const urlImage = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
             existingNews.imgUrl = urlImage;
         }
         // existingNews.ownerName = ownerName;

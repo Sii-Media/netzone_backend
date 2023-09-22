@@ -115,7 +115,7 @@ export const AddDeal = async (req, res) => {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
 
-        const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+        const imgUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
         const foundCategory = await DealsCategories.findOne({ name: category });
 
         console.log(foundCategory);
@@ -184,7 +184,7 @@ export const editDeal = async (req, res) => {
 
         if (req.files['dealImage']) {
             const image = req.files['dealImage'][0];
-            const imgUrl = 'https://net-zoon.onrender.com/' + image.path.replace(/\\/g, '/');
+            const imgUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
             existingDeal.imgUrl = imgUrl;
         }
 
