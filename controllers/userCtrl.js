@@ -26,7 +26,7 @@ const key = 'otp-secret-key';
 //     accountKey: '6Ks95ZqZu8PNbwv4Yvz9'
 // });
 
-QB.init('101248', '7QsUQCOppNXAmTq', 's4XksyBADdYYkPa', '6Ks95ZqZu8PNbwv4Yvz9');
+// QB.init('101248', '7QsUQCOppNXAmTq', 's4XksyBADdYYkPa', '6Ks95ZqZu8PNbwv4Yvz9');
 
 
 export const signin = async (req, res) => {
