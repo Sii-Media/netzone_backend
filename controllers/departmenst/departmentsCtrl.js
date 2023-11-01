@@ -15,11 +15,11 @@ export const getAllProducts = async (req, res) => {
         if (country) {
             products = await Product.find({ country })
                 .populate('category', 'name')
-                .populate('owner', 'username userType');
+                .populate('owner');
         } else {
             products = await Product.find()
                 .populate('category', 'name')
-                .populate('owner', 'username userType');
+                .populate('owner');
         }
 
         return res.json(products);
@@ -67,7 +67,7 @@ export const getSelectableProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     const { productId } = req.params;
     try {
-        const product = await Product.findById(productId).populate('category', 'name').populate('owner', 'username userType');
+        const product = await Product.findById(productId).populate('category', 'name').populate('owner');
         return res.json(product);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -110,7 +110,7 @@ export const filterOnProducts = async (req, res) => {
         }
         let products = await Product.find(query)
             .populate('category', 'name')
-            .populate('owner', 'username userType');
+            .populate('owner');
         return res.json(products);
 
     } catch (error) {
@@ -222,7 +222,7 @@ export const getProductsByCategory = async (req, res) => {
                     },
                     {
                         path: 'owner',
-                        select: 'username',
+                        // select: 'username',
                     },
                 ],
             });
@@ -281,7 +281,7 @@ export const getProductsByCategory = async (req, res) => {
 export const addProduct = async (req, res) => {
     try {
         const { departmentName, categoryName } = req.body;
-        const { owner, name, condition, description, price, quantity, guarantee, address, madeIn, year, discountPercentage, country, color } = req.body;
+        const { owner, name, condition, description, price, quantity, weight, guarantee, address, madeIn, year, discountPercentage, country, color } = req.body;
         const image = req.files['image'][0];
 
         const ownerId = new mongoose.Types.ObjectId(owner);
@@ -324,6 +324,7 @@ export const addProduct = async (req, res) => {
             description,
             price,
             quantity,
+            weight,
             guarantee,
             address,
             madeIn,
@@ -381,7 +382,7 @@ export const addProduct = async (req, res) => {
 export const editProduct = async (req, res) => {
     try {
         const { productId } = req.params;
-        const { name, description, price, guarantee, address, madeIn, year } = req.body;
+        const { name, condition, description, price, quantity, weight, guarantee, address, madeIn, year, } = req.body;
         let urlImage;
         if (req.files && req.files["image"]) {
             const profilePhoto = req.files["image"][0];
@@ -404,10 +405,14 @@ export const editProduct = async (req, res) => {
                     imageUrl: urlImage,
                     description: description,
                     price: price,
+                    condition: condition,
+                    quantity: quantity,
+                    weight: weight,
                     guarantee: guarantee,
                     address: address,
                     madeIn: madeIn,
                     year: year,
+
                 },
                 { new: true }
             );
@@ -420,6 +425,9 @@ export const editProduct = async (req, res) => {
 
                     description: description,
                     price: price,
+                    condition: condition,
+                    quantity: quantity,
+                    weight: weight,
                     guarantee: guarantee,
                     address: address,
                     madeIn: madeIn,
@@ -483,7 +491,7 @@ export const getUserProducts = async (req, res) => {
     const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
 
     try {
-        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner', 'username userType');
+        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });

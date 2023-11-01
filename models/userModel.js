@@ -55,7 +55,10 @@ const userSchema = mongoose.Schema({
     subcategory: String,
     country: String,
     address: String,
-
+    netzoonBalance: {
+        type: Number,
+        default: 0,
+    },
     businessLicense: String,
     companyProductsNumber: Number,
     sellType: String,
@@ -189,6 +192,9 @@ const userSchema = mongoose.Schema({
         type: String,
     },
     addressDetails: {
+        type: String,
+    },
+    contactName: {
         type: String,
     },
     floorNum: {

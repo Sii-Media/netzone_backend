@@ -36,6 +36,10 @@ const ProductSchema = mongoose.Schema({
     },
     quantity: {
         type: Number,
+        default : 0,
+    },
+    weight: {
+        type: Number,
     },
     images: [String],
     vedioUrl: String,

@@ -77,7 +77,7 @@ export const signUp = async (req, res) => {
     try {
 
         const { country } = req.body;
-        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, bio, description, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum, profitRatio, city, addressDetails, floorNum, locationType } = req.body;
+        const { username, email, password, userType, firstMobile, secondeMobile, thirdMobile, isFreeZoon, isService, isSelectable, freezoneCity, deliverable, subcategory, address, website, link, slogn, businessLicense, companyProductsNumber, sellType, toCountry, bio, description, isThereWarehouse, isThereFoodsDelivery, deliveryType, deliveryCarsNum, deliveryMotorsNum, profitRatio, city, addressDetails, contactName, floorNum, locationType } = req.body;
         const { title } = req.body;
         const profilePhoto = req.files['profilePhoto'] ? req.files['profilePhoto'][0] : null;
         const bannerPhoto = req.files['bannerPhoto'] ? req.files['bannerPhoto'][0] : null;
@@ -151,9 +151,10 @@ export const signUp = async (req, res) => {
             deliveryCarsNum: deliveryCarsNum,
             deliveryMotorsNum: deliveryMotorsNum,
             profitRatio: profitRatio,
-            city:city,
-            addressDetails:addressDetails,
-            floorNum:floorNum,
+            city: city,
+            addressDetails: addressDetails,
+            contactName: contactName,
+            floorNum: floorNum,
             locationType: locationType,
         });
         if (userType == 'car' || 'planes' || 'sea_companies' || 'real_estate') {
@@ -526,7 +527,7 @@ export const getUserByType = async (req, res) => {
 
 export const EditUser = async (req, res) => {
     const { userId } = req.params;
-    const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry, bio, description, website, slogn, link, profitRatio } = req.body;
+    const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry, bio, description, website, slogn, link, profitRatio, city, addressDetails, contactName, } = req.body;
     let profileUrlImage;
     let coverUrlImage;
     try {
@@ -549,7 +550,7 @@ export const EditUser = async (req, res) => {
                 coverPhoto.path.replace(/\\/g, "/");
         }
 
-        // Update the user fields
+
         user.username = username;
         user.email = email;
         user.firstMobile = firstMobile;
@@ -566,7 +567,9 @@ export const EditUser = async (req, res) => {
         user.link = link;
         user.slogn = slogn;
         user.profitRatio = profitRatio;
-        // Update the profile photo only if it's included in the request
+        user.city = city;
+        user.addressDetails = addressDetails;
+        user.contactName = contactName;
         if (profileUrlImage) {
             user.profilePhoto = profileUrlImage;
         }

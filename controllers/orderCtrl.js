@@ -1,4 +1,6 @@
+import { ClientOrders } from '../models/order/client_order_model.js';
 import { Order } from '../models/order/order_model.js';
+import { Product } from '../models/product/product.js';
 import userModel from '../models/userModel.js';
 import { createOrder, updateOrder, getOrders } from '../services/order_service.js';
 
@@ -55,17 +57,43 @@ export const findAll = (req, res, next) => {
 
 export const saveOrder = async (req, res) => {
     const { userId } = req.params;
-    const { products, grandTotal, orderStatus, transactionId, orderEvent, shippingAddress, mobile, subTotal, serviceFee } = req.body;
+    const { clientId, products, grandTotal, orderStatus, transactionId, orderEvent, shippingAddress, mobile, subTotal, serviceFee } = req.body;
 
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        for (const productItem of products) {
+            const product = await Product.findById(productItem.product);
+            if (!product) {
+                return res.status(404).json({ message: "Product not found" });
+            }
+            // console.log(product);
+            const quantityOrdered = productItem.qty;
+            const updatedQuantity = product.quantity - quantityOrdered;
+            if (updatedQuantity < 0) {
+                return res.status(400).json({ message: "Insufficient product quantity in inventory." });
+            }
+            await Product.findByIdAndUpdate(product._id, { quantity: updatedQuantity });
+            // console.log(productItem);
+            console.log(product.owner);
+            // const clientOrderModel = new ClientOrders({
+            //     clientId: product.owner,
+            //     product: productItem.product,
+            //     amount: productItem.amount,
+            //     qty: productItem.qty,
+            //     totalQty: productItem.amount * productItem.qty,
+            //     userId: userId,
+            // });
+            // await clientOrderModel.save();
+        }
+
         const orderModel = new Order({
             userId: userId,
+            clientId: clientId,
             products: products,
             orderStatus: orderStatus,
             grandTotal: grandTotal,
@@ -75,8 +103,17 @@ export const saveOrder = async (req, res) => {
             subTotal: subTotal,
             serviceFee: serviceFee,
         });
+
         const response = await orderModel.save();
         console.log(response);
+        const client = await userModel.findById(clientId);
+        if (!client) {
+            return res.status(404).json({ message: "client not found" });
+        }
+        const netzoonBalance = client.netzoonBalance;
+        const updatedBalance = netzoonBalance + subTotal;
+
+        await userModel.findByIdAndUpdate(clientId, { netzoonBalance: updatedBalance });
         return res.status(200).json(response);
 
     } catch (error) {
@@ -96,7 +133,7 @@ export const getUserOrders = async (req, res) => {
                 { path: 'category', select: 'name' },
                 { path: 'owner', select: 'username userType' }
             ],
-        });
+        }).populate('userId', 'username').populate('clientId', 'username');
 
         res.status(200).json(userOrders);
     } catch (error) {
@@ -104,6 +141,27 @@ export const getUserOrders = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+
+export const getClientOrders = async (req, res) => {
+    const { clientId } = req.params;
+
+    try {
+        const clientOrders = await Order.find({ clientId: clientId }).populate({
+            path: 'products.product',
+            populate: [
+                { path: 'category', select: 'name' },
+                { path: 'owner', select: 'username userType' }
+            ],
+        }).populate('userId', 'username').populate('clientId', 'username');
+
+        res.status(200).json(clientOrders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const getOrderById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -114,7 +172,7 @@ export const getOrderById = async (req, res) => {
                 { path: 'category', select: 'name' },
                 { path: 'owner', select: 'username userType' }
             ],
-        });
+        }).populate('userId', 'username');
         res.status(200).json(order);
     } catch (error) {
         console.log(error);
