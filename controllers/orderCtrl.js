@@ -110,8 +110,17 @@ export const saveOrder = async (req, res) => {
         if (!client) {
             return res.status(404).json({ message: "client not found" });
         }
+        let updatedBalance;
+        let calculateBalance;
         const netzoonBalance = client.netzoonBalance;
-        const updatedBalance = netzoonBalance + subTotal;
+        if (client.userType == 'trader' || client.userType == 'factory') {
+            calculateBalance = subTotal - ((subTotal * 3) / 100);
+            updatedBalance = netzoonBalance + calculateBalance;
+        } else {
+            updatedBalance = netzoonBalance + subTotal;
+        }
+
+
 
         await userModel.findByIdAndUpdate(clientId, { netzoonBalance: updatedBalance });
         return res.status(200).json(response);

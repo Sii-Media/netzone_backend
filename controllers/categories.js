@@ -576,23 +576,23 @@ export const createVehicle = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        if (user.subscriptionExpireDate && user.subscriptionExpireDate <= new Date()) {
-            return res.status(403).json('Your subscription has expired, and you cannot add new real estate listings.');
-        }
-        if (category == 'cars') {
-            if (user.carsListingsRemaining <= 0) {
-                return res.status(403).json('You have reached the monthly limit for cars listings');
-            }
-            user.carsListingsRemaining -= 1;
-        }
+        // if (user.subscriptionExpireDate && user.subscriptionExpireDate <= new Date()) {
+        //     return res.status(403).json('Your subscription has expired, and you cannot add new real estate listings.');
+        // }
+        // if (category == 'cars') {
+        //     if (user.carsListingsRemaining <= 0) {
+        //         return res.status(403).json('You have reached the monthly limit for cars listings');
+        //     }
+        //     user.carsListingsRemaining -= 1;
+        // }
 
 
-        if (category == 'planes') {
-            if (user.planesListingsRemaining <= 0) {
-                return res.status(403).json('You have reached the monthly limit for planes listings');
-            }
-            user.planesListingsRemaining -= 1;
-        }
+        // if (category == 'planes') {
+        //     if (user.planesListingsRemaining <= 0) {
+        //         return res.status(403).json('You have reached the monthly limit for planes listings');
+        //     }
+        //     user.planesListingsRemaining -= 1;
+        // }
 
         await user.save();
 
