@@ -67,7 +67,7 @@ export const getSelectableProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     const { productId } = req.params;
     try {
-        const product = await Product.findById(productId).populate('category', 'name').populate('owner');
+        const product = await Product.findById(productId).populate('category', 'name').populate('owner', '-password');
         return res.json(product);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -110,7 +110,7 @@ export const filterOnProducts = async (req, res) => {
         }
         let products = await Product.find(query)
             .populate('category', 'name')
-            .populate('owner');
+            .populate('owner', '-password');
         return res.json(products);
 
     } catch (error) {
@@ -222,6 +222,7 @@ export const getProductsByCategory = async (req, res) => {
                     },
                     {
                         path: 'owner',
+                        select: '-password',
                         // select: 'username',
                     },
                 ],
@@ -491,7 +492,7 @@ export const getUserProducts = async (req, res) => {
     const ownerId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
 
     try {
-        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner');
+        const products = await Product.find({ owner: ownerId }).populate('category', 'name').populate('owner', '-password');
         return res.status(200).json(products);
     } catch (error) {
         return res.status(500).json({ message: error });

@@ -32,6 +32,7 @@ import pushNotificationRoutes from './routes/push_notification_routes.js';
 import realestateRoutes from './routes/realestateRoutes.js';
 import deliveryServiceRoutes from './routes/delivery_servicesRoutes.js'
 import orderRoutes from './routes/order_routes.js';
+import aramexRouter from './routes/aramexRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import helmet from 'helmet';
@@ -144,6 +145,8 @@ app.use('/delivery', deliveryServiceRoutes);
 // app.use('/api/stripe/account',stripeAccount);
 // cron.schedule('0 0 * * *', resetCounts);
 app.use('/order', orderRoutes);
+app.use('/aramex', aramexRouter);
+
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => app.listen(PORT, () => {
     console.log(`Server Running on ${PORT}`)
