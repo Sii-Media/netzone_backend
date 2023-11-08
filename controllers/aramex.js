@@ -22,7 +22,7 @@ export const calculateRateController = async (req, res) => {
     } catch (error) {
         // Handle errors
         console.error('Error:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 };
 
@@ -42,7 +42,7 @@ export const createPickUpController = async (req, res) => {
     } catch (error) {
         // Handle errors
         console.error('Error:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 };
 
@@ -59,6 +59,6 @@ export const createShipmentController = async (req, res) => {
     } catch (error) {
         // Handle errors
         console.error('Error:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error});
     }
 };
