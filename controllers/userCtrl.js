@@ -95,13 +95,13 @@ export const signUp = async (req, res) => {
         if (!error.isEmpty()) {
             return res.json(error);
         }
-        const profileUrlImage = profilePhoto ? 'http://145.14.158.175/' + profilePhoto.path.replace(/\\/g, '/') : null;
-        const coverUrlImage = coverPhoto ? 'http://145.14.158.175/' + coverPhoto.path.replace(/\\/g, '/') : null;
-        const banerUrlImage = bannerPhoto ? 'http://145.14.158.175/' + bannerPhoto.path.replace(/\\/g, '/') : null;
-        const frontIdPhotoUrlImage = frontIdPhoto ? 'http://145.14.158.175/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
-        const backIdPhotoUrlImage = backIdPhoto ? 'http://145.14.158.175/' + backIdPhoto.path.replace(/\\/g, '/') : null;
-        const tradeLicensePhotoUrl = tradeLicensePhoto ? 'http://145.14.158.175/' + tradeLicensePhoto.path.replace(/\\/g, '/') : null;
-        const deliveryPermitPhotoUrl = deliveryPermitPhoto ? 'http://145.14.158.175/' + deliveryPermitPhoto.path.replace(/\\/g, '/') : null;
+        const profileUrlImage = profilePhoto ? 'https://back.netzoon.com/' + profilePhoto.path.replace(/\\/g, '/') : null;
+        const coverUrlImage = coverPhoto ? 'https://back.netzoon.com/' + coverPhoto.path.replace(/\\/g, '/') : null;
+        const banerUrlImage = bannerPhoto ? 'https://back.netzoon.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
+        const frontIdPhotoUrlImage = frontIdPhoto ? 'https://back.netzoon.com/' + frontIdPhoto.path.replace(/\\/g, '/') : null;
+        const backIdPhotoUrlImage = backIdPhoto ? 'https://back.netzoon.com/' + backIdPhoto.path.replace(/\\/g, '/') : null;
+        const tradeLicensePhotoUrl = tradeLicensePhoto ? 'https://back.netzoon.com/' + tradeLicensePhoto.path.replace(/\\/g, '/') : null;
+        const deliveryPermitPhotoUrl = deliveryPermitPhoto ? 'https://back.netzoon.com/' + deliveryPermitPhoto.path.replace(/\\/g, '/') : null;
 
         const existingUser = await userModel.findOne({ username });
         if (existingUser) {
@@ -540,13 +540,13 @@ export const EditUser = async (req, res) => {
         if (req.files && req.files["profilePhoto"]) {
             const profilePhoto = req.files["profilePhoto"][0];
             profileUrlImage =
-                "http://145.14.158.175/" +
+                "https://back.netzoon.com/" +
                 profilePhoto.path.replace(/\\/g, "/");
         }
         if (req.files && req.files["coverPhoto"]) {
             const coverPhoto = req.files["coverPhoto"][0];
             coverUrlImage =
-                "http://145.14.158.175/" +
+                "https://back.netzoon.com/" +
                 coverPhoto.path.replace(/\\/g, "/");
         }
 

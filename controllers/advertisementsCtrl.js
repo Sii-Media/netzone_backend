@@ -134,7 +134,7 @@ export const createAds = async (req, res) => {
 
     const image = req.files['image'][0]
     if (!image) { return res.status(404).json({ message: 'Attached file is not an image.' }); }
-    const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+    const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
 
     const ownerId = new mongoose.Types.ObjectId(owner);
 
@@ -170,14 +170,14 @@ export const createAds = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 newAds.advertisingImageList = imageUrls;
             }
         }
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             newAds.advertisingVedio = urlVideo;
         }
 
@@ -219,7 +219,7 @@ export const editAdvertisement = async (req, res) => {
 
         if (req.files['image']) {
             const image = req.files['image'][0];
-            const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+            const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
             existingAd.advertisingImage = urlImage;
         }
 
@@ -235,7 +235,7 @@ export const editAdvertisement = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
             }
             existingAd.advertisingImageList = imageUrls;
@@ -243,7 +243,7 @@ export const editAdvertisement = async (req, res) => {
 
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             existingAd.advertisingVedio = urlVideo;
         }
 

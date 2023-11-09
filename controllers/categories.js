@@ -601,7 +601,7 @@ export const createVehicle = async (req, res) => {
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
-        const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+        const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
         const newVehicle = new Vehicle({
             name,
             imageUrl: urlImage,
@@ -645,7 +645,7 @@ export const createVehicle = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 newVehicle.carImages = imageUrls;
             }
@@ -653,7 +653,7 @@ export const createVehicle = async (req, res) => {
 
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             newVehicle.vedioUrl = urlVideo;
         }
 
@@ -755,7 +755,7 @@ export const resetVehicleCount = async (req, res) => {
 
 //         if (req.files['image']) {
 //             const image = req.files['image'][0];
-//             const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+//             const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
 //             vehicle.imageUrl = urlImage;
 //         }
 
@@ -771,14 +771,14 @@ export const resetVehicleCount = async (req, res) => {
 //                     return res.status(404).json({ message: 'Attached file is not an image.' });
 //                 }
 
-//                 const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+//                 const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
 //                 imageUrls.push(imageUrl);
 //                 vehicle.carImages = imageUrls;
 //             }
 //         }
 //         if (req.files['video']) {
 //             const video = req.files['video'][0];
-//             const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+//             const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
 //             vehicle.vedioUrl = urlVideo;
 //         }
 //         await vehicle.save();
@@ -804,7 +804,7 @@ export const editVehicle = async (req, res) => {
 
         if (req.files['image']) {
             const image = req.files['image'][0];
-            const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+            const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
             vehicle.imageUrl = urlImage;
         }
 
@@ -820,14 +820,14 @@ export const editVehicle = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 vehicle.carImages = imageUrls;
             }
         }
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             vehicle.vedioUrl = urlVideo;
         }
 

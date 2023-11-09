@@ -56,7 +56,7 @@ export const addRealEstate = async (req, res) => {
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
-        const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+        const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
 
         const newRealEstate = new RealEstate({
             title,
@@ -84,7 +84,7 @@ export const addRealEstate = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 newRealEstate.images = imageUrls;
             }
@@ -129,7 +129,7 @@ export const editRealEstate = async (req, res) => {
             if (!image) {
                 return res.status(404).json({ message: 'Attached file is not an image.' });
             }
-            const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+            const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
             updatedData.imageUrl = urlImage;
         }
 
@@ -146,7 +146,7 @@ export const editRealEstate = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
             }
             updatedData.images = imageUrls;

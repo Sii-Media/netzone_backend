@@ -27,7 +27,7 @@ export const addCompanyService = async (req, res) => {
         const { title, description, price, owner, whatsAppNumber, bio } = req.body;
         const image = req.files['image'] ? req.files['image'][0] : null;
 
-        const imageUrl = image ? 'http://145.14.158.175/' + image.path.replace(/\\/g, '/') : null;
+        const imageUrl = image ? 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/') : null;
 
 
 
@@ -55,14 +55,14 @@ export const addCompanyService = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 newService.serviceImageList = imageUrls;
             }
         }
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             newService.vedioUrl = urlVideo;
         }
 
@@ -96,7 +96,7 @@ export const editCompanyService = async (req, res) => {
 
         if (req.files['image']) {
             const image = req.files['image'][0];
-            const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+            const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
             existingService.imageUrl = urlImage;
         }
 
@@ -112,14 +112,14 @@ export const editCompanyService = async (req, res) => {
                     return res.status(404).json('Attached file is not an image.');
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 existingService.serviceImageList = imageUrls;
             }
         }
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             existingService.vedioUrl = urlVideo;
         }
 

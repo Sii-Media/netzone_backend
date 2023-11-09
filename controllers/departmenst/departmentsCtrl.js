@@ -294,7 +294,7 @@ export const addProduct = async (req, res) => {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }
 
-        const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+        const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
 
 
 
@@ -348,7 +348,7 @@ export const addProduct = async (req, res) => {
                     return res.status(404).json({ message: 'Attached file is not an image.' });
                 }
 
-                const imageUrl = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+                const imageUrl = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
                 imageUrls.push(imageUrl);
                 productData.images = imageUrls;
             }
@@ -357,13 +357,13 @@ export const addProduct = async (req, res) => {
         // Add optional fields if they exist
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             productData.vedioUrl = urlVideo;
         }
 
         if (req.files['gif']) {
             const gif = req.files['gif'][0];
-            const gifUrl = 'http://145.14.158.175/' + gif.path.replace(/\\/g, '/');
+            const gifUrl = 'https://back.netzoon.com/' + gif.path.replace(/\\/g, '/');
             productData.gifUrl = gifUrl;
         }
 
@@ -388,7 +388,7 @@ export const editProduct = async (req, res) => {
         if (req.files && req.files["image"]) {
             const profilePhoto = req.files["image"][0];
             urlImage =
-                "http://145.14.158.175/" +
+                "https://back.netzoon.com/" +
                 profilePhoto.path.replace(/\\/g, "/");
         }
         // const image = req.files['image'][0];
@@ -396,7 +396,7 @@ export const editProduct = async (req, res) => {
         //     return res.status(404).json({ message: 'Attached file is not an image.' });
         // }
 
-        // const urlImage = 'http://145.14.158.175/' + image.path.replace(/\\/g, '/');
+        // const urlImage = 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/');
         let updatedProduct;
         if (req.files && req.files["image"]) {
             updatedProduct = await Product.findByIdAndUpdate(
@@ -444,13 +444,13 @@ export const editProduct = async (req, res) => {
         // Add optional fields if they exist
         if (req.files['video']) {
             const video = req.files['video'][0];
-            const urlVideo = 'http://145.14.158.175/' + video.path.replace(/\\/g, '/');
+            const urlVideo = 'https://back.netzoon.com/' + video.path.replace(/\\/g, '/');
             updatedProduct.vedioUrl = urlVideo;
         }
 
         if (req.files['gif']) {
             const gif = req.files['gif'][0];
-            const gifUrl = 'http://145.14.158.175/' + gif.path.replace(/\\/g, '/');
+            const gifUrl = 'https://back.netzoon.com/' + gif.path.replace(/\\/g, '/');
             updatedProduct.gifUrl = gifUrl;
         }
 
