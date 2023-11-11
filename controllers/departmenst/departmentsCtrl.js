@@ -281,6 +281,7 @@ export const getProductsByCategory = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
+    
         const { departmentName, categoryName } = req.body;
         const { owner, name, condition, description, price, quantity, weight, guarantee, address, madeIn, year, discountPercentage, country, color } = req.body;
         const image = req.files['image'][0];
@@ -290,6 +291,7 @@ export const addProduct = async (req, res) => {
         // if (!existingUser) {
         //     return res.status(500).json({ message: "User don't exists" });
         // }
+       
         if (!image) {
             return res.status(404).json({ message: 'Attached file is not an image.' });
         }

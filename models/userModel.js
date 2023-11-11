@@ -41,16 +41,20 @@ const userSchema = mongoose.Schema({
     },
     isFreeZoon: {
         type: Boolean,
+        default: false,
     },
     isService: {
         type: Boolean,
+        default: false,
     },
     isSelectable: {
         type: Boolean,
+        default: false,
     },
     freezoneCity: String,
     deliverable: {
         type: Boolean,
+        default: false,
     },
     subcategory: String,
     country: String,
@@ -77,9 +81,11 @@ const userSchema = mongoose.Schema({
     tradeLicensePhoto: String,
     isThereWarehouse: {
         type: Boolean,
+        default: false,
     },
     isThereFoodsDelivery: {
         type: Boolean,
+        default: false,
     },
     deliveryType: String,
     deliveryCarsNum: Number,

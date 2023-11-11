@@ -90,11 +90,12 @@ export const signUp = async (req, res) => {
 
 
 
-
         const error = validationResult(req);
         if (!error.isEmpty()) {
-            return res.json(error);
+            console.log(error);
+            return res.status(401).json(error);
         }
+
         const profileUrlImage = profilePhoto ? 'https://back.netzoon.com/' + profilePhoto.path.replace(/\\/g, '/') : null;
         const coverUrlImage = coverPhoto ? 'https://back.netzoon.com/' + coverPhoto.path.replace(/\\/g, '/') : null;
         const banerUrlImage = bannerPhoto ? 'https://back.netzoon.com/' + bannerPhoto.path.replace(/\\/g, '/') : null;
@@ -105,7 +106,9 @@ export const signUp = async (req, res) => {
 
         const existingUser = await userModel.findOne({ username });
         if (existingUser) {
+            console.log('errrrrrrrrrror');
             return res.status(422).json({ message: "User already exists, please login!" });
+
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -121,11 +124,9 @@ export const signUp = async (req, res) => {
             firstMobile,
             secondeMobile,
             thirdMobile,
-            isFreeZoon: isFreeZoon,
-            isService: isService,
-            isSelectable: isSelectable,
+
             freezoneCity: freezoneCity,
-            deliverable: deliverable,
+
             subcategory,
             address,
             businessLicense,
@@ -145,8 +146,7 @@ export const signUp = async (req, res) => {
             tradeLicensePhoto: tradeLicensePhotoUrl,
             deliveryPermitPhoto: deliveryPermitPhotoUrl,
             country: country,
-            isThereWarehouse: isThereWarehouse,
-            isThereFoodsDelivery: isThereFoodsDelivery,
+
             deliveryType: deliveryType,
             deliveryCarsNum: deliveryCarsNum,
             deliveryMotorsNum: deliveryMotorsNum,
@@ -157,6 +157,13 @@ export const signUp = async (req, res) => {
             floorNum: floorNum,
             locationType: locationType,
         });
+        newUser.isFreeZoon = isFreeZoon ?? false;
+        newUser.isService = isService ?? false;
+        newUser.isSelectable = isSelectable ?? false;
+        newUser.deliverable = deliverable ?? false;
+        newUser.isThereWarehouse = isThereWarehouse ?? false;
+        newUser.isThereFoodsDelivery = isThereFoodsDelivery ?? false;
+
         if (userType == 'car' || 'planes' || 'sea_companies' || 'real_estate') {
             const subscriptionExpireDate = new Date();
             subscriptionExpireDate.setDate(subscriptionExpireDate.getDate() + 30);
@@ -184,7 +191,8 @@ export const signUp = async (req, res) => {
                 });
             }
         }
-        res.status(201).json({
+        console.log('succccccccccccccccccccccccc');
+        return res.status(201).json({
             result: newUser,
             message: "User created",
             token: token,
@@ -192,7 +200,7 @@ export const signUp = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Error in registration" });
+        return res.status(500).json({ message: "Error in registration" });
     }
 };
 
