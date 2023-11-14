@@ -84,7 +84,12 @@ const fileFilter = (req, file, cb) => {
 
 app.use(helmet());
 
-app.use(cors());
+app.use(cors({
+    exposedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
