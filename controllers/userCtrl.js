@@ -43,6 +43,7 @@ export const signin = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordCorrect) return res.status(401).json({ message: "Invalid credentials" });
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+        // existingUser = existingUser.select('-password');
         res.status(200).json({ result: existingUser, message: 'LogIn Successfuled', token: token });
     } catch (error) {
         console.log(error);
@@ -538,6 +539,7 @@ export const EditUser = async (req, res) => {
     const { username, email, firstMobile, secondeMobile, thirdMobile, subcategory, address, companyProductsNumber, sellType, toCountry, bio, description, website, slogn, link, profitRatio, city, addressDetails, contactName, } = req.body;
     let profileUrlImage;
     let coverUrlImage;
+    console.log(req.params);
     try {
         const user = await userModel.findById(userId);
         if (!user) {
