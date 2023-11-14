@@ -89,6 +89,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     origin: '*',
     methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
+    optionsSuccessStatus: 200,
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
