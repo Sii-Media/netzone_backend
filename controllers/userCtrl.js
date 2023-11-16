@@ -878,6 +878,26 @@ export const deleteUser = async (req, res) => {
     }
 }
 
+export const deleteAccount = async (req, res) => {
+    const {userId} = req.params;
+
+    try {
+
+        const userToDelete = await userModel.findById(userId);
+
+        if (!userToDelete) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await userModel.findByIdAndDelete(userId);
+
+        res.status(200).json('Account deleted successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Something went wrong' });
+    }
+};
+
 
 
 // Upload the profile photo and banner photo using multer

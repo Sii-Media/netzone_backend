@@ -78,7 +78,7 @@ export const editCompanyService = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, price, whatsAppNumber, bio } = req.body;
-
+        console.log(req.body);
 
         // Check if the company service with the given ID exists
         const existingService = await CompanyServices.findById(id);
@@ -89,9 +89,15 @@ export const editCompanyService = async (req, res) => {
         // Update company service fields
         existingService.title = title;
         existingService.description = description;
-        existingService.price = price;
-        existingService.whatsAppNumber = whatsAppNumber;
-        existingService.bio = bio;
+        if (price) {
+            existingService.price = price;
+        }
+        if (whatsAppNumber) {
+            existingService.whatsAppNumber = whatsAppNumber;
+        }
+        if (bio) {
+            existingService.bio = bio;
+        }
 
 
         if (req.files['image']) {

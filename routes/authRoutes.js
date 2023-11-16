@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { EditUser, addAccount, addNumberOfVisitors, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteProductFromSelectedProducts, deleteUser, getAccountByEmail, getAllFavorites, getAllUsers, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, getVisitors, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
+import { EditUser, addAccount, addNumberOfVisitors, addProductToFavorites, addProductsToSelectedProducts, changeAccount, changePassword, clearFav, deleteAccount, deleteProductFromSelectedProducts, deleteUser, getAccountByEmail, getAllFavorites, getAllUsers, getSelectedProducts, getUserById, getUserByType, getUserFollowers, getUserFollowings, getUserTotalRating, getVisitors, otpLogin, rateUser, removeProductFromFavorites, signUp, signin, toggleFollow, verifyOTPLogin } from '../controllers/userCtrl.js';
 import { stripeAccount } from '../services/stripe_service.js';
 
 const router = express.Router();
@@ -33,7 +33,7 @@ router.post('/signin',
 router.post('/changeAccount', changeAccount);
 
 router.put('/password/:userId', changePassword);
-
+router.delete('/delete-user/:userId', deleteAccount);
 router.post('/otpLogin', otpLogin);
 router.post('/verifyOtpLogin', verifyOTPLogin);
 
@@ -60,7 +60,7 @@ router.get('/:id/visitors', getVisitors);
 router.post('/:id/rate', rateUser);
 router.get('/:id/rating', getUserTotalRating);
 router.delete('/:id', deleteUser);
-router.get('/get-all-users',getAllUsers);
+router.get('/get-all-users', getAllUsers);
 
 router.get('/api/stripe/account', stripeAccount);
 
