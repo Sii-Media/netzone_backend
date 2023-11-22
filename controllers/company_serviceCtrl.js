@@ -1,4 +1,5 @@
 import { CompanyServices } from "../models/company_services/company_service_model.js";
+import { serviceCategoryModel } from "../models/company_services/service_category_model.js";
 
 
 
@@ -12,6 +13,36 @@ export const getCompanyServices = async (req, res) => {
     }
 };
 
+export const getServicesCategories = async (req, res) => {
+    try {
+        const categories = await serviceCategoryModel.find().select('title');
+        res.status(200).json(categories);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+export const getServicesByCategories = async (req, res) => {
+    try {
+        const { category } = req.query;
+        const services = await serviceCategoryModel.findById(category).populate({
+            path: 'services',
+            populate: [
+                { path: 'owner', select: 'username', }
+
+            ]
+        });
+        return res.status(200).json(services);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 export const getServiceById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -24,12 +55,17 @@ export const getServiceById = async (req, res) => {
 
 export const addCompanyService = async (req, res) => {
     try {
+        console.log(req.query);
+        const { category } = req.query;
         const { title, description, price, owner, whatsAppNumber, bio } = req.body;
         const image = req.files['image'] ? req.files['image'][0] : null;
 
         const imageUrl = image ? 'https://back.netzoon.com/' + image.path.replace(/\\/g, '/') : null;
 
-
+        const serviceCategory = await serviceCategoryModel.findById(category);
+        if (!serviceCategory) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
 
         const newService = new CompanyServices({
             title,
@@ -67,6 +103,10 @@ export const addCompanyService = async (req, res) => {
         }
 
         await newService.save();
+
+        serviceCategory.services.push(newService._id);
+        await serviceCategory.save();
+
         res.status(201).json('The service has been added successfully');
 
     } catch (error) {
@@ -76,6 +116,7 @@ export const addCompanyService = async (req, res) => {
 
 export const editCompanyService = async (req, res) => {
     try {
+        console.log(req.params);
         const { id } = req.params;
         const { title, description, price, whatsAppNumber, bio } = req.body;
         console.log(req.body);
