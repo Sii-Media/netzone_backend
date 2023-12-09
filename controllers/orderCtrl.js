@@ -146,7 +146,7 @@ export const saveOrder = async (req, res) => {
     await userModel.findByIdAndUpdate(clientId, {
       netzoonBalance: updatedBalance,
     });
-    return res.status(200).json(populatedOrder);
+    return res.status(200).json("Order updated successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
