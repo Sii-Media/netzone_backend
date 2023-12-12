@@ -137,6 +137,8 @@ export const signUp = async (req, res) => {
       contactName,
       floorNum,
       locationType,
+      withAdd,
+      mainAccount,
     } = req.body;
     const { title } = req.body;
     const profilePhoto = req.files["profilePhoto"]
@@ -280,6 +282,17 @@ export const signUp = async (req, res) => {
           factory: [newUser._id],
         });
       }
+    }
+    if (withAdd && withAdd == true) {
+      const existingUser = await userModel.findOne({ email: mainAccount });
+
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      existingUser.accounts.push(newUser._id);
+      newUser.accounts.push(existingUser._id);
+      await existingUser.save();
+      await newUser.save();
     }
     console.log("succccccccccccccccccccccccc");
     return res.status(201).json({
