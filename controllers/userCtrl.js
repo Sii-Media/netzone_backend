@@ -283,13 +283,19 @@ export const signUp = async (req, res) => {
         });
       }
     }
-    if (withAdd == true) {
+
+    console.log("1111111111");
+    console.log(withAdd);
+    if (withAdd && withAdd == true) {
+      console.log("222222222");
       const existingUser = await userModel.findOne({ email: mainAccount });
 
       if (!existingUser) {
         return res.status(404).json({ message: "User not found" });
       }
+      console.log("33333333333");
       existingUser.accounts.push(newUser._id);
+      console.log(existingUser.accounts);
       newUser.accounts.push(existingUser._id);
       await existingUser.save();
       await newUser.save();
