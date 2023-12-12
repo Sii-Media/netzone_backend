@@ -283,7 +283,7 @@ export const signUp = async (req, res) => {
         });
       }
     }
-    if (withAdd && withAdd == true) {
+    if (withAdd == true) {
       const existingUser = await userModel.findOne({ email: mainAccount });
 
       if (!existingUser) {
