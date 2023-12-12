@@ -286,7 +286,7 @@ export const signUp = async (req, res) => {
 
     console.log("1111111111");
     console.log(withAdd);
-    if (withAdd && withAdd == true) {
+    if (withAdd || withAdd == true) {
       console.log("222222222");
       const existingUser = await userModel.findOne({ email: mainAccount });
 
