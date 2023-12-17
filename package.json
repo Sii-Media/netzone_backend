@@ -29,6 +29,8 @@
     "nexmo": "^2.9.1",
     "node-cron": "^3.0.2",
     "otp-generator": "^4.0.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0",
     "quickblox": "^2.15.5",
     "stripe": "^12.4.0",
     "twilio": "^4.11.1"

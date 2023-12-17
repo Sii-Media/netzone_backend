@@ -1,61 +1,69 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema({
-
+const userSchema = mongoose.Schema(
+  {
     username: {
-        type: String,
-        required: true,
-        unique: true,
-        index: true,
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
     },
     email: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
     },
     userType: {
-        type: String,
-        required: true,
-        enum: ['local_company', 'user', 'freezone', 'factory', 'car', 'planes', 'sea_companies', 'news_agency', 'real_estate', 'trader', 'delivery_company'],
-
+      type: String,
+      enum: [
+        "local_company",
+        "user",
+        "freezone",
+        "factory",
+        "car",
+        "planes",
+        "sea_companies",
+        "news_agency",
+        "real_estate",
+        "trader",
+        "delivery_company",
+      ],
     },
     firstMobile: {
-        type: String,
-        required: true,
+      type: String,
     },
 
     secondeMobile: {
-        type: String,
+      type: String,
     },
     thirdMobile: {
-        type: String,
+      type: String,
     },
     isFreeZoon: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     isService: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     isSelectable: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     freezoneCity: String,
     deliverable: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     subcategory: String,
     country: String,
     address: String,
     netzoonBalance: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     businessLicense: String,
     companyProductsNumber: Number,
@@ -74,146 +82,150 @@ const userSchema = mongoose.Schema({
     deliveryPermitPhoto: String,
     tradeLicensePhoto: String,
     isThereWarehouse: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     isThereFoodsDelivery: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     deliveryType: String,
     deliveryCarsNum: Number,
     deliveryMotorsNum: Number,
     vehicles: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Vehicles',
-            default: [],
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vehicles",
+        default: [],
+      },
     ],
     products: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Products',
-            default: [],
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products",
+        default: [],
+      },
     ],
     selectedProducts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Products',
-            default: [],
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products",
+        default: [],
+      },
     ],
     stripeCustomerId: {
-        type: String,
+      type: String,
     },
     cart: {
-        items: [
-            {
-                productId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Products',
-                    required: true
-                },
-                quantity: { type: Number, required: true }
-            }
-        ]
+      items: [
+        {
+          productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Products",
+            required: true,
+          },
+          quantity: { type: Number, required: true },
+        },
+      ],
     },
     favorites: {
-        products: [
-            {
-                productId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Products',
-                },
-            }
-        ]
+      products: [
+        {
+          productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Products",
+          },
+        },
+      ],
     },
     accounts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
     ],
 
     followings: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            default: []
-        },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
     ],
 
     followers: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            default: []
-        },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: [],
+      },
     ],
 
     ratings: [
-        {
-            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-            rating: { type: Number, required: true, min: 1, max: 5 }
-        }
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        rating: { type: Number, required: true, min: 1, max: 5 },
+      },
     ],
     totalRatings: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
-    uniqueProfileVisitors: [{
+    uniqueProfileVisitors: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        default: []
-    }],
+        ref: "User",
+        default: [],
+      },
+    ],
     profileViews: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     unreadNotifications: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Notifications',
-            default: [],
-        },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notifications",
+        default: [],
+      },
     ],
 
     subscriptionExpireDate: {
-        type: Date,
+      type: Date,
     },
     realEstateListingsRemaining: { type: Number, default: 50 },
     advertisementsRemaining: { type: Number, default: 3 },
     carsListingsRemaining: { type: Number, default: 50 },
     planesListingsRemaining: { type: Number, default: 50 },
     profitRatio: {
-        type: Number,
+      type: Number,
     },
     city: {
-        type: String,
+      type: String,
     },
     addressDetails: {
-        type: String,
+      type: String,
     },
     contactName: {
-        type: String,
+      type: String,
     },
     floorNum: {
-        type: Number,
+      type: Number,
     },
     locationType: {
-        type: String,
-        enum: ['home', 'work']
-    }
-
-
-},
-    {
-        // Set the select option to exclude the password field by default
-        toJSON: {
-            select: '-password'
-        }
+      type: String,
+      enum: ["home", "work"],
     },
-    { timestamps: true }
+  },
+  {
+    // Set the select option to exclude the password field by default
+    toJSON: {
+      select: "-password",
+    },
+  },
+  { timestamps: true }
 );
 
 export default mongoose.model("User", userSchema);

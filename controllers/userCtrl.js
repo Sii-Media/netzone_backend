@@ -19,7 +19,24 @@ import { News } from "../models/news/newsModel.js";
 import { Comment } from "../models/news/comment_model.js";
 import { DealsItems } from "../models/deals/dealsItemsModel.js";
 import { DealsCategories } from "../models/deals/dealsCategoriesModel.js";
+// import passport from "passport";
+// var GoogleStrategy = require("passport-google-oauth2").Strategy;
 
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: GOOGLE_CLIENT_ID,
+//       clientSecret: GOOGLE_CLIENT_SECRET,
+//       callbackURL: "http://yourdomain:3000/auth/google/callback",
+//       passReqToCallback: true,
+//     },
+//     function (request, accessToken, refreshToken, profile, done) {
+//       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//         return done(err, user);
+//       });
+//     }
+//   )
+// );
 const nexmo = new Nexmo({
   apiKey: "7e88bc5b",
   apiSecret: "6W60UQDnogslVCuP",
@@ -65,6 +82,181 @@ export const signin = async (req, res) => {
       message: "LogIn Successfuled",
       token: token,
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const oAuthSignIn = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const existingUser = await userModel.findOne({ email });
+    if (!existingUser) {
+      const {
+        username,
+        profilePhoto,
+        userType,
+        firstMobile,
+        secondeMobile,
+        thirdMobile,
+        isFreeZoon,
+        isService,
+        isSelectable,
+        freezoneCity,
+        deliverable,
+        subcategory,
+        address,
+        website,
+        link,
+        slogn,
+        businessLicense,
+        companyProductsNumber,
+        sellType,
+        toCountry,
+        bio,
+        description,
+        isThereWarehouse,
+        isThereFoodsDelivery,
+        deliveryType,
+        deliveryCarsNum,
+        deliveryMotorsNum,
+        profitRatio,
+        city,
+        addressDetails,
+        contactName,
+        floorNum,
+        locationType,
+        title,
+        country,
+      } = req.body;
+      const coverPhoto = req.files["coverPhoto"]
+        ? req.files["coverPhoto"][0]
+        : null;
+      const frontIdPhoto = req.files["frontIdPhoto"]
+        ? req.files["frontIdPhoto"][0]
+        : null;
+      const backIdPhoto = req.files["backIdPhoto"]
+        ? req.files["backIdPhoto"][0]
+        : null;
+      const tradeLicensePhoto = req.files["tradeLicensePhoto"]
+        ? req.files["tradeLicensePhoto"][0]
+        : null;
+      const deliveryPermitPhoto = req.files["deliveryPermitPhoto"]
+        ? req.files["deliveryPermitPhoto"][0]
+        : null;
+
+      const coverUrlImage = coverPhoto
+        ? "https://back.netzoon.com/" + coverPhoto.path.replace(/\\/g, "/")
+        : "https://i.imgur.com/EOWYmuQ.png";
+
+      const frontIdPhotoUrlImage = frontIdPhoto
+        ? "https://back.netzoon.com/" + frontIdPhoto.path.replace(/\\/g, "/")
+        : null;
+      const backIdPhotoUrlImage = backIdPhoto
+        ? "https://back.netzoon.com/" + backIdPhoto.path.replace(/\\/g, "/")
+        : null;
+      const tradeLicensePhotoUrl = tradeLicensePhoto
+        ? "https://back.netzoon.com/" +
+          tradeLicensePhoto.path.replace(/\\/g, "/")
+        : null;
+      const deliveryPermitPhotoUrl = deliveryPermitPhoto
+        ? "https://back.netzoon.com/" +
+          deliveryPermitPhoto.path.replace(/\\/g, "/")
+        : null;
+
+      const newUser = await userModel.create({
+        username,
+        email,
+        userType,
+        firstMobile,
+        secondeMobile,
+        thirdMobile,
+        freezoneCity: freezoneCity,
+        subcategory,
+        address,
+        businessLicense,
+        companyProductsNumber,
+        sellType,
+        toCountry,
+        bio,
+        description,
+        website: website,
+        slogn: slogn,
+        link: link,
+        profilePhoto: profilePhoto,
+        coverPhoto: coverUrlImage,
+
+        frontIdPhoto: frontIdPhotoUrlImage,
+        backIdPhoto: backIdPhotoUrlImage,
+        tradeLicensePhoto: tradeLicensePhotoUrl,
+        deliveryPermitPhoto: deliveryPermitPhotoUrl,
+        country: country,
+
+        deliveryType: deliveryType,
+        deliveryCarsNum: deliveryCarsNum,
+        deliveryMotorsNum: deliveryMotorsNum,
+        profitRatio: profitRatio,
+        city: city,
+        addressDetails: addressDetails,
+        contactName: contactName,
+        floorNum: floorNum,
+        locationType: locationType,
+      });
+      newUser.isFreeZoon = isFreeZoon ?? false;
+      newUser.isService = isService ?? false;
+      newUser.isSelectable = isSelectable ?? false;
+      newUser.deliverable = deliverable ?? false;
+      newUser.isThereWarehouse = isThereWarehouse ?? false;
+      newUser.isThereFoodsDelivery = isThereFoodsDelivery ?? false;
+
+      if (userType == "car" || "planes" || "sea_companies" || "real_estate") {
+        const subscriptionExpireDate = new Date();
+        subscriptionExpireDate.setDate(subscriptionExpireDate.getDate() + 30);
+        newUser.subscriptionExpireDate = subscriptionExpireDate;
+        newUser.save();
+      }
+
+      if (userType === "factory") {
+        const factoryCategory = await FactoryCategories.findOneAndUpdate(
+          { title: title }, // Update this condition based on your requirements
+          { $push: { factory: newUser._id } },
+          { new: true }
+        );
+
+        // Handle case when FactoryCategories document doesn't exist
+        if (!factoryCategory) {
+          // Create a new FactoryCategories document
+          await FactoryCategories.create({
+            title: title,
+            factory: [newUser._id],
+          });
+        }
+      }
+      const token = jwt.sign(
+        { email: newUser.email, id: newUser._id },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "7d" }
+      );
+
+      return res.status(201).json({
+        result: newUser,
+        message: "User created",
+        token: token,
+      });
+    } else {
+      const token = jwt.sign(
+        { email: existingUser.email, id: existingUser._id },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "7d" }
+      );
+      console.log(existingUser);
+      res.status(201).json({
+        result: existingUser,
+        message: "LogIn Successfuled",
+        token: token,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
@@ -647,6 +839,7 @@ export const EditUser = async (req, res) => {
   const { userId } = req.params;
   const {
     username,
+    userType,
     email,
     firstMobile,
     secondeMobile,
@@ -665,9 +858,17 @@ export const EditUser = async (req, res) => {
     city,
     addressDetails,
     contactName,
+    floorNum,
+    locationType,
   } = req.body;
+  console.log(req.body);
   let profileUrlImage;
   let coverUrlImage;
+  let frontIdPhotoUrlImage;
+  let backIdPhotoUrlImage;
+  let tradeLicensePhotoUrlImage;
+  let deliveryPermitPhotoUrlImage;
+
   console.log(req.params);
   try {
     const user = await userModel.findById(userId);
@@ -685,6 +886,29 @@ export const EditUser = async (req, res) => {
       const coverPhoto = req.files["coverPhoto"][0];
       coverUrlImage =
         "https://back.netzoon.com/" + coverPhoto.path.replace(/\\/g, "/");
+    }
+
+    if (req.files && req.files["frontIdPhoto"]) {
+      const frontIdPhoto = req.files["frontIdPhoto"][0];
+      frontIdPhotoUrlImage =
+        "https://back.netzoon.com/" + frontIdPhoto.path.replace(/\\/g, "/");
+    }
+    if (req.files && req.files["backIdPhoto"]) {
+      const backIdPhoto = req.files["backIdPhoto"][0];
+      backIdPhotoUrlImage =
+        "https://back.netzoon.com/" + backIdPhoto.path.replace(/\\/g, "/");
+    }
+    if (req.files && req.files["tradeLicensePhoto"]) {
+      const tradeLicensePhoto = req.files["tradeLicensePhoto"][0];
+      tradeLicensePhotoUrlImage =
+        "https://back.netzoon.com/" +
+        tradeLicensePhoto.path.replace(/\\/g, "/");
+    }
+    if (req.files && req.files["deliveryPermitPhoto"]) {
+      const deliveryPermitPhoto = req.files["deliveryPermitPhoto"][0];
+      deliveryPermitPhotoUrlImage =
+        "https://back.netzoon.com/" +
+        deliveryPermitPhoto.path.replace(/\\/g, "/");
     }
 
     user.username = username;
@@ -711,6 +935,27 @@ export const EditUser = async (req, res) => {
     }
     if (coverUrlImage) {
       user.coverPhoto = coverUrlImage;
+    }
+    if (frontIdPhotoUrlImage) {
+      user.frontIdPhoto = frontIdPhotoUrlImage;
+    }
+    if (backIdPhotoUrlImage) {
+      user.backIdPhoto = backIdPhotoUrlImage;
+    }
+    if (tradeLicensePhotoUrlImage) {
+      user.tradeLicensePhoto = tradeLicensePhotoUrlImage;
+    }
+    if (deliveryPermitPhotoUrlImage) {
+      user.deliveryPermitPhoto = deliveryPermitPhotoUrlImage;
+    }
+    if (userType) {
+      user.userType = userType;
+    }
+    if (floorNum) {
+      user.floorNum = floorNum;
+    }
+    if (locationType) {
+      user.locationType = locationType;
     }
 
     const updatedUser = await user.save();
