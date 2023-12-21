@@ -117,6 +117,7 @@ export const AddDeal = async (req, res) => {
     location,
     category,
     country,
+    description,
   } = req.body;
   try {
     const ownerId = new mongoose.Types.ObjectId(owner);
@@ -150,6 +151,7 @@ export const AddDeal = async (req, res) => {
       location,
       category,
       country,
+      description,
     };
 
     const deal = new DealsItems(dealData);
@@ -183,6 +185,7 @@ export const editDeal = async (req, res) => {
       location,
       category,
       country,
+      description,
     } = req.body;
 
     // Check if deals item with the given ID exists
@@ -200,6 +203,7 @@ export const editDeal = async (req, res) => {
     existingDeal.location = location;
     existingDeal.category = category;
     existingDeal.country = country;
+    existingDeal.description = description;
 
     if (req.files["dealImage"]) {
       const image = req.files["dealImage"][0];
