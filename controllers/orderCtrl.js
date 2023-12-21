@@ -136,7 +136,11 @@ export const saveOrder = async (req, res) => {
     let updatedBalance;
     let calculateBalance;
     const netzoonBalance = client.netzoonBalance;
-    if (client.userType == "trader" || client.userType == "factory") {
+    if (
+      client.userType == "trader" ||
+      client.userType == "factory" ||
+      client.userType == "local_company"
+    ) {
       calculateBalance = subTotal - (subTotal * 3) / 100;
       updatedBalance = netzoonBalance + calculateBalance;
     } else {

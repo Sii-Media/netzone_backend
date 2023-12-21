@@ -437,12 +437,25 @@ export const signUp = async (req, res) => {
       floorNum: floorNum,
       locationType: locationType,
     });
-    newUser.isFreeZoon = isFreeZoon ?? false;
-    newUser.isService = isService ?? false;
-    newUser.isSelectable = isSelectable ?? false;
-    newUser.deliverable = deliverable ?? false;
-    newUser.isThereWarehouse = isThereWarehouse ?? false;
-    newUser.isThereFoodsDelivery = isThereFoodsDelivery ?? false;
+    if (isFreeZoon) {
+      newUser.isFreeZoon = isFreeZoon ?? false;
+    }
+    if (isService) {
+      newUser.isService = isService ?? false;
+    }
+
+    if (isSelectable) {
+      newUser.isSelectable = isSelectable ?? false;
+    }
+    if (deliverable) {
+      newUser.deliverable = deliverable ?? false;
+    }
+    if (isThereWarehouse) {
+      newUser.isThereWarehouse = isThereWarehouse ?? false;
+    }
+    if (isThereFoodsDelivery) {
+      newUser.isThereFoodsDelivery = isThereFoodsDelivery ?? false;
+    }
 
     if (userType == "car" || "planes" || "sea_companies" || "real_estate") {
       const subscriptionExpireDate = new Date();
