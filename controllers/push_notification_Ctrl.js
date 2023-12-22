@@ -19,22 +19,20 @@ var FCM = new fcm(serverKey);
 export const sendPushNotification = async (req, res, next) => {
   const { username, imageUrl, text, category, itemId, body } = req.body;
   try {
-    if (category != "account") {
-      const notification = new Notifications({
-        username: username,
-        userProfileImage: imageUrl,
-        text: text,
-        category: category,
-        itemId: itemId,
-      });
+    const notification = new Notifications({
+      username: username,
+      userProfileImage: imageUrl,
+      text: text,
+      category: category,
+      itemId: itemId,
+    });
 
-      await notification.save();
-      const users = await userModel.find();
+    await notification.save();
+    const users = await userModel.find();
 
-      for (const user of users) {
-        user.unreadNotifications.push(notification);
-        await user.save();
-      }
+    for (const user of users) {
+      user.unreadNotifications.push(notification);
+      await user.save();
     }
 
     let message = {
