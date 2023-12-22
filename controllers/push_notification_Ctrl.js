@@ -27,15 +27,16 @@ export const sendPushNotification = async (req, res, next) => {
         category: category,
         itemId: itemId,
       });
+
       await notification.save();
+      const users = await userModel.find();
+
+      for (const user of users) {
+        user.unreadNotifications.push(notification);
+        await user.save();
+      }
     }
 
-    const users = await userModel.find();
-
-    for (const user of users) {
-      user.unreadNotifications.push(notification);
-      await user.save();
-    }
     let message = {
       to: "/topics/Netzoon",
       notification: {
