@@ -90,7 +90,7 @@ router.delete("/delete-user/:userId", deleteAccount);
 router.post("/otpLogin", otpLogin);
 router.post("/verifyOtpLogin", verifyOTPLogin);
 
-router.put("/editUser/:userId", EditUser);
+router.put("/net-editUser/:userId", EditUser);
 router.get("/getuseraccounts", getAccountByEmail);
 router.post("/addaccount", addAccount);
 
