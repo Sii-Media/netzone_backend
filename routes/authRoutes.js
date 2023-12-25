@@ -115,7 +115,7 @@ router.post("/:userId/addvisitor", addNumberOfVisitors);
 router.get("/:id/visitors", getVisitors);
 router.post("/:id/rate", rateUser);
 router.get("/:id/rating", getUserTotalRating);
-router.delete("/net-remove/:id", deleteUser);
+// router.delete("/net-remove/:id", deleteUser);
 router.get("/get-all-users", getAllUsers);
 
 router.get("/api/stripe/account", stripeAccount);
