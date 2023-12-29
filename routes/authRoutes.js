@@ -12,6 +12,7 @@ import {
   deleteAccount,
   deleteProductFromSelectedProducts,
   deleteUser,
+  forgetPassword,
   getAccountByEmail,
   getAllFavorites,
   getAllUsers,
@@ -26,6 +27,7 @@ import {
   otpLogin,
   rateUser,
   removeProductFromFavorites,
+  resetPassword,
   signUp,
   signin,
   toggleFollow,
@@ -119,5 +121,8 @@ router.get("/:id/rating", getUserTotalRating);
 router.get("/get-all-users", getAllUsers);
 
 router.get("/api/stripe/account", stripeAccount);
+
+router.post("/forget-password", forgetPassword);
+router.put("/reset-password/:token", resetPassword);
 
 export default router;

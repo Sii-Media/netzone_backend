@@ -218,6 +218,8 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ["home", "work"],
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
   },
   {
     // Set the select option to exclude the password field by default

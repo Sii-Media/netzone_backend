@@ -11,20 +11,14 @@ const shipmentUrl =
 const fetchCitiesUrl =
   "https://ws.aramex.net/ShippingAPI.V2/Location/Service_1_0.svc/json/FetchCities";
 
-// Controller for rate calculation
 export const calculateRateController = async (req, res) => {
   try {
-    // Get the request body from the client
     const requestBody = req.body;
 
-    // Make a POST request to the Aramex API
     const response = await axios.post(aramexApiUrl, requestBody);
 
-    // Send the Aramex API response back to the client
     res.json(response.data);
   } catch (error) {
-    // Handle errors
-    console.error("Error:", error.message);
     res.status(500).json({ error: error });
   }
 };
