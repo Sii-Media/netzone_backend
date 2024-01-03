@@ -8,10 +8,13 @@ export const getAllRealEstate = async (req, res) => {
     if (country) {
       realEstates = await RealEstate.find({ country: country }).populate(
         "createdBy",
-        "username"
+        "username firstMobile profilePhoto"
       );
     } else {
-      realEstates = await RealEstate.find().populate("createdBy", "username");
+      realEstates = await RealEstate.find().populate(
+        "createdBy",
+        "username firstMobile profilePhoto"
+      );
     }
     // const realEstates = await RealEstate.find().populate('createdBy', 'username');
     return res.json(realEstates);
@@ -33,6 +36,10 @@ export const addRealEstate = async (req, res) => {
       amenities,
       createdBy,
       country,
+      type,
+      category,
+      forWhat,
+      furnishing,
     } = req.body;
 
     const user = await userModel.findById(createdBy);
@@ -40,25 +47,25 @@ export const addRealEstate = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (
-      user.subscriptionExpireDate &&
-      user.subscriptionExpireDate <= new Date()
-    ) {
-      return res
-        .status(403)
-        .json(
-          "Your subscription has expired, and you cannot add new real estate listings."
-        );
-    }
+    // if (
+    //   user.subscriptionExpireDate &&
+    //   user.subscriptionExpireDate <= new Date()
+    // ) {
+    //   return res
+    //     .status(403)
+    //     .json(
+    //       "Your subscription has expired, and you cannot add new real estate listings."
+    //     );
+    // }
 
-    if (user.realEstateListingsRemaining <= 0) {
-      return res
-        .status(403)
-        .json("You have reached the monthly limit for real estate listings");
-    }
+    // if (user.realEstateListingsRemaining <= 0) {
+    //   return res
+    //     .status(403)
+    //     .json("You have reached the monthly limit for real estate listings");
+    // }
 
-    user.realEstateListingsRemaining -= 1;
-    await user.save();
+    // user.realEstateListingsRemaining -= 1;
+    // await user.save();
 
     const image = req.files["image"][0];
     if (!image) {
@@ -81,6 +88,10 @@ export const addRealEstate = async (req, res) => {
       amenities,
       createdBy,
       country: country,
+      type,
+      category,
+      forWhat,
+      furnishing,
     });
 
     if (req.files["realestateimages"]) {
@@ -125,6 +136,10 @@ export const editRealEstate = async (req, res) => {
       bedrooms,
       bathrooms,
       amenities,
+      type,
+      category,
+      forWhat,
+      furnishing,
     } = req.body;
     const { id } = req.params;
 
@@ -137,6 +152,10 @@ export const editRealEstate = async (req, res) => {
       bedrooms,
       bathrooms,
       amenities,
+      type,
+      category,
+      forWhat,
+      furnishing,
     };
 
     if (req.files["image"]) {
