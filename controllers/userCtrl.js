@@ -941,9 +941,13 @@ export const EditUser = async (req, res) => {
     user.link = link;
     user.slogn = slogn;
     user.profitRatio = profitRatio;
-    user.city = city;
-    user.addressDetails = addressDetails;
     user.contactName = contactName;
+    if (city) {
+      user.city = city;
+    }
+    if (addressDetails) {
+      user.addressDetails = addressDetails;
+    }
     if (profileUrlImage) {
       user.profilePhoto = profileUrlImage;
     }
